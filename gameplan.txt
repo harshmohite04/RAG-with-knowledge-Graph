@@ -1,0 +1,6 @@
+1. Android Application 
+
+2. plugin into existing ERP portal 
+
+3. make a script which will extract and monitor new data from time to time 
+

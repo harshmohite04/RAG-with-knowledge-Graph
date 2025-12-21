@@ -1308,3 +1308,1180 @@ CONTEXT:
 Retriever items: 5
 =============================================
 
+
+
+==============================
+QUERY: List all clinical and non-clinical departments in the hospital and describe their roles
+==============================
+
+ANSWER:
+**Clinical Departments:**
+
+* Emergency Department (ED)
+	+ Department Head: Dr. Rohan Patel
+	+ Staff: 35 professionals
+	+ Operating Hours: 24/7/365
+	+ Annual Patient Volume: 85,000+ visits
+	+ Services Provided:
+		- Triage and rapid assessment
+		- Trauma care and resuscitation
+		- Acute medical emergencies
+		- Pediatric emergencies
+		- Emergency obstetrics
+		- Toxicology and overdose management
+		- Burns treatment
+* General Surgery
+* Cardiology
+* Cardiothoracic Surgery
+* Neurology
+* Neurosurgery
+* Orthopedics
+* Pediatrics
+* Obstetrics & Gynecology
+* Oncology
+* Radiation Oncology
+* Nephrology
+* Urology
+* Gastroenterology
+* Hepatology
+* Pulmonology/Respiratory Medicine
+* ENT (Otorhinolaryngology)
+* Ophthalmology
+* Psychiatry/Mental Health
+* Dermatology
+* Infectious Diseases
+* Endocrinology & Metabolism
+* Rheumatology
+* Physical Medicine & Rehabilitation
+* Anesthesiology
+
+**Non-Clinical Departments:**
+
+* Radiology & Imaging
+* Laboratory Medicine
+* Pathology
+* Pharmacy
+* Dietary Services
+* Housekeeping & Sanitation
+* Security & Safety
+* Human Resources
+* Finance & Billing
+* Information Technology
+* Medical Records & Health Information Management
+
+CONTEXT:
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1109' labels=frozenset({'Chunk'}) properties={'id': 'f85738c0-83ec-4e05-a66a-388f805f6fb0', 'text': '1.3 Department Organization\nClinical Departments (25):\n1.\tEmergency Department (ED)\n2.\tGeneral Surgery\n3.\tCardiology\n4.\tCardiothoracic Surgery\n5.\tNeurology\n6.\tNeurosurgery\n7.\tOrthopedics\n8.\tPediatrics\n9.\tObstetrics & Gynecology\n10.\tOncology\n11.\tRadiation Oncology\n12.\tNephrology\n13.\tUrology\n14.\tGastroenterology\n15.\tHepatology\n16.\tPulmonology/Respiratory Medicine\n17.\tENT (Otorhinolaryngology)\n18.\tOphthalmology\n19.\tPsychiatry/Mental Health\n20.\tDermatology\n21.\tInfectious Diseases\n22.\tEndocrinology & Metabolism\n23.\tRheumatology\n24.\tPhysical Medicine & Rehabilitation\n25.\tAnesthesiology\nSupport Departments:\n1.\tRadiology & Imaging\n2.\tLaboratory Medicine\n3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing', 'source': 'sample1.txt'}> score=0.7810031>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1110' labels=frozenset({'Chunk'}) properties={'id': '034467bd-e8f6-4071-9012-59da7c3c1c49', 'text': '3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing\n10.\tInformation Technology\n11.\tMedical Records & Health Information Management\n________________________________________\nPart 2: Clinical Departments - Detailed Overview\n2.1 Emergency Department (ED)\nDepartment Head: Dr. Rohan Patel\nStaff: 35 professionals\nOperating Hours: 24/7/365\nAnnual Patient Volume: 85,000+ visits\nServices Provided:\n•\tTriage and rapid assessment\n•\tTrauma care and resuscitation\n•\tAcute medical emergencies\n•\tPediatric emergencies\n•\tEmergency obstetrics\n•\tToxicology and overdose management\n•\tBurns treatment\nPhysical Infrastructure:\n•\t15 Emergency Stretchers\n•\t6 Resuscitation bays\n•\t3 Trauma rooms\n•\t1 Pediatric emergency area', 'source': 'sample1.txt'}> score=0.68105114>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1184' labels=frozenset({'Chunk'}) properties={'id': 'c9a0412c-994c-4daf-976e-fd0fdfc21e8f', 'text': '[5] Medinous. (2025). A detailed view of hospital management system (HMS). Medinous Healthcare Solutions.\n[6] HHS. (2009). Summary of the HIPAA security rule. Department of Health & Human Services.\n[7] GoAID. (2025). List of hospital departments: Detailed information. GoAID Medical Reference Guide.\n[8] LeadSquared. (2025). 11 modules of hospital management system and their functions. LeadSquared Industries Blog.\n[9] HIPAA Journal. (2025). Electronic medical records and HIPAA compliance. HIPAA Journal Technical Guide.\n[10] eCampus Ontario. (2025). General hospital departments: Hospital unit administration. eCampus Ontario Pressbooks.', 'source': 'sample1.txt'}> score=0.6777021>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1107' labels=frozenset({'Chunk'}) properties={'id': 'ca635d00-bf3c-4664-b62b-e4d057faa72b', 'text': '________________________________________\nPart 1: Hospital Organization & Structure\n1.1 Organizational Hierarchy\nHospital Board of Directors\n↓\nChief Executive Officer (CEO)\n├── Chief Medical Officer (CMO)\n├── Chief Operating Officer (COO)\n├── Chief Financial Officer (CFO)\n└── Chief Information Officer (CIO)\nKey Leadership Roles:\n•\tChief Executive Officer (Dr. Rajesh Verma): Overall hospital management, strategic planning, board reporting\n•\tChief Medical Officer (Dr. Anjali Sharma): Clinical governance, medical staff credentialing, quality assurance\n•\tChief Operating Officer (Vikram Singh): Day-to-day operations, bed management, staff coordination\n•\tChief Financial Officer (Priya Malhotra): Budget management, revenue cycle, insurance processing', 'source': 'sample1.txt'}> score=0.66308814>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1118' labels=frozenset({'Chunk'}) properties={'id': '57d49109-cac8-4932-b448-726ae09e72a9', 'text': 'Common Diagnoses Managed:\n•\tAcute coronary syndrome\n•\tStable coronary artery disease\n•\tHeart failure (systolic & diastolic)\n•\tValvular heart disease\n•\tArrhythmias\n•\tCardiomyopathies\n•\tPulmonary hypertension\nCardiology Clinic Structure:\nMonday: General cardiology (Dr. Arunesh), Echocardiography\nWednesday: Interventional cardiology (Dr. Arunesh), EP clinic\nFriday: Heart failure clinic, Arrhythmia clinic\nSaturday: Follow-up clinic\nPatient Flow in Cath Lab:\n1.\tPre-operative: Consent, NPO status, pre-medication, IV access\n2.\tImaging: Femoral/radial access, angiography, diagnosis\n3.\tIntervention: Stent, PTCA, other therapeutic procedures (if needed)\n4.\tPost-operative: Pressure dressing, vital monitoring, observation (4-6 hours)', 'source': 'sample1.txt'}> score=0.64494556>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1161' labels=frozenset({'Chunk'}) properties={'id': '084c2bfd-f109-45c7-b02a-f09071d016fb', 'text': "________________________________________\nPart 6: Operational Workflows & Protocols\n6.1 Daily Hospital Operations\n6 AM - Morning Shift Begins\n•\tStaff muster roll call\n•\tWard handover from night shift\n•\tNursing care plan review\n•\t6:30 AM - Doctors' ward rounds\n8 AM - Clinical Work\n•\tICU rounds (multidisciplinary)\n•\tOutpatient clinic opening\n•\tLaboratory processing begins\n12 PM - Midday Activities\n•\tLunch service for patients\n•\tMedication administration\n•\tAfternoon investigations\n2 PM - Clinical Continuity\n•\tFollow-up patient reviews\n•\tEmergency department activity peaks\n•\tSurgical procedures (if scheduled evening)\n6 PM - Evening Transition\n•\tOutpatient clinic closure\n•\tEvening vital signs monitoring\n•\tNursing handover preparation\n8 PM - Night Shift Begins\n•\tNight staff muster roll", 'source': 'sample1.txt'}> score=0.6193267>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1183' labels=frozenset({'Chunk'}) properties={'id': '28e53e14-ab46-4165-a021-e4345b64edbf', 'text': '•\tStatin: Atorvastatin 80 mg\n•\tACE inhibitor: Lisinopril 5 mg (if LVEF <40%)\n________________________________________\nReferences\n[1] Winasti, W. (2023). Hospital organizational structure and information processing. PMC US National Library of Medicine, 10047425.\n[2] Health Ray. (2025). Hospital patient record management systems: Revolutionizing patient data management. HealthRay Blog.\n[3] Bigscal. (2024). HIPAA compliant EMR software mandatory for hospitals. Bigscal Healthcare IT Blog.\n[4] Organimi. (2024). Hospital organizational structure: How it works and examples. Organimi Organization Documentation.\n[5] Medinous. (2025). A detailed view of hospital management system (HMS). Medinous Healthcare Solutions.', 'source': 'sample1.txt'}> score=0.6187676>
+
+Retriever items: 7
+=============================================
+
+
+
+==============================
+QUERY: List all clinical and non-clinical departments in the hospital and describe their roles
+==============================
+
+ANSWER:
+**Clinical Departments:**
+
+* Emergency Department (ED)
+	+ Department Head: Dr. Rohan Patel
+	+ Staff: 35 professionals
+	+ Operating Hours: 24/7/365
+	+ Annual Patient Volume: 85,000+ visits
+	+ Services Provided:
+		- Triage and rapid assessment
+		- Trauma care and resuscitation
+		- Acute medical emergencies
+		- Pediatric emergencies
+		- Emergency obstetrics
+		- Toxicology and overdose management
+		- Burns treatment
+* General Surgery
+* Cardiology
+* Cardiothoracic Surgery
+* Neurology
+* Neurosurgery
+* Orthopedics
+* Pediatrics
+* Obstetrics & Gynecology
+* Oncology
+* Radiation Oncology
+* Nephrology
+* Urology
+* Gastroenterology
+* Hepatology
+* Pulmonology/Respiratory Medicine
+* ENT (Otorhinolaryngology)
+* Ophthalmology
+* Psychiatry/Mental Health
+* Dermatology
+* Infectious Diseases
+* Endocrinology & Metabolism
+* Rheumatology
+* Physical Medicine & Rehabilitation
+* Anesthesiology
+
+**Non-Clinical Departments:**
+
+* Radiology & Imaging
+* Laboratory Medicine
+* Pathology
+* Pharmacy
+* Dietary Services
+* Housekeeping & Sanitation
+* Security & Safety
+* Human Resources
+* Finance & Billing
+* Information Technology
+* Medical Records & Health Information Management
+
+CONTEXT:
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1109' labels=frozenset({'Chunk'}) properties={'id': 'f85738c0-83ec-4e05-a66a-388f805f6fb0', 'text': '1.3 Department Organization\nClinical Departments (25):\n1.\tEmergency Department (ED)\n2.\tGeneral Surgery\n3.\tCardiology\n4.\tCardiothoracic Surgery\n5.\tNeurology\n6.\tNeurosurgery\n7.\tOrthopedics\n8.\tPediatrics\n9.\tObstetrics & Gynecology\n10.\tOncology\n11.\tRadiation Oncology\n12.\tNephrology\n13.\tUrology\n14.\tGastroenterology\n15.\tHepatology\n16.\tPulmonology/Respiratory Medicine\n17.\tENT (Otorhinolaryngology)\n18.\tOphthalmology\n19.\tPsychiatry/Mental Health\n20.\tDermatology\n21.\tInfectious Diseases\n22.\tEndocrinology & Metabolism\n23.\tRheumatology\n24.\tPhysical Medicine & Rehabilitation\n25.\tAnesthesiology\nSupport Departments:\n1.\tRadiology & Imaging\n2.\tLaboratory Medicine\n3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing', 'source': 'sample1.txt'}> score=0.7810031>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1110' labels=frozenset({'Chunk'}) properties={'id': '034467bd-e8f6-4071-9012-59da7c3c1c49', 'text': '3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing\n10.\tInformation Technology\n11.\tMedical Records & Health Information Management\n________________________________________\nPart 2: Clinical Departments - Detailed Overview\n2.1 Emergency Department (ED)\nDepartment Head: Dr. Rohan Patel\nStaff: 35 professionals\nOperating Hours: 24/7/365\nAnnual Patient Volume: 85,000+ visits\nServices Provided:\n•\tTriage and rapid assessment\n•\tTrauma care and resuscitation\n•\tAcute medical emergencies\n•\tPediatric emergencies\n•\tEmergency obstetrics\n•\tToxicology and overdose management\n•\tBurns treatment\nPhysical Infrastructure:\n•\t15 Emergency Stretchers\n•\t6 Resuscitation bays\n•\t3 Trauma rooms\n•\t1 Pediatric emergency area', 'source': 'sample1.txt'}> score=0.68105114>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1184' labels=frozenset({'Chunk'}) properties={'id': 'c9a0412c-994c-4daf-976e-fd0fdfc21e8f', 'text': '[5] Medinous. (2025). A detailed view of hospital management system (HMS). Medinous Healthcare Solutions.\n[6] HHS. (2009). Summary of the HIPAA security rule. Department of Health & Human Services.\n[7] GoAID. (2025). List of hospital departments: Detailed information. GoAID Medical Reference Guide.\n[8] LeadSquared. (2025). 11 modules of hospital management system and their functions. LeadSquared Industries Blog.\n[9] HIPAA Journal. (2025). Electronic medical records and HIPAA compliance. HIPAA Journal Technical Guide.\n[10] eCampus Ontario. (2025). General hospital departments: Hospital unit administration. eCampus Ontario Pressbooks.', 'source': 'sample1.txt'}> score=0.6777021>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1107' labels=frozenset({'Chunk'}) properties={'id': 'ca635d00-bf3c-4664-b62b-e4d057faa72b', 'text': '________________________________________\nPart 1: Hospital Organization & Structure\n1.1 Organizational Hierarchy\nHospital Board of Directors\n↓\nChief Executive Officer (CEO)\n├── Chief Medical Officer (CMO)\n├── Chief Operating Officer (COO)\n├── Chief Financial Officer (CFO)\n└── Chief Information Officer (CIO)\nKey Leadership Roles:\n•\tChief Executive Officer (Dr. Rajesh Verma): Overall hospital management, strategic planning, board reporting\n•\tChief Medical Officer (Dr. Anjali Sharma): Clinical governance, medical staff credentialing, quality assurance\n•\tChief Operating Officer (Vikram Singh): Day-to-day operations, bed management, staff coordination\n•\tChief Financial Officer (Priya Malhotra): Budget management, revenue cycle, insurance processing', 'source': 'sample1.txt'}> score=0.66308814>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1118' labels=frozenset({'Chunk'}) properties={'id': '57d49109-cac8-4932-b448-726ae09e72a9', 'text': 'Common Diagnoses Managed:\n•\tAcute coronary syndrome\n•\tStable coronary artery disease\n•\tHeart failure (systolic & diastolic)\n•\tValvular heart disease\n•\tArrhythmias\n•\tCardiomyopathies\n•\tPulmonary hypertension\nCardiology Clinic Structure:\nMonday: General cardiology (Dr. Arunesh), Echocardiography\nWednesday: Interventional cardiology (Dr. Arunesh), EP clinic\nFriday: Heart failure clinic, Arrhythmia clinic\nSaturday: Follow-up clinic\nPatient Flow in Cath Lab:\n1.\tPre-operative: Consent, NPO status, pre-medication, IV access\n2.\tImaging: Femoral/radial access, angiography, diagnosis\n3.\tIntervention: Stent, PTCA, other therapeutic procedures (if needed)\n4.\tPost-operative: Pressure dressing, vital monitoring, observation (4-6 hours)', 'source': 'sample1.txt'}> score=0.64494556>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1161' labels=frozenset({'Chunk'}) properties={'id': '084c2bfd-f109-45c7-b02a-f09071d016fb', 'text': "________________________________________\nPart 6: Operational Workflows & Protocols\n6.1 Daily Hospital Operations\n6 AM - Morning Shift Begins\n•\tStaff muster roll call\n•\tWard handover from night shift\n•\tNursing care plan review\n•\t6:30 AM - Doctors' ward rounds\n8 AM - Clinical Work\n•\tICU rounds (multidisciplinary)\n•\tOutpatient clinic opening\n•\tLaboratory processing begins\n12 PM - Midday Activities\n•\tLunch service for patients\n•\tMedication administration\n•\tAfternoon investigations\n2 PM - Clinical Continuity\n•\tFollow-up patient reviews\n•\tEmergency department activity peaks\n•\tSurgical procedures (if scheduled evening)\n6 PM - Evening Transition\n•\tOutpatient clinic closure\n•\tEvening vital signs monitoring\n•\tNursing handover preparation\n8 PM - Night Shift Begins\n•\tNight staff muster roll", 'source': 'sample1.txt'}> score=0.6193267>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1183' labels=frozenset({'Chunk'}) properties={'id': '28e53e14-ab46-4165-a021-e4345b64edbf', 'text': '•\tStatin: Atorvastatin 80 mg\n•\tACE inhibitor: Lisinopril 5 mg (if LVEF <40%)\n________________________________________\nReferences\n[1] Winasti, W. (2023). Hospital organizational structure and information processing. PMC US National Library of Medicine, 10047425.\n[2] Health Ray. (2025). Hospital patient record management systems: Revolutionizing patient data management. HealthRay Blog.\n[3] Bigscal. (2024). HIPAA compliant EMR software mandatory for hospitals. Bigscal Healthcare IT Blog.\n[4] Organimi. (2024). Hospital organizational structure: How it works and examples. Organimi Organization Documentation.\n[5] Medinous. (2025). A detailed view of hospital management system (HMS). Medinous Healthcare Solutions.', 'source': 'sample1.txt'}> score=0.6187676>
+
+Retriever items: 7
+=============================================
+
+
+
+==============================
+QUERY: List all clinical and non-clinical departments in the hospital and describe their roles
+==============================
+
+ANSWER:
+**Clinical Departments:**
+
+* Emergency Department (ED)
+	+ Role: Triage and rapid assessment, trauma care and resuscitation, acute medical emergencies, pediatric emergencies, emergency obstetrics, toxicology and overdose management, burns treatment
+* General Surgery
+	+ Role: Surgical procedures for various conditions
+* Cardiology
+	+ Role: Diagnoses and treats heart-related conditions (acute coronary syndrome, stable coronary artery disease, heart failure, valvular heart disease, arrhythmias, cardiomyopathies, pulmonary hypertension)
+* Cardiothoracic Surgery
+	+ Role: Surgical procedures for thoracic and cardiovascular conditions
+* Neurology
+	+ Role: Diagnoses and treats neurological conditions (e.g. stroke, seizures, Parkinson's disease)
+* Neurosurgery
+	+ Role: Surgical procedures for brain and spine conditions
+* Orthopedics
+	+ Role: Diagnoses and treats musculoskeletal conditions (e.g. fractures, joint problems)
+* Pediatrics
+	+ Role: Provides medical care to children
+* Obstetrics & Gynecology
+	+ Role: Provides prenatal, delivery, and postpartum care for women
+* Oncology
+	+ Role: Diagnoses and treats cancer
+* Radiation Oncology
+	+ Role: Treats cancer using radiation therapy
+* Nephrology
+	+ Role: Diagnoses and treats kidney-related conditions (e.g. kidney failure)
+* Urology
+	+ Role: Diagnoses and treats urinary tract conditions (e.g. prostate issues, kidney stones)
+* Gastroenterology
+	+ Role: Diagnoses and treats digestive system conditions (e.g. ulcers, inflammatory bowel disease)
+* Hepatology
+	+ Role: Diagnoses and treats liver-related conditions (e.g. cirrhosis, liver cancer)
+* Pulmonology/Respiratory Medicine
+	+ Role: Diagnoses and treats respiratory conditions (e.g. asthma, COPD)
+* ENT (Otorhinolaryngology)
+	+ Role: Diagnoses and treats ear, nose, and throat conditions
+* Ophthalmology
+	+ Role: Diagnoses and treats eye-related conditions (e.g. cataracts, glaucoma)
+* Psychiatry/Mental Health
+	+ Role: Provides mental health services for patients
+* Dermatology
+	+ Role: Diagnoses and treats skin-related conditions (e.g. acne, psoriasis)
+* Infectious Diseases
+	+ Role: Diagnoses and treats infections
+* Endocrinology & Metabolism
+	+ Role: Diagnoses and treats hormone-related conditions (e.g. diabetes, thyroid disorders)
+* Rheumatology
+	+ Role: Diagnoses and treats arthritis and other rheumatic conditions
+* Physical Medicine & Rehabilitation
+	+ Role: Provides rehabilitation services for patients with physical disabilities
+* Anesthesiology
+	+ Role: Provides anesthesia services for surgical procedures
+
+**Non-Clinical Departments:**
+
+* Radiology & Imaging
+	+ Role: Performs imaging tests (e.g. X-rays, CT scans) and provides diagnostic images
+* Laboratory Medicine
+	+ Role: Conducts laboratory tests to diagnose and monitor patients' conditions
+* Pathology
+	+ Role: Examines tissues and cells to diagnose diseases
+* Pharmacy
+	+ Role: Dispenses medications to patients
+* Dietary Services
+	+ Role: Provides nutrition counseling and meal planning services for patients
+* Housekeeping & Sanitation
+	+ Role: Maintains hospital cleanliness and sanitation
+* Security & Safety
+	+ Role: Ensures patient safety and security
+* Human Resources
+	+ Role: Manages hospital staff and personnel
+* Finance & Billing
+	+ Role: Manages hospital finances and billing processes
+* Information Technology
+	+ Role: Provides IT support for hospital operations
+* Medical Records & Health Information Management
+	+ Role: Maintains patient medical records and ensures HIPAA compliance
+
+CONTEXT:
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1109' labels=frozenset({'Chunk'}) properties={'id': 'f85738c0-83ec-4e05-a66a-388f805f6fb0', 'text': '1.3 Department Organization\nClinical Departments (25):\n1.\tEmergency Department (ED)\n2.\tGeneral Surgery\n3.\tCardiology\n4.\tCardiothoracic Surgery\n5.\tNeurology\n6.\tNeurosurgery\n7.\tOrthopedics\n8.\tPediatrics\n9.\tObstetrics & Gynecology\n10.\tOncology\n11.\tRadiation Oncology\n12.\tNephrology\n13.\tUrology\n14.\tGastroenterology\n15.\tHepatology\n16.\tPulmonology/Respiratory Medicine\n17.\tENT (Otorhinolaryngology)\n18.\tOphthalmology\n19.\tPsychiatry/Mental Health\n20.\tDermatology\n21.\tInfectious Diseases\n22.\tEndocrinology & Metabolism\n23.\tRheumatology\n24.\tPhysical Medicine & Rehabilitation\n25.\tAnesthesiology\nSupport Departments:\n1.\tRadiology & Imaging\n2.\tLaboratory Medicine\n3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing', 'source': 'sample1.txt'}> score=0.7810031>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1110' labels=frozenset({'Chunk'}) properties={'id': '034467bd-e8f6-4071-9012-59da7c3c1c49', 'text': '3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing\n10.\tInformation Technology\n11.\tMedical Records & Health Information Management\n________________________________________\nPart 2: Clinical Departments - Detailed Overview\n2.1 Emergency Department (ED)\nDepartment Head: Dr. Rohan Patel\nStaff: 35 professionals\nOperating Hours: 24/7/365\nAnnual Patient Volume: 85,000+ visits\nServices Provided:\n•\tTriage and rapid assessment\n•\tTrauma care and resuscitation\n•\tAcute medical emergencies\n•\tPediatric emergencies\n•\tEmergency obstetrics\n•\tToxicology and overdose management\n•\tBurns treatment\nPhysical Infrastructure:\n•\t15 Emergency Stretchers\n•\t6 Resuscitation bays\n•\t3 Trauma rooms\n•\t1 Pediatric emergency area', 'source': 'sample1.txt'}> score=0.68105114>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1184' labels=frozenset({'Chunk'}) properties={'id': 'c9a0412c-994c-4daf-976e-fd0fdfc21e8f', 'text': '[5] Medinous. (2025). A detailed view of hospital management system (HMS). Medinous Healthcare Solutions.\n[6] HHS. (2009). Summary of the HIPAA security rule. Department of Health & Human Services.\n[7] GoAID. (2025). List of hospital departments: Detailed information. GoAID Medical Reference Guide.\n[8] LeadSquared. (2025). 11 modules of hospital management system and their functions. LeadSquared Industries Blog.\n[9] HIPAA Journal. (2025). Electronic medical records and HIPAA compliance. HIPAA Journal Technical Guide.\n[10] eCampus Ontario. (2025). General hospital departments: Hospital unit administration. eCampus Ontario Pressbooks.', 'source': 'sample1.txt'}> score=0.6777021>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1107' labels=frozenset({'Chunk'}) properties={'id': 'ca635d00-bf3c-4664-b62b-e4d057faa72b', 'text': '________________________________________\nPart 1: Hospital Organization & Structure\n1.1 Organizational Hierarchy\nHospital Board of Directors\n↓\nChief Executive Officer (CEO)\n├── Chief Medical Officer (CMO)\n├── Chief Operating Officer (COO)\n├── Chief Financial Officer (CFO)\n└── Chief Information Officer (CIO)\nKey Leadership Roles:\n•\tChief Executive Officer (Dr. Rajesh Verma): Overall hospital management, strategic planning, board reporting\n•\tChief Medical Officer (Dr. Anjali Sharma): Clinical governance, medical staff credentialing, quality assurance\n•\tChief Operating Officer (Vikram Singh): Day-to-day operations, bed management, staff coordination\n•\tChief Financial Officer (Priya Malhotra): Budget management, revenue cycle, insurance processing', 'source': 'sample1.txt'}> score=0.66308814>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1118' labels=frozenset({'Chunk'}) properties={'id': '57d49109-cac8-4932-b448-726ae09e72a9', 'text': 'Common Diagnoses Managed:\n•\tAcute coronary syndrome\n•\tStable coronary artery disease\n•\tHeart failure (systolic & diastolic)\n•\tValvular heart disease\n•\tArrhythmias\n•\tCardiomyopathies\n•\tPulmonary hypertension\nCardiology Clinic Structure:\nMonday: General cardiology (Dr. Arunesh), Echocardiography\nWednesday: Interventional cardiology (Dr. Arunesh), EP clinic\nFriday: Heart failure clinic, Arrhythmia clinic\nSaturday: Follow-up clinic\nPatient Flow in Cath Lab:\n1.\tPre-operative: Consent, NPO status, pre-medication, IV access\n2.\tImaging: Femoral/radial access, angiography, diagnosis\n3.\tIntervention: Stent, PTCA, other therapeutic procedures (if needed)\n4.\tPost-operative: Pressure dressing, vital monitoring, observation (4-6 hours)', 'source': 'sample1.txt'}> score=0.64494556>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1161' labels=frozenset({'Chunk'}) properties={'id': '084c2bfd-f109-45c7-b02a-f09071d016fb', 'text': "________________________________________\nPart 6: Operational Workflows & Protocols\n6.1 Daily Hospital Operations\n6 AM - Morning Shift Begins\n•\tStaff muster roll call\n•\tWard handover from night shift\n•\tNursing care plan review\n•\t6:30 AM - Doctors' ward rounds\n8 AM - Clinical Work\n•\tICU rounds (multidisciplinary)\n•\tOutpatient clinic opening\n•\tLaboratory processing begins\n12 PM - Midday Activities\n•\tLunch service for patients\n•\tMedication administration\n•\tAfternoon investigations\n2 PM - Clinical Continuity\n•\tFollow-up patient reviews\n•\tEmergency department activity peaks\n•\tSurgical procedures (if scheduled evening)\n6 PM - Evening Transition\n•\tOutpatient clinic closure\n•\tEvening vital signs monitoring\n•\tNursing handover preparation\n8 PM - Night Shift Begins\n•\tNight staff muster roll", 'source': 'sample1.txt'}> score=0.6193267>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1183' labels=frozenset({'Chunk'}) properties={'id': '28e53e14-ab46-4165-a021-e4345b64edbf', 'text': '•\tStatin: Atorvastatin 80 mg\n•\tACE inhibitor: Lisinopril 5 mg (if LVEF <40%)\n________________________________________\nReferences\n[1] Winasti, W. (2023). Hospital organizational structure and information processing. PMC US National Library of Medicine, 10047425.\n[2] Health Ray. (2025). Hospital patient record management systems: Revolutionizing patient data management. HealthRay Blog.\n[3] Bigscal. (2024). HIPAA compliant EMR software mandatory for hospitals. Bigscal Healthcare IT Blog.\n[4] Organimi. (2024). Hospital organizational structure: How it works and examples. Organimi Organization Documentation.\n[5] Medinous. (2025). A detailed view of hospital management system (HMS). Medinous Healthcare Solutions.', 'source': 'sample1.txt'}> score=0.6187676>
+
+Retriever items: 7
+=============================================
+
+
+
+==============================
+QUERY: List all clinical and non-clinical departments in the hospital and describe their roles
+==============================
+
+ANSWER:
+Here is a list of clinical and non-clinical departments in the hospital, along with their roles:
+
+**Clinical Departments:**
+
+• Emergency Department (ED)
+	+ Role: Providing 24/7 emergency care for patients
+	+ Services Provided: Triage and rapid assessment, trauma care and resuscitation, acute medical emergencies, pediatric emergencies, emergency obstetrics, toxicology and overdose management, burns treatment
+• General Surgery
+	+ Role: Performing surgical procedures to treat various conditions
+• Cardiology
+	+ Role: Diagnosing and treating heart-related conditions
+• Cardiothoracic Surgery
+	+ Role: Performing surgical procedures on the heart and lungs
+• Neurology
+	+ Role: Diagnosing and treating neurological conditions
+• Neurosurgery
+	+ Role: Performing surgical procedures to treat brain and spine conditions
+• Orthopedics
+	+ Role: Treating musculoskeletal disorders and injuries
+• Pediatrics
+	+ Role: Providing medical care to infants, children, and adolescents
+• Obstetrics & Gynecology
+	+ Role: Providing prenatal, delivery, and postpartum care for women
+• Oncology
+	+ Role: Diagnosing and treating cancer
+• Radiation Oncology
+	+ Role: Using radiation therapy to treat cancer
+• Nephrology
+	+ Role: Diagnosing and treating kidney-related conditions
+• Urology
+	+ Role: Treating urinary tract disorders and injuries
+• Gastroenterology
+	+ Role: Diagnosing and treating digestive system disorders
+• Hepatology
+	+ Role: Diagnosing and treating liver-related conditions
+• Pulmonology/Respiratory Medicine
+	+ Role: Diagnosing and treating respiratory system disorders
+• ENT (Otorhinolaryngology)
+	+ Role: Treating ear, nose, and throat disorders
+• Ophthalmology
+	+ Role: Providing eye care services
+• Psychiatry/Mental Health
+	+ Role: Diagnosing and treating mental health conditions
+• Dermatology
+	+ Role: Treating skin-related disorders
+• Infectious Diseases
+	+ Role: Diagnosing and treating infections
+• Endocrinology & Metabolism
+	+ Role: Diagnosing and treating hormone-related disorders
+• Rheumatology
+	+ Role: Treating musculoskeletal disorders and autoimmune conditions
+• Physical Medicine & Rehabilitation
+	+ Role: Providing rehabilitation services for patients with physical disabilities
+• Anesthesiology
+	+ Role: Administering anesthesia to patients undergoing surgery
+
+**Non-Clinical Departments:**
+
+• Radiology & Imaging
+	+ Role: Performing imaging tests such as X-rays, CT scans, and MRIs
+• Laboratory Medicine
+	+ Role: Conducting laboratory tests to diagnose and monitor diseases
+• Pathology
+	+ Role: Examining tissues and cells to diagnose diseases
+• Pharmacy
+	+ Role: Dispensing medications to patients
+• Dietary Services
+	+ Role: Providing nutrition counseling and meal planning services
+• Housekeeping & Sanitation
+	+ Role: Maintaining the cleanliness and hygiene of hospital facilities
+• Security & Safety
+	+ Role: Ensuring the safety and security of patients, staff, and visitors
+• Human Resources
+	+ Role: Managing employee relations, recruitment, and benefits
+• Finance & Billing
+	+ Role: Managing hospital finances, billing, and insurance processing
+• Information Technology
+	+ Role: Providing IT support and managing hospital systems
+• Medical Records & Health Information Management
+	+ Role: Maintaining patient medical records and ensuring HIPAA compliance
+
+CONTEXT:
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1109' labels=frozenset({'Chunk'}) properties={'id': 'f85738c0-83ec-4e05-a66a-388f805f6fb0', 'text': '1.3 Department Organization\nClinical Departments (25):\n1.\tEmergency Department (ED)\n2.\tGeneral Surgery\n3.\tCardiology\n4.\tCardiothoracic Surgery\n5.\tNeurology\n6.\tNeurosurgery\n7.\tOrthopedics\n8.\tPediatrics\n9.\tObstetrics & Gynecology\n10.\tOncology\n11.\tRadiation Oncology\n12.\tNephrology\n13.\tUrology\n14.\tGastroenterology\n15.\tHepatology\n16.\tPulmonology/Respiratory Medicine\n17.\tENT (Otorhinolaryngology)\n18.\tOphthalmology\n19.\tPsychiatry/Mental Health\n20.\tDermatology\n21.\tInfectious Diseases\n22.\tEndocrinology & Metabolism\n23.\tRheumatology\n24.\tPhysical Medicine & Rehabilitation\n25.\tAnesthesiology\nSupport Departments:\n1.\tRadiology & Imaging\n2.\tLaboratory Medicine\n3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing', 'source': 'sample1.txt'}> score=0.7810031>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1110' labels=frozenset({'Chunk'}) properties={'id': '034467bd-e8f6-4071-9012-59da7c3c1c49', 'text': '3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing\n10.\tInformation Technology\n11.\tMedical Records & Health Information Management\n________________________________________\nPart 2: Clinical Departments - Detailed Overview\n2.1 Emergency Department (ED)\nDepartment Head: Dr. Rohan Patel\nStaff: 35 professionals\nOperating Hours: 24/7/365\nAnnual Patient Volume: 85,000+ visits\nServices Provided:\n•\tTriage and rapid assessment\n•\tTrauma care and resuscitation\n•\tAcute medical emergencies\n•\tPediatric emergencies\n•\tEmergency obstetrics\n•\tToxicology and overdose management\n•\tBurns treatment\nPhysical Infrastructure:\n•\t15 Emergency Stretchers\n•\t6 Resuscitation bays\n•\t3 Trauma rooms\n•\t1 Pediatric emergency area', 'source': 'sample1.txt'}> score=0.68105114>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1184' labels=frozenset({'Chunk'}) properties={'id': 'c9a0412c-994c-4daf-976e-fd0fdfc21e8f', 'text': '[5] Medinous. (2025). A detailed view of hospital management system (HMS). Medinous Healthcare Solutions.\n[6] HHS. (2009). Summary of the HIPAA security rule. Department of Health & Human Services.\n[7] GoAID. (2025). List of hospital departments: Detailed information. GoAID Medical Reference Guide.\n[8] LeadSquared. (2025). 11 modules of hospital management system and their functions. LeadSquared Industries Blog.\n[9] HIPAA Journal. (2025). Electronic medical records and HIPAA compliance. HIPAA Journal Technical Guide.\n[10] eCampus Ontario. (2025). General hospital departments: Hospital unit administration. eCampus Ontario Pressbooks.', 'source': 'sample1.txt'}> score=0.6777021>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1107' labels=frozenset({'Chunk'}) properties={'id': 'ca635d00-bf3c-4664-b62b-e4d057faa72b', 'text': '________________________________________\nPart 1: Hospital Organization & Structure\n1.1 Organizational Hierarchy\nHospital Board of Directors\n↓\nChief Executive Officer (CEO)\n├── Chief Medical Officer (CMO)\n├── Chief Operating Officer (COO)\n├── Chief Financial Officer (CFO)\n└── Chief Information Officer (CIO)\nKey Leadership Roles:\n•\tChief Executive Officer (Dr. Rajesh Verma): Overall hospital management, strategic planning, board reporting\n•\tChief Medical Officer (Dr. Anjali Sharma): Clinical governance, medical staff credentialing, quality assurance\n•\tChief Operating Officer (Vikram Singh): Day-to-day operations, bed management, staff coordination\n•\tChief Financial Officer (Priya Malhotra): Budget management, revenue cycle, insurance processing', 'source': 'sample1.txt'}> score=0.66308814>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1118' labels=frozenset({'Chunk'}) properties={'id': '57d49109-cac8-4932-b448-726ae09e72a9', 'text': 'Common Diagnoses Managed:\n•\tAcute coronary syndrome\n•\tStable coronary artery disease\n•\tHeart failure (systolic & diastolic)\n•\tValvular heart disease\n•\tArrhythmias\n•\tCardiomyopathies\n•\tPulmonary hypertension\nCardiology Clinic Structure:\nMonday: General cardiology (Dr. Arunesh), Echocardiography\nWednesday: Interventional cardiology (Dr. Arunesh), EP clinic\nFriday: Heart failure clinic, Arrhythmia clinic\nSaturday: Follow-up clinic\nPatient Flow in Cath Lab:\n1.\tPre-operative: Consent, NPO status, pre-medication, IV access\n2.\tImaging: Femoral/radial access, angiography, diagnosis\n3.\tIntervention: Stent, PTCA, other therapeutic procedures (if needed)\n4.\tPost-operative: Pressure dressing, vital monitoring, observation (4-6 hours)', 'source': 'sample1.txt'}> score=0.64494556>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1161' labels=frozenset({'Chunk'}) properties={'id': '084c2bfd-f109-45c7-b02a-f09071d016fb', 'text': "________________________________________\nPart 6: Operational Workflows & Protocols\n6.1 Daily Hospital Operations\n6 AM - Morning Shift Begins\n•\tStaff muster roll call\n•\tWard handover from night shift\n•\tNursing care plan review\n•\t6:30 AM - Doctors' ward rounds\n8 AM - Clinical Work\n•\tICU rounds (multidisciplinary)\n•\tOutpatient clinic opening\n•\tLaboratory processing begins\n12 PM - Midday Activities\n•\tLunch service for patients\n•\tMedication administration\n•\tAfternoon investigations\n2 PM - Clinical Continuity\n•\tFollow-up patient reviews\n•\tEmergency department activity peaks\n•\tSurgical procedures (if scheduled evening)\n6 PM - Evening Transition\n•\tOutpatient clinic closure\n•\tEvening vital signs monitoring\n•\tNursing handover preparation\n8 PM - Night Shift Begins\n•\tNight staff muster roll", 'source': 'sample1.txt'}> score=0.6193267>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1183' labels=frozenset({'Chunk'}) properties={'id': '28e53e14-ab46-4165-a021-e4345b64edbf', 'text': '•\tStatin: Atorvastatin 80 mg\n•\tACE inhibitor: Lisinopril 5 mg (if LVEF <40%)\n________________________________________\nReferences\n[1] Winasti, W. (2023). Hospital organizational structure and information processing. PMC US National Library of Medicine, 10047425.\n[2] Health Ray. (2025). Hospital patient record management systems: Revolutionizing patient data management. HealthRay Blog.\n[3] Bigscal. (2024). HIPAA compliant EMR software mandatory for hospitals. Bigscal Healthcare IT Blog.\n[4] Organimi. (2024). Hospital organizational structure: How it works and examples. Organimi Organization Documentation.\n[5] Medinous. (2025). A detailed view of hospital management system (HMS). Medinous Healthcare Solutions.', 'source': 'sample1.txt'}> score=0.6187676>
+
+Retriever items: 7
+=============================================
+
+
+
+==============================
+QUERY: List all clinical and non-clinical departments in the hospital
+==============================
+
+ANSWER:
+**Clinical Departments:**
+
+• Emergency Department (ED)
+• General Surgery
+• Cardiology
+• Cardiothoracic Surgery
+• Neurology
+• Neurosurgery
+• Orthopedics
+• Pediatrics
+• Obstetrics & Gynecology
+• Oncology
+• Radiation Oncology
+• Nephrology
+• Urology
+• Gastroenterology
+• Hepatology
+• Pulmonology/Respiratory Medicine
+• ENT (Otorhinolaryngology)
+• Ophthalmology
+• Psychiatry/Mental Health
+• Dermatology
+• Infectious Diseases
+• Endocrinology & Metabolism
+• Rheumatology
+• Physical Medicine & Rehabilitation
+• Anesthesiology
+
+**Non-Clinical Departments:**
+
+• Radiology & Imaging
+• Laboratory Medicine
+• Pathology
+• Pharmacy
+• Dietary Services
+• Housekeeping & Sanitation
+• Security & Safety
+• Human Resources
+• Finance & Billing
+• Information Technology
+• Medical Records & Health Information Management
+
+CONTEXT:
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1109' labels=frozenset({'Chunk'}) properties={'id': 'f85738c0-83ec-4e05-a66a-388f805f6fb0', 'text': '1.3 Department Organization\nClinical Departments (25):\n1.\tEmergency Department (ED)\n2.\tGeneral Surgery\n3.\tCardiology\n4.\tCardiothoracic Surgery\n5.\tNeurology\n6.\tNeurosurgery\n7.\tOrthopedics\n8.\tPediatrics\n9.\tObstetrics & Gynecology\n10.\tOncology\n11.\tRadiation Oncology\n12.\tNephrology\n13.\tUrology\n14.\tGastroenterology\n15.\tHepatology\n16.\tPulmonology/Respiratory Medicine\n17.\tENT (Otorhinolaryngology)\n18.\tOphthalmology\n19.\tPsychiatry/Mental Health\n20.\tDermatology\n21.\tInfectious Diseases\n22.\tEndocrinology & Metabolism\n23.\tRheumatology\n24.\tPhysical Medicine & Rehabilitation\n25.\tAnesthesiology\nSupport Departments:\n1.\tRadiology & Imaging\n2.\tLaboratory Medicine\n3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing', 'source': 'sample1.txt'}> score=0.7726233>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1184' labels=frozenset({'Chunk'}) properties={'id': 'c9a0412c-994c-4daf-976e-fd0fdfc21e8f', 'text': '[5] Medinous. (2025). A detailed view of hospital management system (HMS). Medinous Healthcare Solutions.\n[6] HHS. (2009). Summary of the HIPAA security rule. Department of Health & Human Services.\n[7] GoAID. (2025). List of hospital departments: Detailed information. GoAID Medical Reference Guide.\n[8] LeadSquared. (2025). 11 modules of hospital management system and their functions. LeadSquared Industries Blog.\n[9] HIPAA Journal. (2025). Electronic medical records and HIPAA compliance. HIPAA Journal Technical Guide.\n[10] eCampus Ontario. (2025). General hospital departments: Hospital unit administration. eCampus Ontario Pressbooks.', 'source': 'sample1.txt'}> score=0.68178>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1110' labels=frozenset({'Chunk'}) properties={'id': '034467bd-e8f6-4071-9012-59da7c3c1c49', 'text': '3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing\n10.\tInformation Technology\n11.\tMedical Records & Health Information Management\n________________________________________\nPart 2: Clinical Departments - Detailed Overview\n2.1 Emergency Department (ED)\nDepartment Head: Dr. Rohan Patel\nStaff: 35 professionals\nOperating Hours: 24/7/365\nAnnual Patient Volume: 85,000+ visits\nServices Provided:\n•\tTriage and rapid assessment\n•\tTrauma care and resuscitation\n•\tAcute medical emergencies\n•\tPediatric emergencies\n•\tEmergency obstetrics\n•\tToxicology and overdose management\n•\tBurns treatment\nPhysical Infrastructure:\n•\t15 Emergency Stretchers\n•\t6 Resuscitation bays\n•\t3 Trauma rooms\n•\t1 Pediatric emergency area', 'source': 'sample1.txt'}> score=0.6487307>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1118' labels=frozenset({'Chunk'}) properties={'id': '57d49109-cac8-4932-b448-726ae09e72a9', 'text': 'Common Diagnoses Managed:\n•\tAcute coronary syndrome\n•\tStable coronary artery disease\n•\tHeart failure (systolic & diastolic)\n•\tValvular heart disease\n•\tArrhythmias\n•\tCardiomyopathies\n•\tPulmonary hypertension\nCardiology Clinic Structure:\nMonday: General cardiology (Dr. Arunesh), Echocardiography\nWednesday: Interventional cardiology (Dr. Arunesh), EP clinic\nFriday: Heart failure clinic, Arrhythmia clinic\nSaturday: Follow-up clinic\nPatient Flow in Cath Lab:\n1.\tPre-operative: Consent, NPO status, pre-medication, IV access\n2.\tImaging: Femoral/radial access, angiography, diagnosis\n3.\tIntervention: Stent, PTCA, other therapeutic procedures (if needed)\n4.\tPost-operative: Pressure dressing, vital monitoring, observation (4-6 hours)', 'source': 'sample1.txt'}> score=0.63054585>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1183' labels=frozenset({'Chunk'}) properties={'id': '28e53e14-ab46-4165-a021-e4345b64edbf', 'text': '•\tStatin: Atorvastatin 80 mg\n•\tACE inhibitor: Lisinopril 5 mg (if LVEF <40%)\n________________________________________\nReferences\n[1] Winasti, W. (2023). Hospital organizational structure and information processing. PMC US National Library of Medicine, 10047425.\n[2] Health Ray. (2025). Hospital patient record management systems: Revolutionizing patient data management. HealthRay Blog.\n[3] Bigscal. (2024). HIPAA compliant EMR software mandatory for hospitals. Bigscal Healthcare IT Blog.\n[4] Organimi. (2024). Hospital organizational structure: How it works and examples. Organimi Organization Documentation.\n[5] Medinous. (2025). A detailed view of hospital management system (HMS). Medinous Healthcare Solutions.', 'source': 'sample1.txt'}> score=0.6104981>
+
+Retriever items: 5
+=============================================
+
+
+
+==============================
+QUERY: List all clinical and non-clinical departments in the hospital
+==============================
+
+ANSWER:
+**Clinical Departments:**
+
+* Emergency Department (ED)
+* General Surgery
+* Cardiology
+* Cardiothoracic Surgery
+* Neurology
+* Neurosurgery
+* Orthopedics
+* Pediatrics
+* Obstetrics & Gynecology
+* Oncology
+* Radiation Oncology
+* Nephrology
+* Urology
+* Gastroenterology
+* Hepatology
+* Pulmonology/Respiratory Medicine
+* ENT (Otorhinolaryngology)
+* Ophthalmology
+* Psychiatry/Mental Health
+* Dermatology
+* Infectious Diseases
+* Endocrinology & Metabolism
+* Rheumatology
+* Physical Medicine & Rehabilitation
+* Anesthesiology
+
+**Non-Clinical Departments:**
+
+* Radiology & Imaging
+* Laboratory Medicine
+* Pathology
+* Pharmacy
+* Dietary Services
+* Housekeeping & Sanitation
+* Security & Safety
+* Human Resources
+* Finance & Billing
+* Information Technology
+* Medical Records & Health Information Management
+
+CONTEXT:
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1109' labels=frozenset({'Chunk'}) properties={'id': 'f85738c0-83ec-4e05-a66a-388f805f6fb0', 'text': '1.3 Department Organization\nClinical Departments (25):\n1.\tEmergency Department (ED)\n2.\tGeneral Surgery\n3.\tCardiology\n4.\tCardiothoracic Surgery\n5.\tNeurology\n6.\tNeurosurgery\n7.\tOrthopedics\n8.\tPediatrics\n9.\tObstetrics & Gynecology\n10.\tOncology\n11.\tRadiation Oncology\n12.\tNephrology\n13.\tUrology\n14.\tGastroenterology\n15.\tHepatology\n16.\tPulmonology/Respiratory Medicine\n17.\tENT (Otorhinolaryngology)\n18.\tOphthalmology\n19.\tPsychiatry/Mental Health\n20.\tDermatology\n21.\tInfectious Diseases\n22.\tEndocrinology & Metabolism\n23.\tRheumatology\n24.\tPhysical Medicine & Rehabilitation\n25.\tAnesthesiology\nSupport Departments:\n1.\tRadiology & Imaging\n2.\tLaboratory Medicine\n3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing', 'source': 'sample1.txt'}> score=0.7726233>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1184' labels=frozenset({'Chunk'}) properties={'id': 'c9a0412c-994c-4daf-976e-fd0fdfc21e8f', 'text': '[5] Medinous. (2025). A detailed view of hospital management system (HMS). Medinous Healthcare Solutions.\n[6] HHS. (2009). Summary of the HIPAA security rule. Department of Health & Human Services.\n[7] GoAID. (2025). List of hospital departments: Detailed information. GoAID Medical Reference Guide.\n[8] LeadSquared. (2025). 11 modules of hospital management system and their functions. LeadSquared Industries Blog.\n[9] HIPAA Journal. (2025). Electronic medical records and HIPAA compliance. HIPAA Journal Technical Guide.\n[10] eCampus Ontario. (2025). General hospital departments: Hospital unit administration. eCampus Ontario Pressbooks.', 'source': 'sample1.txt'}> score=0.68178>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1110' labels=frozenset({'Chunk'}) properties={'id': '034467bd-e8f6-4071-9012-59da7c3c1c49', 'text': '3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing\n10.\tInformation Technology\n11.\tMedical Records & Health Information Management\n________________________________________\nPart 2: Clinical Departments - Detailed Overview\n2.1 Emergency Department (ED)\nDepartment Head: Dr. Rohan Patel\nStaff: 35 professionals\nOperating Hours: 24/7/365\nAnnual Patient Volume: 85,000+ visits\nServices Provided:\n•\tTriage and rapid assessment\n•\tTrauma care and resuscitation\n•\tAcute medical emergencies\n•\tPediatric emergencies\n•\tEmergency obstetrics\n•\tToxicology and overdose management\n•\tBurns treatment\nPhysical Infrastructure:\n•\t15 Emergency Stretchers\n•\t6 Resuscitation bays\n•\t3 Trauma rooms\n•\t1 Pediatric emergency area', 'source': 'sample1.txt'}> score=0.6487307>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1118' labels=frozenset({'Chunk'}) properties={'id': '57d49109-cac8-4932-b448-726ae09e72a9', 'text': 'Common Diagnoses Managed:\n•\tAcute coronary syndrome\n•\tStable coronary artery disease\n•\tHeart failure (systolic & diastolic)\n•\tValvular heart disease\n•\tArrhythmias\n•\tCardiomyopathies\n•\tPulmonary hypertension\nCardiology Clinic Structure:\nMonday: General cardiology (Dr. Arunesh), Echocardiography\nWednesday: Interventional cardiology (Dr. Arunesh), EP clinic\nFriday: Heart failure clinic, Arrhythmia clinic\nSaturday: Follow-up clinic\nPatient Flow in Cath Lab:\n1.\tPre-operative: Consent, NPO status, pre-medication, IV access\n2.\tImaging: Femoral/radial access, angiography, diagnosis\n3.\tIntervention: Stent, PTCA, other therapeutic procedures (if needed)\n4.\tPost-operative: Pressure dressing, vital monitoring, observation (4-6 hours)', 'source': 'sample1.txt'}> score=0.63054585>
+- <Record node=<Node element_id='4:bdfd51fc-7fd2-4307-9fbe-0f22f61f2ca2:1183' labels=frozenset({'Chunk'}) properties={'id': '28e53e14-ab46-4165-a021-e4345b64edbf', 'text': '•\tStatin: Atorvastatin 80 mg\n•\tACE inhibitor: Lisinopril 5 mg (if LVEF <40%)\n________________________________________\nReferences\n[1] Winasti, W. (2023). Hospital organizational structure and information processing. PMC US National Library of Medicine, 10047425.\n[2] Health Ray. (2025). Hospital patient record management systems: Revolutionizing patient data management. HealthRay Blog.\n[3] Bigscal. (2024). HIPAA compliant EMR software mandatory for hospitals. Bigscal Healthcare IT Blog.\n[4] Organimi. (2024). Hospital organizational structure: How it works and examples. Organimi Organization Documentation.\n[5] Medinous. (2025). A detailed view of hospital management system (HMS). Medinous Healthcare Solutions.', 'source': 'sample1.txt'}> score=0.6104981>
+
+Retriever items: 5
+=============================================
+
+
+
+==============================
+QUERY: Can you name all the board members?
+==============================
+
+ANSWER:
+Here are the names of the board members:
+
+• Dr. Rajesh Verma (Chief Executive Officer)
+• Dr. Anjali Sharma (Chief Medical Officer)
+• Vikram Singh (Chief Operating Officer)
+• Priya Malhotra (Chief Financial Officer)
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:1' labels=frozenset({'Chunk'}) properties={'id': 'c2c733ed-368d-4eec-83e1-fec6f883129f', 'text': '________________________________________\nPart 1: Hospital Organization & Structure\n1.1 Organizational Hierarchy\nHospital Board of Directors\n↓\nChief Executive Officer (CEO)\n├── Chief Medical Officer (CMO)\n├── Chief Operating Officer (COO)\n├── Chief Financial Officer (CFO)\n└── Chief Information Officer (CIO)\nKey Leadership Roles:\n•\tChief Executive Officer (Dr. Rajesh Verma): Overall hospital management, strategic planning, board reporting\n•\tChief Medical Officer (Dr. Anjali Sharma): Clinical governance, medical staff credentialing, quality assurance\n•\tChief Operating Officer (Vikram Singh): Day-to-day operations, bed management, staff coordination\n•\tChief Financial Officer (Priya Malhotra): Budget management, revenue cycle, insurance processing', 'source': 'sample1.txt'}> score=0.5460535>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:60' labels=frozenset({'Chunk'}) properties={'id': 'f7d853a4-0b99-4d08-8a27-a5fa69072f23', 'text': 'Registration/Accreditation\tIssuing Body\tStatus\tRenewal\nMedical Council Registration\tState Medical Council\tActive\t5 years\nHospital License\tState Health Dept.\tActive\t5 years\nNABH Accreditation\tNABH\tActive\t4 years\nISO 9001:2015\tQMS\tActive\t3 years\nHIPAA Compliance\tSelf-audited\tActive\tAnnual\nBiohazard Waste License\tPollution Control Board\tActive\t5 years\nRadiological Safety\tAtomic Energy Regulatory Board\tActive\tAnnual', 'source': 'sample1.txt'}> score=0.508212>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: can you tell me CEO 
+==============================
+
+ANSWER:
+Chief Financial Officer (Priya Malhotra)
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:2' labels=frozenset({'Chunk'}) properties={'id': 'a9b05680-344b-43c0-8f7f-feee2b7993cb', 'text': '•\tChief Financial Officer (Priya Malhotra): Budget management, revenue cycle, insurance processing\n•\tChief Information Officer (Arun Kumar): EMR/EHR systems, data security, HIPAA compliance\n1.2 Hospital Structure & Capacity\nMetric\tValue\nTotal Beds\t350\nICU Beds\t45\nCCU Beds\t20\nHDU Beds\t30\nGeneral Ward Beds\t200\nNICU Beds\t15\nPICU Beds\t10\nEmergency Stretchers\t15\nOutpatient Clinics\t22\nOperating Theatres\t8\nCatheterization Labs\t2\nDiagnostic Centers\t3', 'source': 'sample1.txt'}> score=0.5297103>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:23' labels=frozenset({'Chunk'}) properties={'id': '89afed89-5cb0-4fb8-9829-f737a9bab397', 'text': '•\tMonitoring for pre-eclampsia\n•\tFetal position assessment\n•\tGroup B Streptococcus (GBS) screening at 35-37 weeks\nCesarean Section Indications:\n•\tPlacenta previa: 22%\n•\tCephalopelvic disproportion: 18%\n•\tFailed trial of labor: 15%\n•\tRecurrent CS: 14%\n•\tBreech presentation: 12%\n•\tFetal distress: 11%\n•\tOther reasons: 8%\n________________________________________\n2.7 Oncology Department\nDepartment Head: Dr. Vikram Joshi\nStaff: 18 professionals\nBeds: 20 (Dedicated oncology ward)\nAnnual Patient Volume: 3,200 new cases, 8,500 follow-ups\nCancer Types Managed:\nCancer Type\tNew Cases/Year\nBreast cancer\t680\nLung cancer\t420\nColorectal cancer\t280\nGastric cancer\t240\nLiver cancer\t210\nPancreatic cancer\t160\nOvarian cancer\t180\nProstate cancer\t320\nHead & neck cancers\t280\nLymphomas (Hodgkin/NHL)\t240', 'source': 'sample1.txt'}> score=0.52388585>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: i want ceo
+==============================
+
+ANSWER:
+• Chief Executive Officer (Dr. Rajesh Verma): Overall hospital management, strategic planning, board reporting
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:1' labels=frozenset({'Chunk'}) properties={'id': 'c2c733ed-368d-4eec-83e1-fec6f883129f', 'text': '________________________________________\nPart 1: Hospital Organization & Structure\n1.1 Organizational Hierarchy\nHospital Board of Directors\n↓\nChief Executive Officer (CEO)\n├── Chief Medical Officer (CMO)\n├── Chief Operating Officer (COO)\n├── Chief Financial Officer (CFO)\n└── Chief Information Officer (CIO)\nKey Leadership Roles:\n•\tChief Executive Officer (Dr. Rajesh Verma): Overall hospital management, strategic planning, board reporting\n•\tChief Medical Officer (Dr. Anjali Sharma): Clinical governance, medical staff credentialing, quality assurance\n•\tChief Operating Officer (Vikram Singh): Day-to-day operations, bed management, staff coordination\n•\tChief Financial Officer (Priya Malhotra): Budget management, revenue cycle, insurance processing', 'source': 'sample1.txt'}> score=0.5070457>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:2' labels=frozenset({'Chunk'}) properties={'id': 'a9b05680-344b-43c0-8f7f-feee2b7993cb', 'text': '•\tChief Financial Officer (Priya Malhotra): Budget management, revenue cycle, insurance processing\n•\tChief Information Officer (Arun Kumar): EMR/EHR systems, data security, HIPAA compliance\n1.2 Hospital Structure & Capacity\nMetric\tValue\nTotal Beds\t350\nICU Beds\t45\nCCU Beds\t20\nHDU Beds\t30\nGeneral Ward Beds\t200\nNICU Beds\t15\nPICU Beds\t10\nEmergency Stretchers\t15\nOutpatient Clinics\t22\nOperating Theatres\t8\nCatheterization Labs\t2\nDiagnostic Centers\t3', 'source': 'sample1.txt'}> score=0.50056833>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: List all the clinical departments in the hospital
+==============================
+
+ANSWER:
+• Emergency Department (ED)
+• General Surgery
+• Cardiology
+• Cardiothoracic Surgery
+• Neurology
+• Neurosurgery
+• Orthopedics
+• Pediatrics
+• Obstetrics & Gynecology
+• Oncology
+• Radiation Oncology
+• Nephrology
+• Urology
+• Gastroenterology
+• Hepatology
+• Pulmonology/Respiratory Medicine
+• ENT (Otorhinolaryngology)
+• Ophthalmology
+• Psychiatry/Mental Health
+• Dermatology
+• Infectious Diseases
+• Endocrinology & Metabolism
+• Rheumatology
+• Physical Medicine & Rehabilitation
+• Anesthesiology
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:3' labels=frozenset({'Chunk'}) properties={'id': '7688c7a8-c176-45eb-aad7-ab8a6c4413df', 'text': '1.3 Department Organization\nClinical Departments (25):\n1.\tEmergency Department (ED)\n2.\tGeneral Surgery\n3.\tCardiology\n4.\tCardiothoracic Surgery\n5.\tNeurology\n6.\tNeurosurgery\n7.\tOrthopedics\n8.\tPediatrics\n9.\tObstetrics & Gynecology\n10.\tOncology\n11.\tRadiation Oncology\n12.\tNephrology\n13.\tUrology\n14.\tGastroenterology\n15.\tHepatology\n16.\tPulmonology/Respiratory Medicine\n17.\tENT (Otorhinolaryngology)\n18.\tOphthalmology\n19.\tPsychiatry/Mental Health\n20.\tDermatology\n21.\tInfectious Diseases\n22.\tEndocrinology & Metabolism\n23.\tRheumatology\n24.\tPhysical Medicine & Rehabilitation\n25.\tAnesthesiology\nSupport Departments:\n1.\tRadiology & Imaging\n2.\tLaboratory Medicine\n3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing', 'source': 'sample1.txt'}> score=0.7900877>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:78' labels=frozenset({'Chunk'}) properties={'id': '2a0180a6-f3a7-45df-bc9a-48278cf0ad7b', 'text': '[5] Medinous. (2025). A detailed view of hospital management system (HMS). Medinous Healthcare Solutions.\n[6] HHS. (2009). Summary of the HIPAA security rule. Department of Health & Human Services.\n[7] GoAID. (2025). List of hospital departments: Detailed information. GoAID Medical Reference Guide.\n[8] LeadSquared. (2025). 11 modules of hospital management system and their functions. LeadSquared Industries Blog.\n[9] HIPAA Journal. (2025). Electronic medical records and HIPAA compliance. HIPAA Journal Technical Guide.\n[10] eCampus Ontario. (2025). General hospital departments: Hospital unit administration. eCampus Ontario Pressbooks.', 'source': 'sample1.txt'}> score=0.70358557>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: What is the total bed capacity and how many ICU beds are there
+==============================
+
+ANSWER:
+Here's the answer to your question:
+
+* Total bed capacity: 45
+* Number of ICU beds: 45
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:7' labels=frozenset({'Chunk'}) properties={'id': '6be0d90f-b3cb-49a8-bfdc-d55987d50835', 'text': '•\t30-day readmission rate: 8.2%\n•\tPatient satisfaction: 92%\n________________________________________\n2.2 Intensive Care Unit (ICU) - General\nDepartment Head: Dr. Niharika Desai\nStaff: 45 professionals (Nurses: 25, Doctors: 8, Technicians: 12)\nBeds: 45 (Level 3 care)\nOccupancy Rate: 78% average\nICU Classification:\n•\tGeneral medical-surgical ICU\n•\t24/7 physician coverage\n•\tNurse-to-bed ratio: 1:2\n•\tAverage LOS: 5.8 days\nCritical Equipment per Bed:\n•\tMechanical ventilator (SIMV, PCV, PSV modes)\n•\tCardiac monitor (12-lead ECG capable)\n•\tInfusion pumps (4 channels minimum)\n•\tSyringe pumps (2 channels)\n•\tArterial line setup\n•\tCentral venous pressure monitoring\n•\tPulse oximetry and capnography\n•\tTemperature control devices\nICU Admission Criteria:\nPatients requiring:', 'source': 'sample1.txt'}> score=0.689497>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:20' labels=frozenset({'Chunk'}) properties={'id': '6bfc6e56-6447-423b-a8a8-bf148938edab', 'text': 'Annual Patient Volume: 8,900 deliveries, 3,200 gynecological procedures\nServices:\n•\tAntenatal care\n•\tHigh-risk pregnancy management\n•\tIntrapartum care\n•\tPostpartum care\n•\tGynecological oncology\n•\tReproductive medicine/Infertility\n•\tMinimal invasive gynecology\nMaternity Unit Structure:\nLabor & Delivery:\n•\t6 labor rooms with partograph monitoring\n•\t2 Delivery suites (sterile operating theatres)\n•\tFetal monitoring equipment (NST, CTG - 8 machines)\n•\tImmediate newborn care setup in each room\nAntenatal Ward:\n•\t20 beds for high-risk pregnancies\n•\tBed rest accommodation\n•\tMonitoring: BP monitoring, 24-hour urine collection, NST\nPostnatal Ward:\n•\t10 beds for normal recovery\n•\tMother-baby care setup\n•\tLactation support resources\nDelivery Statistics (Annual):\nParameter\tNumber\nTotal deliveries\t8,900', 'source': 'sample1.txt'}> score=0.6771797>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: are you sure
+==============================
+
+ANSWER:
+I'm ready to help. What's the question?
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:33' labels=frozenset({'Chunk'}) properties={'id': 'a16a1b6a-a5eb-42f2-af55-737322442ae8', 'text': '•\tAuscultation: Breath sounds, adventitious sounds\nAbdomen:\n•\tInspection: Shape, scars, distension, visible pulsations\n•\tAuscultation: Bowel sounds\n•\tPalpation: Tenderness, organs, masses, rebound/guarding\n•\tPercussion: Ascites, organomegaly\nNeurological:\n•\tConsciousness (GCS score if altered)\n•\tCranial nerves (I-XII)\n•\tMotor: Strength (MRC grade 0-5), tone, coordination\n•\tSensory: Light touch, pain, temperature, vibration, proprioception\n•\tReflexes: Biceps, triceps, knee, ankle, plantar\n•\tCerebellar signs: Nystagmus, ataxia, dysdiadochokinesia\nAssessment & Plan:\nProvisional Diagnosis:\n•\tPrimary diagnosis (ICD-10 code)\n•\tDifferential diagnoses\nInvestigations Required:\n•\tLabs, imaging, ECG, scans\n•\tJustification for each test\nTreatment Plan:', 'source': 'sample1.txt'}> score=0.42262143>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:32' labels=frozenset({'Chunk'}) properties={'id': '1ec1cb97-a4be-4b2f-858b-05a6e908ce7a', 'text': 'Physical Examination:\nGeneral Examination:\n•\tAppearance, alert/conscious, cooperative, hydration status, nutritional status\n•\tLymph nodes examination (regional and generalized)\n•\tExamination of extremities for edema, clubbing, pallor, cyanosis\nSystem-wise Examination:\nCardiovascular:\n•\tPulse rate, rhythm, character, volume\n•\tBlood pressure (both arms if indicated)\n•\tJVP, hepatojugular reflex\n•\tPalpation: Apical impulse, parasternal impulse\n•\tAuscultation: Heart sounds, murmurs, friction rubs\nRespiratory:\n•\tInspection: Chest symmetry, respiratory pattern\n•\tPalpation: Chest expansion, tactile fremitus\n•\tPercussion: Resonance, dullness\n•\tAuscultation: Breath sounds, adventitious sounds\nAbdomen:\n•\tInspection: Shape, scars, distension, visible pulsations\n•\tAuscultation: Bowel sounds', 'source': 'sample1.txt'}> score=0.40920028>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: What is the total bed capacity and how many ICU beds are there
+
+==============================
+
+ANSWER:
+Here's the answer:
+
+* Total bed capacity: 45
+* Number of ICU beds: 45
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:7' labels=frozenset({'Chunk'}) properties={'id': '6be0d90f-b3cb-49a8-bfdc-d55987d50835', 'text': '•\t30-day readmission rate: 8.2%\n•\tPatient satisfaction: 92%\n________________________________________\n2.2 Intensive Care Unit (ICU) - General\nDepartment Head: Dr. Niharika Desai\nStaff: 45 professionals (Nurses: 25, Doctors: 8, Technicians: 12)\nBeds: 45 (Level 3 care)\nOccupancy Rate: 78% average\nICU Classification:\n•\tGeneral medical-surgical ICU\n•\t24/7 physician coverage\n•\tNurse-to-bed ratio: 1:2\n•\tAverage LOS: 5.8 days\nCritical Equipment per Bed:\n•\tMechanical ventilator (SIMV, PCV, PSV modes)\n•\tCardiac monitor (12-lead ECG capable)\n•\tInfusion pumps (4 channels minimum)\n•\tSyringe pumps (2 channels)\n•\tArterial line setup\n•\tCentral venous pressure monitoring\n•\tPulse oximetry and capnography\n•\tTemperature control devices\nICU Admission Criteria:\nPatients requiring:', 'source': 'sample1.txt'}> score=0.689497>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:20' labels=frozenset({'Chunk'}) properties={'id': '6bfc6e56-6447-423b-a8a8-bf148938edab', 'text': 'Annual Patient Volume: 8,900 deliveries, 3,200 gynecological procedures\nServices:\n•\tAntenatal care\n•\tHigh-risk pregnancy management\n•\tIntrapartum care\n•\tPostpartum care\n•\tGynecological oncology\n•\tReproductive medicine/Infertility\n•\tMinimal invasive gynecology\nMaternity Unit Structure:\nLabor & Delivery:\n•\t6 labor rooms with partograph monitoring\n•\t2 Delivery suites (sterile operating theatres)\n•\tFetal monitoring equipment (NST, CTG - 8 machines)\n•\tImmediate newborn care setup in each room\nAntenatal Ward:\n•\t20 beds for high-risk pregnancies\n•\tBed rest accommodation\n•\tMonitoring: BP monitoring, 24-hour urine collection, NST\nPostnatal Ward:\n•\t10 beds for normal recovery\n•\tMother-baby care setup\n•\tLactation support resources\nDelivery Statistics (Annual):\nParameter\tNumber\nTotal deliveries\t8,900', 'source': 'sample1.txt'}> score=0.6771797>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: What is the complete protocol for treating a STEMI patient from arrival to discharge
+==============================
+
+ANSWER:
+• Step 1: Arrival → Triage
+    • Time: 5 minutes
+    • Action: Triage
+
+• Step 2: Door-to-balloon time < 90 minutes
+    • Target: < 90 minutes
+    • Action: Cardiology consult, Cath lab activation, Antiplatelet therapy (Aspirin + P2Y12 inhibitor), Anticoagulation (Heparin/LMWH)
+
+• Step 3: Angiography → Stent placement
+    • Time: Not specified
+    • Action: Angiography
+
+• Step 4: ICU admission → Intensive monitoring
+    • Time: Not specified
+    • Action: ICU admission
+
+• Step 5: Day 2-3 → Ward transfer
+    • Time: Not specified
+    • Action: Ward transfer
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:57' labels=frozenset({'Chunk'}) properties={'id': '067143e2-eb9f-4512-ace4-01161b44eeb2', 'text': '•\tConsent form signed\nStep 4: Doctor Examination (20-30 minutes)\n•\tPhysical examination\n•\tDifferential diagnosis\n•\tInvestigation order\n•\tInitial treatment plan\nStep 5: Bed Assignment (30-45 minutes)\n•\tRoom/ward confirmation\n•\tBed preparation\n•\tPatient orientation\nStep 6: Documentation (45-60 minutes)\n•\tEMR entry complete\n•\tOrders placed\n•\tNursing care plan initiated\nTotal admission time: 60-90 minutes\n6.3 Critical Pathways (Examples)\nAcute MI (STEMI) Pathway:\nArrival → Triage\n↓ (5 min)\n12-lead ECG\n↓ (10 min)\nDoor-to-balloon: Target <90 min\n├─ Cardiology consult\n├─ Cath lab activation\n├─ Antiplatelet therapy (Aspirin + P2Y12 inhibitor)\n└─ Anticoagulation (Heparin/LMWH)\n↓\nAngiography → Stent placement\n↓\nICU admission → Intensive monitoring\n↓\nDay 2-3 → Ward transfer\n↓', 'source': 'sample1.txt'}> score=0.71267796>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:6' labels=frozenset({'Chunk'}) properties={'id': '7151bede-c253-48f8-8548-83a11c88517a', 'text': '4.\tAssessment: ED physician performs initial assessment\n5.\tDiagnostics: Labs, imaging, ECG ordered as needed\n6.\tTreatment: Medications, procedures, stabilization initiated\n7.\tDisposition: Admission, transfer, or discharge\nCommon Conditions Treated:\n•\tAcute coronary syndrome (ACS): ~2,400 cases/year\n•\tStroke: ~1,800 cases/year\n•\tTrauma: ~8,500 cases/year\n•\tRespiratory distress: ~5,200 cases/year\n•\tAbdominal pain: ~12,400 cases/year\n•\tSepsis/Infections: ~3,100 cases/year\n•\tPoisoning/Overdose: ~800 cases/year\nPerformance Metrics:\n•\tAverage ED wait time: 15 minutes\n•\tDoor-to-room time: 10 minutes\n•\tED length of stay (LOS): 4.5 hours average\n•\t30-day readmission rate: 8.2%\n•\tPatient satisfaction: 92%\n________________________________________\n2.2 Intensive Care Unit (ICU) - General', 'source': 'sample1.txt'}> score=0.6728554>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: What are the first-hour interventions required for a sepsis patient
+==============================
+
+ANSWER:
+* Initial Assessment (First Hour) Interventions:
+  • Blood cultures: Before antibiotics (2 sets from different sites)
+  • Imaging: CXR, ultrasound, CT as indicated
+  • Lactate level: Baseline measurement
+  • CBC, CMP, coagulation profile: Baseline labs
+  • Urinalysis & culture: If UTI suspected
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:69' labels=frozenset({'Chunk'}) properties={'id': 'e03ed0fb-2745-4e87-9438-af1787de1cff', 'text': '10.1 Sepsis Protocol\nDefinition: SIRS + Suspected/confirmed infection\nSIRS Criteria (≥2):\n•\tTemperature: >38°C or <36°C\n•\tHR: >90 bpm\n•\tRR: >20 breaths/min\n•\tWBC: >12,000/µL or <4,000/µL\nInitial Assessment (First Hour - "Golden Hour"):\n1.\tBlood cultures: Before antibiotics (2 sets from different sites)\n2.\tImaging: CXR, ultrasound, CT as indicated\n3.\tLactate level: Baseline measurement\n4.\tCBC, CMP, coagulation profile: Baseline labs\n5.\tUrinalysis & culture: If UTI suspected\nManagement Bundle (0-3 hours):\n•\tFluid resuscitation: 30 mL/kg crystalloids for hypotension/lactate >4\n•\tVasopressors: Target MAP ≥65 mmHg (norepinephrine first-line)\n•\tSource control: Identify & treat infection source\n•\tAntibiotics: Within 1 hour of recognition\no\tEmpiric regimen based on likely source:', 'source': 'sample1.txt'}> score=0.74991214>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:70' labels=frozenset({'Chunk'}) properties={'id': '0fbce1e2-97b9-426c-b7a8-5485e02dcec6', 'text': '•\tSource control: Identify & treat infection source\n•\tAntibiotics: Within 1 hour of recognition\no\tEmpiric regimen based on likely source:\n\uf0a7\tCommunity-acquired pneumonia: Ceftriaxone + Azithromycin\n\uf0a7\tUTI/intra-abdominal: Cephalosporin + Metronidazole\n\uf0a7\tMeningitis: Ceftriaxone + Vancomycin + Ampicillin\n\uf0a7\tUnknown: Carbapenems (Meropenem)\n•\tGlucose control: Target 150-180 mg/dL\n•\tCorticosteroids: Only if refractory hypotension despite fluids/vasopressors\nMonitoring:\n•\tHourly vitals × 3 hours\n•\tSerial lactate (repeat at 3 & 6 hours)\n•\tUrine output: Target ≥0.5 mL/kg/hr\n•\tReassess source of infection regularly\nICU Admission Criteria:\n•\tPersistent hypotension despite fluids\n•\tLactate >4 mmol/L\n•\tNeed for vasopressors\n•\tAltered mental status\n•\tOrgan dysfunction', 'source': 'sample1.txt'}> score=0.6552775>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: Walk me through the complete patient admission process with timelines
+==============================
+
+ANSWER:
+**Patient Admission Process Timeline**
+
+* **Step 1: Registration (0-10 minutes)**
+	+ Collect demographics
+	+ Verify insurance
+	+ Assign UPI & admission number
+* **Step 2: Triage (10-15 minutes)**
+	+ Vital signs
+	+ Chief complaint assessment
+	+ Room/bed assignment
+* **Step 3: Nursing Assessment (15-20 minutes)**
+	+ Detailed history taking
+	+ Medication review
+	+ Allergies confirmation
+	+ Consent form signed
+* **Step 4: Doctor Examination (20-30 minutes)**
+	+ Physical examination
+	+ Differential diagnosis
+	+ Investigation order
+
+**Total Admission Time:** 60-90 minutes
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:57' labels=frozenset({'Chunk'}) properties={'id': '067143e2-eb9f-4512-ace4-01161b44eeb2', 'text': '•\tConsent form signed\nStep 4: Doctor Examination (20-30 minutes)\n•\tPhysical examination\n•\tDifferential diagnosis\n•\tInvestigation order\n•\tInitial treatment plan\nStep 5: Bed Assignment (30-45 minutes)\n•\tRoom/ward confirmation\n•\tBed preparation\n•\tPatient orientation\nStep 6: Documentation (45-60 minutes)\n•\tEMR entry complete\n•\tOrders placed\n•\tNursing care plan initiated\nTotal admission time: 60-90 minutes\n6.3 Critical Pathways (Examples)\nAcute MI (STEMI) Pathway:\nArrival → Triage\n↓ (5 min)\n12-lead ECG\n↓ (10 min)\nDoor-to-balloon: Target <90 min\n├─ Cardiology consult\n├─ Cath lab activation\n├─ Antiplatelet therapy (Aspirin + P2Y12 inhibitor)\n└─ Anticoagulation (Heparin/LMWH)\n↓\nAngiography → Stent placement\n↓\nICU admission → Intensive monitoring\n↓\nDay 2-3 → Ward transfer\n↓', 'source': 'sample1.txt'}> score=0.74213356>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:56' labels=frozenset({'Chunk'}) properties={'id': 'c3a1cea3-4fc3-45e7-9dcc-4fb35055fdef', 'text': '•\tOutpatient clinic closure\n•\tEvening vital signs monitoring\n•\tNursing handover preparation\n8 PM - Night Shift Begins\n•\tNight staff muster roll\n•\tHandover from day staff\n•\tICU/HDU night monitoring begins\n12 AM - Midnight\n•\tNight staff rounds\n•\tEmergency cases only\n•\tMonitoring intensifies for critical patients\n6.2 Patient Admission Process\nStep 1: Registration (0-10 minutes)\n•\tCollect demographics\n•\tVerify insurance\n•\tAssign UPI & admission number\nStep 2: Triage (10-15 minutes)\n•\tVital signs\n•\tChief complaint assessment\n•\tRoom/bed assignment\nStep 3: Nursing Assessment (15-20 minutes)\n•\tDetailed history taking\n•\tMedication review\n•\tAllergies confirmation\n•\tConsent form signed\nStep 4: Doctor Examination (20-30 minutes)\n•\tPhysical examination\n•\tDifferential diagnosis\n•\tInvestigation order', 'source': 'sample1.txt'}> score=0.74086237>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: What is the ED triage process and average wait times
+==============================
+
+ANSWER:
+* ED Triage Process:
+  • Assessment: ED physician performs initial assessment
+  • Diagnostics: Labs, imaging, ECG ordered as needed
+  • Treatment: Medications, procedures, stabilization initiated
+  • Disposition: Admission, transfer, or discharge
+
+* Average Wait Times:
+  • Average ED wait time: 15 minutes
+  • Door-to-room time: 10 minutes
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:6' labels=frozenset({'Chunk'}) properties={'id': '7151bede-c253-48f8-8548-83a11c88517a', 'text': '4.\tAssessment: ED physician performs initial assessment\n5.\tDiagnostics: Labs, imaging, ECG ordered as needed\n6.\tTreatment: Medications, procedures, stabilization initiated\n7.\tDisposition: Admission, transfer, or discharge\nCommon Conditions Treated:\n•\tAcute coronary syndrome (ACS): ~2,400 cases/year\n•\tStroke: ~1,800 cases/year\n•\tTrauma: ~8,500 cases/year\n•\tRespiratory distress: ~5,200 cases/year\n•\tAbdominal pain: ~12,400 cases/year\n•\tSepsis/Infections: ~3,100 cases/year\n•\tPoisoning/Overdose: ~800 cases/year\nPerformance Metrics:\n•\tAverage ED wait time: 15 minutes\n•\tDoor-to-room time: 10 minutes\n•\tED length of stay (LOS): 4.5 hours average\n•\t30-day readmission rate: 8.2%\n•\tPatient satisfaction: 92%\n________________________________________\n2.2 Intensive Care Unit (ICU) - General', 'source': 'sample1.txt'}> score=0.6404527>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:37' labels=frozenset({'Chunk'}) properties={'id': 'f139bf91-10c9-45b1-8290-3a411503e031', 'text': 'Turnaround Times (TAT):\nCategory\tRoutine\tSTAT\nHematology\t1-2 hours\t30 minutes\nBiochemistry\t2-4 hours\t1 hour\nCoagulation\t1-2 hours\t30 minutes\nMicrobiology\t24-72 hours\tVaries\nImmunology\t2-4 hours\t1 hour', 'source': 'sample1.txt'}> score=0.6259061>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: What equipment is required per ICU bed and what is the nurse-to-bed ratio
+==============================
+
+ANSWER:
+Here are the details about the ICU beds at Sunrise Multi-Specialty Hospital:
+
+* Critical Equipment per Bed:
+  • Mechanical ventilator (SIMV, PCV, PSV modes)
+  • Cardiac monitor (12-lead ECG capable)
+  • Infusion pumps (4 channels minimum)
+  • Syringe pumps (2 channels)
+  • Arterial line setup
+  • Central venous pressure monitoring
+  • Pulse oximetry and capnography
+  • Temperature control devices
+
+* Nurse-to-Bed Ratio: 1:2
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:7' labels=frozenset({'Chunk'}) properties={'id': '6be0d90f-b3cb-49a8-bfdc-d55987d50835', 'text': '•\t30-day readmission rate: 8.2%\n•\tPatient satisfaction: 92%\n________________________________________\n2.2 Intensive Care Unit (ICU) - General\nDepartment Head: Dr. Niharika Desai\nStaff: 45 professionals (Nurses: 25, Doctors: 8, Technicians: 12)\nBeds: 45 (Level 3 care)\nOccupancy Rate: 78% average\nICU Classification:\n•\tGeneral medical-surgical ICU\n•\t24/7 physician coverage\n•\tNurse-to-bed ratio: 1:2\n•\tAverage LOS: 5.8 days\nCritical Equipment per Bed:\n•\tMechanical ventilator (SIMV, PCV, PSV modes)\n•\tCardiac monitor (12-lead ECG capable)\n•\tInfusion pumps (4 channels minimum)\n•\tSyringe pumps (2 channels)\n•\tArterial line setup\n•\tCentral venous pressure monitoring\n•\tPulse oximetry and capnography\n•\tTemperature control devices\nICU Admission Criteria:\nPatients requiring:', 'source': 'sample1.txt'}> score=0.7331492>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:8' labels=frozenset({'Chunk'}) properties={'id': '1588f05b-a8cd-41be-9fb7-753f029f50ba', 'text': '•\tCentral venous pressure monitoring\n•\tPulse oximetry and capnography\n•\tTemperature control devices\nICU Admission Criteria:\nPatients requiring:\n•\tMechanical ventilation support\n•\tContinuous hemodynamic monitoring\n•\tFrequent vital sign checks (<15 minutes)\n•\tMultiple inotropic/vasopressor support (>2 agents)\n•\tAdvanced airway management\n•\tIntensive medication management\n•\tClose nursing observation (1:2 ratio)\nCommon Diagnoses (Annual):\n•\tPost-operative patients: 8,200\n•\tRespiratory failure: 3,400\n•\tSepsis/Septic shock: 2,800\n•\tAcute heart failure: 2,100\n•\tCerebral hemorrhage: 1,600\n•\tMulti-organ failure: 1,200\n•\tSevere trauma: 900\nICU Protocols:\nDaily Rounds (8 AM):\n•\tMultidisciplinary team: ICU physician, nurses, physiotherapist, nutritionist\n•\tDuration: 2-3 hours', 'source': 'sample1.txt'}> score=0.7239162>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: What is the complete cost breakdown for a cesarean section including all charges
+==============================
+
+ANSWER:
+• Procedure: Cesarean section
+  • Base Cost: $32,000
+  • Anesthesia: $10,000
+  • OT Charges: $15,000
+  • Total: $57,000
+
+• Emergency Department Costs:
+  • Severity: Severe
+    • Base Fee: $5,000
+    • Imaging: $8,000
+    • Tests: $15,000
+    • Total (Avg): $32,000
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:51' labels=frozenset({'Chunk'}) properties={'id': '7124266f-7ea0-4022-ba85-e83c55423840', 'text': 'Surgical Procedures:\nProcedure\tBase Cost\tAnesthesia\tOT Charges\tTotal\nAppendectomy\t18,000\t8,000\t12,000\t38,000\nCholecystectomy\t22,000\t8,000\t12,000\t42,000\nHysterectomy\t28,000\t10,000\t15,000\t53,000\nCesarean section\t32,000\t10,000\t15,000\t57,000\nCABG (Open heart)\t185,000\t12,000\t20,000\t217,000\n\nEmergency Department Costs:\nSeverity\tBase Fee\tImaging\tTests\tTotal (Avg)\nMinor\t800\t2,000\t2,000\t4,800\nModerate\t1,500\t4,000\t4,000\t9,500\nSevere\t2,500\t8,000\t8,000\t18,500\nCritical\t5,000\t12,000\t15,000\t32,000\n\nOutpatient Consultation:\nSpeciality\tNew Patient\tFollow-up\nGeneral practitioner\t300\t200\nGeneral specialist\t500\t300\nSuper-specialty\t800\t500\nEmergency consultation\t1,000\t700', 'source': 'sample1.txt'}> score=0.71588755>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:21' labels=frozenset({'Chunk'}) properties={'id': '6b97d7f2-e4dc-4300-a756-5d917f55c5f1', 'text': '•\tMother-baby care setup\n•\tLactation support resources\nDelivery Statistics (Annual):\nParameter\tNumber\nTotal deliveries\t8,900\nVaginal deliveries\t6,200 (70%)\nCesarean sections\t2,700 (30%)\nEmergency CS rate\t1,850 (21%)\nAssisted deliveries (Vacuum/Forceps)\t280\nStillbirth rate\t1.2 per 1000\nMaternal mortality ratio\t45 per 100,000\nEarly neonatal mortality\t2.8 per 1000', 'source': 'sample1.txt'}> score=0.6324712>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: What are the hospital's annual revenue cycle metrics and collection rates
+==============================
+
+ANSWER:
+Annual Revenue Cycle Metrics:
+
+• Total patient billings: 185 Cr INR
+• Insurance collections: 172 Cr INR (93% of total billing)
+• Patient out-of-pocket: 10 Cr INR (5% of total billing)
+• Charity/write-off: 3 Cr INR (2% of total billing)
+• Accounts receivable days: 52 days average
+
+Insurance Collection Rates:
+
+• Insurance claim denial rate: 9.2%
+• Claim resolution time: 48 days average
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:54' labels=frozenset({'Chunk'}) properties={'id': '3bf61f45-45cb-4c82-8360-5cd1c30f6c2a', 'text': 'Step 6: Collection\n•\tInsurance payment: 45-60 days average\n•\tPatient copay: Due at discharge/billing\n•\tWrite-off: Approved by compliance (2-3% of total billing)\nRevenue Cycle Metrics (Annual):\nMetric\tValue\nTotal patient billings\t185 Cr INR\nInsurance collections\t172 Cr INR (93%)\nPatient out-of-pocket\t10 Cr INR (5%)\nCharity/write-off\t3 Cr INR (2%)\nAccounts receivable days\t52 days average\nInsurance claim denial rate\t9.2%\nClaim resolution time\t48 days average', 'source': 'sample1.txt'}> score=0.7346937>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:2' labels=frozenset({'Chunk'}) properties={'id': 'a9b05680-344b-43c0-8f7f-feee2b7993cb', 'text': '•\tChief Financial Officer (Priya Malhotra): Budget management, revenue cycle, insurance processing\n•\tChief Information Officer (Arun Kumar): EMR/EHR systems, data security, HIPAA compliance\n1.2 Hospital Structure & Capacity\nMetric\tValue\nTotal Beds\t350\nICU Beds\t45\nCCU Beds\t20\nHDU Beds\t30\nGeneral Ward Beds\t200\nNICU Beds\t15\nPICU Beds\t10\nEmergency Stretchers\t15\nOutpatient Clinics\t22\nOperating Theatres\t8\nCatheterization Labs\t2\nDiagnostic Centers\t3', 'source': 'sample1.txt'}> score=0.6868757>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: Compare the costs of MRI with contrast versus CT scan with contrast
+==============================
+
+ANSWER:
+To compare the costs of MRI with contrast versus CT scan with contrast:
+
+* MRI (contrast): $10,000
+* CT scan (contrast): $6,500
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:52' labels=frozenset({'Chunk'}) properties={'id': 'c88ec7b5-d97a-41da-900b-67184046c524', 'text': 'Diagnostic Tests:\nTest\tCost\nComplete blood count\t300\nMetabolic panel\t500\nLipid profile\t400\nThyroid function (TSH)\t350\nECG\t200\nChest X-ray\t400\nAbdominal ultrasound\t800\nCT scan (non-contrast)\t4,500\nCT scan (contrast)\t6,500\nMRI (non-contrast)\t8,000\nMRI (contrast)\t10,000', 'source': 'sample1.txt'}> score=0.6982739>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:51' labels=frozenset({'Chunk'}) properties={'id': '7124266f-7ea0-4022-ba85-e83c55423840', 'text': 'Surgical Procedures:\nProcedure\tBase Cost\tAnesthesia\tOT Charges\tTotal\nAppendectomy\t18,000\t8,000\t12,000\t38,000\nCholecystectomy\t22,000\t8,000\t12,000\t42,000\nHysterectomy\t28,000\t10,000\t15,000\t53,000\nCesarean section\t32,000\t10,000\t15,000\t57,000\nCABG (Open heart)\t185,000\t12,000\t20,000\t217,000\n\nEmergency Department Costs:\nSeverity\tBase Fee\tImaging\tTests\tTotal (Avg)\nMinor\t800\t2,000\t2,000\t4,800\nModerate\t1,500\t4,000\t4,000\t9,500\nSevere\t2,500\t8,000\t8,000\t18,500\nCritical\t5,000\t12,000\t15,000\t32,000\n\nOutpatient Consultation:\nSpeciality\tNew Patient\tFollow-up\nGeneral practitioner\t300\t200\nGeneral specialist\t500\t300\nSuper-specialty\t800\t500\nEmergency consultation\t1,000\t700', 'source': 'sample1.txt'}> score=0.5477142>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: What are the current hospital-acquired infection rates and how do they compare to targets?"
+==============================
+
+ANSWER:
+Current hospital-acquired infection rates:
+
+* Hospital-acquired infection rate: 1.8%
+* Comparison to target: <2% (target)
+
+Note: The comparison is based on the provided context, which states that the target for hospital-acquired infection rate is <2%. However, it does not specify whether the current rate is above or below the target.
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:66' labels=frozenset({'Chunk'}) properties={'id': '94d77b10-db79-4456-b863-635d0aa8f825', 'text': 'Hospital-acquired infection rate\t<2%\t1.8%\nAntibiotic stewardship: Appropriate prescribing\t>85%\t87%\nSurgical site infection (SSI) rate\t<2.5%\t2.1%\nPatient safety incidents reported\t>200/year\t245/year\nMedication error rate\t<0.5%\t0.32%\nReadmission rate (30-day)\t<8%\t7.6%\nDoor-to-room time (ED)\t<15 min\t12 min', 'source': 'sample1.txt'}> score=0.76087856>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:67' labels=frozenset({'Chunk'}) properties={'id': '3a04b488-753d-4dae-a6c6-b4b32bc6bd48', 'text': '9.2 Infection Control Metrics\nParameter\tTarget\tCurrent\nHand hygiene compliance\t90%\t92%\nCentral line-associated bloodstream infection (CLABSI)\t<2 per 1000 catheter days\t1.2\nCatheter-associated UTI (CAUTI)\t<3 per 1000 catheter days\t2.4\nVentilator-associated pneumonia (VAP)\t<3 per 1000 ventilator days\t1.8\nClostridioides difficile infection rate\t<1 per 1000 admissions\t0.8', 'source': 'sample1.txt'}> score=0.707379>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: What is our 30-day readmission rate and what's driving it
+==============================
+
+ANSWER:
+• **30-day Readmission Rate:** 
+    • 8.2%
+
+• **Driving Factors:**
+    • Hospital-acquired infection rate: <2%
+    • Surgical site infection (SSI) rate: <2.5%
+    • Antibiotic stewardship: Appropriate prescribing >85%
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:7' labels=frozenset({'Chunk'}) properties={'id': '6be0d90f-b3cb-49a8-bfdc-d55987d50835', 'text': '•\t30-day readmission rate: 8.2%\n•\tPatient satisfaction: 92%\n________________________________________\n2.2 Intensive Care Unit (ICU) - General\nDepartment Head: Dr. Niharika Desai\nStaff: 45 professionals (Nurses: 25, Doctors: 8, Technicians: 12)\nBeds: 45 (Level 3 care)\nOccupancy Rate: 78% average\nICU Classification:\n•\tGeneral medical-surgical ICU\n•\t24/7 physician coverage\n•\tNurse-to-bed ratio: 1:2\n•\tAverage LOS: 5.8 days\nCritical Equipment per Bed:\n•\tMechanical ventilator (SIMV, PCV, PSV modes)\n•\tCardiac monitor (12-lead ECG capable)\n•\tInfusion pumps (4 channels minimum)\n•\tSyringe pumps (2 channels)\n•\tArterial line setup\n•\tCentral venous pressure monitoring\n•\tPulse oximetry and capnography\n•\tTemperature control devices\nICU Admission Criteria:\nPatients requiring:', 'source': 'sample1.txt'}> score=0.63959527>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:66' labels=frozenset({'Chunk'}) properties={'id': '94d77b10-db79-4456-b863-635d0aa8f825', 'text': 'Hospital-acquired infection rate\t<2%\t1.8%\nAntibiotic stewardship: Appropriate prescribing\t>85%\t87%\nSurgical site infection (SSI) rate\t<2.5%\t2.1%\nPatient safety incidents reported\t>200/year\t245/year\nMedication error rate\t<0.5%\t0.32%\nReadmission rate (30-day)\t<8%\t7.6%\nDoor-to-room time (ED)\t<15 min\t12 min', 'source': 'sample1.txt'}> score=0.61533505>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: Compare the cardiology department's procedures volume with oncology's annual patient load
+==============================
+
+ANSWER:
+Here is the comparison between the cardiology department and the oncology department:
+
+**Comparison of Annual Patient Volumes**
+
+* Cardiology Department: 12,400 outpatient visits, 3,200 admissions
+* Oncology Department (Gynecological Procedures): 8,900 deliveries, 3,200 gynecological procedures
+
+Note that there is no direct comparison between cardiology and oncology departments in terms of patient volume. However, we can compare the number of procedures performed annually by the cardiology department with the number of deliveries and gynecological procedures performed annually by the oncology department.
+
+**Cardiology Department Procedures**
+
+* Coronary angiography: 2,100
+* Angioplasty/Stent placement: 1,800
+* Pacemaker implantation: 320
+* ICD implantation: 180
+* CRT device implantation: 95
+* Echocardiography: 8,900
+
+**Oncology Department Procedures**
+
+* Antenatal care: Not specified
+* High-risk pregnancy management: Not specified
+* Intrapartum care: Not specified
+* Postpartum care: Not specified
+* Gynecological oncology: Not specified
+* Reproductive medicine/Infertility: Not specified
+* Minimal invasive gynecology: Not specified
+
+Since there is no direct comparison between cardiology and oncology departments, we cannot make a meaningful comparison.
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:10' labels=frozenset({'Chunk'}) properties={'id': 'c5f67eb8-6000-4da0-9a88-b34a7dc1cd5c', 'text': '•\tAntibiotic stewardship rounds\n•\tCentral line bundle compliance: 99%+\n________________________________________\n2.3 Cardiology Department\nDepartment Head: Dr. Arunesh Sharma\nStaff: 28 professionals\nOutpatient Clinics: 4 days/week\nAnnual Patient Volume: 12,400 outpatient visits, 3,200 admissions\nSub-specialties:\n•\tGeneral cardiology\n•\tInterventional cardiology\n•\tCardiac electrophysiology\n•\tEchocardiography\nDiagnostic Facilities:\n•\t2 Cath labs (DSA capable)\n•\t3 Echocardiography suites\n•\t1 Stress test laboratory\n•\t1 Holter/Event recorder lab\n•\t1 Arrhythmia mapping lab\nProcedures Performed Annually:\nProcedure\tNumber/Year\nCoronary angiography\t2,100\nAngioplasty/Stent placement\t1,800\nPacemaker implantation\t320\nICD implantation\t180\nCRT device implantation\t95\nEchocardiography\t8,900', 'source': 'sample1.txt'}> score=0.6897601>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:20' labels=frozenset({'Chunk'}) properties={'id': '6bfc6e56-6447-423b-a8a8-bf148938edab', 'text': 'Annual Patient Volume: 8,900 deliveries, 3,200 gynecological procedures\nServices:\n•\tAntenatal care\n•\tHigh-risk pregnancy management\n•\tIntrapartum care\n•\tPostpartum care\n•\tGynecological oncology\n•\tReproductive medicine/Infertility\n•\tMinimal invasive gynecology\nMaternity Unit Structure:\nLabor & Delivery:\n•\t6 labor rooms with partograph monitoring\n•\t2 Delivery suites (sterile operating theatres)\n•\tFetal monitoring equipment (NST, CTG - 8 machines)\n•\tImmediate newborn care setup in each room\nAntenatal Ward:\n•\t20 beds for high-risk pregnancies\n•\tBed rest accommodation\n•\tMonitoring: BP monitoring, 24-hour urine collection, NST\nPostnatal Ward:\n•\t10 beds for normal recovery\n•\tMother-baby care setup\n•\tLactation support resources\nDelivery Statistics (Annual):\nParameter\tNumber\nTotal deliveries\t8,900', 'source': 'sample1.txt'}> score=0.67878807>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: What is the complete acute MI pathway from arrival to discharge including expected LOS and mortality rate?
+==============================
+
+ANSWER:
+**Acute MI Pathway**
+
+* **Arrival to Triage**: 
+  - Time: 5 minutes
+  - Actions:
+    • Triage
+* **Triage to 12-lead ECG**:
+  - Time: 10 minutes
+  - Actions:
+    • 12-lead ECG
+* **Door-to-balloon time**:
+  - Target <90 minutes
+  - Actions:
+    • Cardiology consult
+    • Cath lab activation
+    • Antiplatelet therapy (Aspirin + P2Y12 inhibitor)
+    • Anticoagulation (Heparin/LMWH)
+* **Angiography to Stent placement**:
+  - Time: Not specified
+  - Actions:
+    • Angiography
+    • Stent placement
+* **ICU admission to Intensive monitoring**:
+  - Time: Not specified
+  - Actions:
+    • ICU admission
+    • Intensive monitoring
+* **Day 2-3 to Ward transfer**:
+  - Time: Not specified
+  - Actions:
+    • Ward transfer
+
+**Expected Length of Stay (LOS)**:
+
+* Total admission time: 60-90 minutes
+* Day 2-3: Ward transfer (not specified, but assumed to be part of the overall LOS)
+
+**Mortality Rate**:
+
+Not provided in the context.
+
+Note: The expected LOS is not explicitly stated for each step, but it can be inferred that the total admission time ranges from 60-90 minutes.
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:6' labels=frozenset({'Chunk'}) properties={'id': '7151bede-c253-48f8-8548-83a11c88517a', 'text': '4.\tAssessment: ED physician performs initial assessment\n5.\tDiagnostics: Labs, imaging, ECG ordered as needed\n6.\tTreatment: Medications, procedures, stabilization initiated\n7.\tDisposition: Admission, transfer, or discharge\nCommon Conditions Treated:\n•\tAcute coronary syndrome (ACS): ~2,400 cases/year\n•\tStroke: ~1,800 cases/year\n•\tTrauma: ~8,500 cases/year\n•\tRespiratory distress: ~5,200 cases/year\n•\tAbdominal pain: ~12,400 cases/year\n•\tSepsis/Infections: ~3,100 cases/year\n•\tPoisoning/Overdose: ~800 cases/year\nPerformance Metrics:\n•\tAverage ED wait time: 15 minutes\n•\tDoor-to-room time: 10 minutes\n•\tED length of stay (LOS): 4.5 hours average\n•\t30-day readmission rate: 8.2%\n•\tPatient satisfaction: 92%\n________________________________________\n2.2 Intensive Care Unit (ICU) - General', 'source': 'sample1.txt'}> score=0.6696419>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:57' labels=frozenset({'Chunk'}) properties={'id': '067143e2-eb9f-4512-ace4-01161b44eeb2', 'text': '•\tConsent form signed\nStep 4: Doctor Examination (20-30 minutes)\n•\tPhysical examination\n•\tDifferential diagnosis\n•\tInvestigation order\n•\tInitial treatment plan\nStep 5: Bed Assignment (30-45 minutes)\n•\tRoom/ward confirmation\n•\tBed preparation\n•\tPatient orientation\nStep 6: Documentation (45-60 minutes)\n•\tEMR entry complete\n•\tOrders placed\n•\tNursing care plan initiated\nTotal admission time: 60-90 minutes\n6.3 Critical Pathways (Examples)\nAcute MI (STEMI) Pathway:\nArrival → Triage\n↓ (5 min)\n12-lead ECG\n↓ (10 min)\nDoor-to-balloon: Target <90 min\n├─ Cardiology consult\n├─ Cath lab activation\n├─ Antiplatelet therapy (Aspirin + P2Y12 inhibitor)\n└─ Anticoagulation (Heparin/LMWH)\n↓\nAngiography → Stent placement\n↓\nICU admission → Intensive monitoring\n↓\nDay 2-3 → Ward transfer\n↓', 'source': 'sample1.txt'}> score=0.6500894>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: If we have 15 emergency stretchers and average ED LOS is 4.5 hours, what's our daily capacity and how does that align with our 85,000 annual visits
+==============================
+
+ANSWER:
+To calculate the daily capacity of the Emergency Department (ED), we need to first determine the total number of bed-days available per year.
+
+Given:
+- Total emergency stretchers: 15
+- Average ED LOS: 4.5 hours
+
+First, convert the average ED LOS from hours to days:
+4.5 hours / 24 hours/day = 0.1875 days/hour
+Multiply by the total number of hours in a year (8760):
+0.1875 days/hour * 8760 hours/year ≈ 1.65 days
+
+Now, multiply the total number of stretchers by the average ED LOS in days:
+15 stretchers * 1.65 days/stretcher ≈ 24.75 bed-days per day
+
+To calculate the daily capacity, we need to know how many patients can be treated on a given day. We are not provided with this information directly.
+
+However, we can use the annual patient volume (85,000 visits) and the average ED LOS in days to estimate the daily capacity:
+Daily capacity = Annual patient volume / Average ED LOS in days
+= 85,000 visits/year / 1.65 days/visit
+≈ 51,512 visits/day
+
+This is an estimated value based on the given data. The actual daily capacity may vary depending on other factors such as staffing levels, bed availability, and patient flow.
+
+Here's a summary of the ED data:
+
+* Department Head: Dr. Rohan Patel
+* Staff: 35 professionals
+* Operating Hours: 24/7/365
+* Annual Patient Volume: 85,000+ visits
+* Services Provided:
+	+ Triage and rapid assessment
+	+ Trauma care and resuscitation
+	+ Acute medical emergencies
+	+ Pediatric emergencies
+	+ Emergency obstetrics
+	+ Toxicology and overdose management
+	+ Burns treatment
+* Physical Infrastructure:
+	+ 15 Emergency Stretchers
+	+ 6 Resuscitation bays
+	+ 3 Trauma rooms
+	+ 1 Pediatric emergency area
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:20' labels=frozenset({'Chunk'}) properties={'id': '6bfc6e56-6447-423b-a8a8-bf148938edab', 'text': 'Annual Patient Volume: 8,900 deliveries, 3,200 gynecological procedures\nServices:\n•\tAntenatal care\n•\tHigh-risk pregnancy management\n•\tIntrapartum care\n•\tPostpartum care\n•\tGynecological oncology\n•\tReproductive medicine/Infertility\n•\tMinimal invasive gynecology\nMaternity Unit Structure:\nLabor & Delivery:\n•\t6 labor rooms with partograph monitoring\n•\t2 Delivery suites (sterile operating theatres)\n•\tFetal monitoring equipment (NST, CTG - 8 machines)\n•\tImmediate newborn care setup in each room\nAntenatal Ward:\n•\t20 beds for high-risk pregnancies\n•\tBed rest accommodation\n•\tMonitoring: BP monitoring, 24-hour urine collection, NST\nPostnatal Ward:\n•\t10 beds for normal recovery\n•\tMother-baby care setup\n•\tLactation support resources\nDelivery Statistics (Annual):\nParameter\tNumber\nTotal deliveries\t8,900', 'source': 'sample1.txt'}> score=0.6274774>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:4' labels=frozenset({'Chunk'}) properties={'id': 'e880a34c-272b-4dc8-9d52-f5d5a44c75db', 'text': '3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing\n10.\tInformation Technology\n11.\tMedical Records & Health Information Management\n________________________________________\nPart 2: Clinical Departments - Detailed Overview\n2.1 Emergency Department (ED)\nDepartment Head: Dr. Rohan Patel\nStaff: 35 professionals\nOperating Hours: 24/7/365\nAnnual Patient Volume: 85,000+ visits\nServices Provided:\n•\tTriage and rapid assessment\n•\tTrauma care and resuscitation\n•\tAcute medical emergencies\n•\tPediatric emergencies\n•\tEmergency obstetrics\n•\tToxicology and overdose management\n•\tBurns treatment\nPhysical Infrastructure:\n•\t15 Emergency Stretchers\n•\t6 Resuscitation bays\n•\t3 Trauma rooms\n•\t1 Pediatric emergency area', 'source': 'sample1.txt'}> score=0.62320554>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: can you tell me who is the CEO
+==============================
+
+ANSWER:
+The Chief Executive Officer (CEO) is Dr. Rajesh Verma.
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:2' labels=frozenset({'Chunk'}) properties={'id': 'a9b05680-344b-43c0-8f7f-feee2b7993cb', 'text': '•\tChief Financial Officer (Priya Malhotra): Budget management, revenue cycle, insurance processing\n•\tChief Information Officer (Arun Kumar): EMR/EHR systems, data security, HIPAA compliance\n1.2 Hospital Structure & Capacity\nMetric\tValue\nTotal Beds\t350\nICU Beds\t45\nCCU Beds\t20\nHDU Beds\t30\nGeneral Ward Beds\t200\nNICU Beds\t15\nPICU Beds\t10\nEmergency Stretchers\t15\nOutpatient Clinics\t22\nOperating Theatres\t8\nCatheterization Labs\t2\nDiagnostic Centers\t3', 'source': 'sample1.txt'}> score=0.57551825>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:1' labels=frozenset({'Chunk'}) properties={'id': 'c2c733ed-368d-4eec-83e1-fec6f883129f', 'text': '________________________________________\nPart 1: Hospital Organization & Structure\n1.1 Organizational Hierarchy\nHospital Board of Directors\n↓\nChief Executive Officer (CEO)\n├── Chief Medical Officer (CMO)\n├── Chief Operating Officer (COO)\n├── Chief Financial Officer (CFO)\n└── Chief Information Officer (CIO)\nKey Leadership Roles:\n•\tChief Executive Officer (Dr. Rajesh Verma): Overall hospital management, strategic planning, board reporting\n•\tChief Medical Officer (Dr. Anjali Sharma): Clinical governance, medical staff credentialing, quality assurance\n•\tChief Operating Officer (Vikram Singh): Day-to-day operations, bed management, staff coordination\n•\tChief Financial Officer (Priya Malhotra): Budget management, revenue cycle, insurance processing', 'source': 'sample1.txt'}> score=0.56202984>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: What is the complete protocol for treating a STEMI patient from arrival to discharge
+==============================
+
+ANSWER:
+**Protocol for Treating a STEMI Patient**
+
+* **Arrival → Triage**
+	+ ↓ (5 min)
+	+ 12-lead ECG
+* **Cardiology Consult**
+	+ ↓ (10 min)
+* **Cath Lab Activation**
+	+ ↓
+* **Antiplatelet Therapy (Aspirin + P2Y12 inhibitor)**
+	+ ↓
+* **Anticoagulation (Heparin/LMWH)**
+	+ ↓
+* **Angiography → Stent Placement**
+	+ ↓
+* **ICU Admission → Intensive Monitoring**
+	+ ↓
+* **Day 2-3 → Ward Transfer**
+	+ ↓
+
+**Critical Pathway Timeline:**
+
+| Time | Event |
+| --- | --- |
+| Arrival (0 min) | Triage |
+| 5 min | 12-lead ECG |
+| 10 min | Cardiology consult, Cath lab activation, Antiplatelet therapy initiation |
+| 15 min | Anticoagulation initiation |
+| 20 min | Angiography and stent placement |
+| 25 min | ICU admission and intensive monitoring |
+| Day 2 (24-48 hours) | Ward transfer |
+
+**Note:** The timeline is approximate and may vary based on individual patient needs.
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:57' labels=frozenset({'Chunk'}) properties={'id': '067143e2-eb9f-4512-ace4-01161b44eeb2', 'text': '•\tConsent form signed\nStep 4: Doctor Examination (20-30 minutes)\n•\tPhysical examination\n•\tDifferential diagnosis\n•\tInvestigation order\n•\tInitial treatment plan\nStep 5: Bed Assignment (30-45 minutes)\n•\tRoom/ward confirmation\n•\tBed preparation\n•\tPatient orientation\nStep 6: Documentation (45-60 minutes)\n•\tEMR entry complete\n•\tOrders placed\n•\tNursing care plan initiated\nTotal admission time: 60-90 minutes\n6.3 Critical Pathways (Examples)\nAcute MI (STEMI) Pathway:\nArrival → Triage\n↓ (5 min)\n12-lead ECG\n↓ (10 min)\nDoor-to-balloon: Target <90 min\n├─ Cardiology consult\n├─ Cath lab activation\n├─ Antiplatelet therapy (Aspirin + P2Y12 inhibitor)\n└─ Anticoagulation (Heparin/LMWH)\n↓\nAngiography → Stent placement\n↓\nICU admission → Intensive monitoring\n↓\nDay 2-3 → Ward transfer\n↓', 'source': 'sample1.txt'}> score=0.71267796>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:6' labels=frozenset({'Chunk'}) properties={'id': '7151bede-c253-48f8-8548-83a11c88517a', 'text': '4.\tAssessment: ED physician performs initial assessment\n5.\tDiagnostics: Labs, imaging, ECG ordered as needed\n6.\tTreatment: Medications, procedures, stabilization initiated\n7.\tDisposition: Admission, transfer, or discharge\nCommon Conditions Treated:\n•\tAcute coronary syndrome (ACS): ~2,400 cases/year\n•\tStroke: ~1,800 cases/year\n•\tTrauma: ~8,500 cases/year\n•\tRespiratory distress: ~5,200 cases/year\n•\tAbdominal pain: ~12,400 cases/year\n•\tSepsis/Infections: ~3,100 cases/year\n•\tPoisoning/Overdose: ~800 cases/year\nPerformance Metrics:\n•\tAverage ED wait time: 15 minutes\n•\tDoor-to-room time: 10 minutes\n•\tED length of stay (LOS): 4.5 hours average\n•\t30-day readmission rate: 8.2%\n•\tPatient satisfaction: 92%\n________________________________________\n2.2 Intensive Care Unit (ICU) - General', 'source': 'sample1.txt'}> score=0.6728554>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: Compare the costs of MRI with contrast versus CT scan with contrast
+==============================
+
+ANSWER:
+* **MRI (contrast)**: $10,000
+* **CT scan (contrast)**: $6,500
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:52' labels=frozenset({'Chunk'}) properties={'id': 'c88ec7b5-d97a-41da-900b-67184046c524', 'text': 'Diagnostic Tests:\nTest\tCost\nComplete blood count\t300\nMetabolic panel\t500\nLipid profile\t400\nThyroid function (TSH)\t350\nECG\t200\nChest X-ray\t400\nAbdominal ultrasound\t800\nCT scan (non-contrast)\t4,500\nCT scan (contrast)\t6,500\nMRI (non-contrast)\t8,000\nMRI (contrast)\t10,000', 'source': 'sample1.txt'}> score=0.6982739>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:51' labels=frozenset({'Chunk'}) properties={'id': '7124266f-7ea0-4022-ba85-e83c55423840', 'text': 'Surgical Procedures:\nProcedure\tBase Cost\tAnesthesia\tOT Charges\tTotal\nAppendectomy\t18,000\t8,000\t12,000\t38,000\nCholecystectomy\t22,000\t8,000\t12,000\t42,000\nHysterectomy\t28,000\t10,000\t15,000\t53,000\nCesarean section\t32,000\t10,000\t15,000\t57,000\nCABG (Open heart)\t185,000\t12,000\t20,000\t217,000\n\nEmergency Department Costs:\nSeverity\tBase Fee\tImaging\tTests\tTotal (Avg)\nMinor\t800\t2,000\t2,000\t4,800\nModerate\t1,500\t4,000\t4,000\t9,500\nSevere\t2,500\t8,000\t8,000\t18,500\nCritical\t5,000\t12,000\t15,000\t32,000\n\nOutpatient Consultation:\nSpeciality\tNew Patient\tFollow-up\nGeneral practitioner\t300\t200\nGeneral specialist\t500\t300\nSuper-specialty\t800\t500\nEmergency consultation\t1,000\t700', 'source': 'sample1.txt'}> score=0.5477142>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: If we have 15 emergency stretchers and average ED LOS is 4.5 hours, what's our daily capacity and how does that align with our 85,000 annual visits
+
+==============================
+
+ANSWER:
+To calculate the daily capacity of the Emergency Department (ED), we need to first determine the total number of bed-days available per year.
+
+Given:
+- Operating Hours: 24/7/365
+- Annual Patient Volume: 85,000+ visits
+- Average ED LOS: 4.5 hours
+
+Assuming an average stay of 4.5 hours, and considering a standard hospital day (24 hours), we can calculate the total bed-days available per year:
+
+Total Bed-Days = Annual Visits x Average Stay / 24 Hours
+= 85,000+ visits x 4.5 hours / 24 hours
+= 17,312.5 bed-days
+
+Now, let's convert this to a daily capacity:
+
+Daily Capacity (beds) = Total Bed-Days / Number of Standard Hospital Days per Year
+= 17,312.5 bed-days / 365 days
+≈ 47.6 beds
+
+Considering the physical infrastructure:
+- 15 Emergency Stretchers
+
+To align with our calculated daily capacity, we can assume that each stretcher is used for approximately 1 day (24 hours). Therefore:
+
+Daily Capacity (stretchers) = Total Number of Stretchers
+= 15 stretchers
+
+This means that our ED has a daily capacity of approximately 47.6 beds and 15 stretchers.
+
+Please note that this calculation assumes an average stay of 4.5 hours, which may not accurately reflect the actual length of stay for all patients.
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:20' labels=frozenset({'Chunk'}) properties={'id': '6bfc6e56-6447-423b-a8a8-bf148938edab', 'text': 'Annual Patient Volume: 8,900 deliveries, 3,200 gynecological procedures\nServices:\n•\tAntenatal care\n•\tHigh-risk pregnancy management\n•\tIntrapartum care\n•\tPostpartum care\n•\tGynecological oncology\n•\tReproductive medicine/Infertility\n•\tMinimal invasive gynecology\nMaternity Unit Structure:\nLabor & Delivery:\n•\t6 labor rooms with partograph monitoring\n•\t2 Delivery suites (sterile operating theatres)\n•\tFetal monitoring equipment (NST, CTG - 8 machines)\n•\tImmediate newborn care setup in each room\nAntenatal Ward:\n•\t20 beds for high-risk pregnancies\n•\tBed rest accommodation\n•\tMonitoring: BP monitoring, 24-hour urine collection, NST\nPostnatal Ward:\n•\t10 beds for normal recovery\n•\tMother-baby care setup\n•\tLactation support resources\nDelivery Statistics (Annual):\nParameter\tNumber\nTotal deliveries\t8,900', 'source': 'sample1.txt'}> score=0.6274774>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:4' labels=frozenset({'Chunk'}) properties={'id': 'e880a34c-272b-4dc8-9d52-f5d5a44c75db', 'text': '3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing\n10.\tInformation Technology\n11.\tMedical Records & Health Information Management\n________________________________________\nPart 2: Clinical Departments - Detailed Overview\n2.1 Emergency Department (ED)\nDepartment Head: Dr. Rohan Patel\nStaff: 35 professionals\nOperating Hours: 24/7/365\nAnnual Patient Volume: 85,000+ visits\nServices Provided:\n•\tTriage and rapid assessment\n•\tTrauma care and resuscitation\n•\tAcute medical emergencies\n•\tPediatric emergencies\n•\tEmergency obstetrics\n•\tToxicology and overdose management\n•\tBurns treatment\nPhysical Infrastructure:\n•\t15 Emergency Stretchers\n•\t6 Resuscitation bays\n•\t3 Trauma rooms\n•\t1 Pediatric emergency area', 'source': 'sample1.txt'}> score=0.62320554>
+
+Retriever items: 2
+=============================================
+
+
+
+==============================
+QUERY: What is the complete cost breakdown for a cesarean section including all charges
+==============================
+
+ANSWER:
+Here's the complete cost breakdown for a cesarean section:
+
+• Procedure: Cesarean section
+  • Base Cost: $32,000
+  • Anesthesia: $10,000
+  • OT Charges: $15,000
+  • Total: $57,000
+
+Note that this data is from Sunrise Multi-Specialty Hospital's table "Surgical Procedures" with the highest score of 0.71588755.
+
+CONTEXT:
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:51' labels=frozenset({'Chunk'}) properties={'id': '7124266f-7ea0-4022-ba85-e83c55423840', 'text': 'Surgical Procedures:\nProcedure\tBase Cost\tAnesthesia\tOT Charges\tTotal\nAppendectomy\t18,000\t8,000\t12,000\t38,000\nCholecystectomy\t22,000\t8,000\t12,000\t42,000\nHysterectomy\t28,000\t10,000\t15,000\t53,000\nCesarean section\t32,000\t10,000\t15,000\t57,000\nCABG (Open heart)\t185,000\t12,000\t20,000\t217,000\n\nEmergency Department Costs:\nSeverity\tBase Fee\tImaging\tTests\tTotal (Avg)\nMinor\t800\t2,000\t2,000\t4,800\nModerate\t1,500\t4,000\t4,000\t9,500\nSevere\t2,500\t8,000\t8,000\t18,500\nCritical\t5,000\t12,000\t15,000\t32,000\n\nOutpatient Consultation:\nSpeciality\tNew Patient\tFollow-up\nGeneral practitioner\t300\t200\nGeneral specialist\t500\t300\nSuper-specialty\t800\t500\nEmergency consultation\t1,000\t700', 'source': 'sample1.txt'}> score=0.71588755>
+- <Record node=<Node element_id='4:a1e9863f-6b25-4973-a3dd-d239bc8dda67:21' labels=frozenset({'Chunk'}) properties={'id': '6b97d7f2-e4dc-4300-a756-5d917f55c5f1', 'text': '•\tMother-baby care setup\n•\tLactation support resources\nDelivery Statistics (Annual):\nParameter\tNumber\nTotal deliveries\t8,900\nVaginal deliveries\t6,200 (70%)\nCesarean sections\t2,700 (30%)\nEmergency CS rate\t1,850 (21%)\nAssisted deliveries (Vacuum/Forceps)\t280\nStillbirth rate\t1.2 per 1000\nMaternal mortality ratio\t45 per 100,000\nEarly neonatal mortality\t2.8 per 1000', 'source': 'sample1.txt'}> score=0.6324712>
+
+Retriever items: 2
+=============================================
+

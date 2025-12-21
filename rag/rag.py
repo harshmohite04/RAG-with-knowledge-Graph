@@ -159,48 +159,7 @@ def ask(query: str, top_k=5):
 
     return result.answer
 
-
 if __name__ == "__main__":
-    ask("Hospital overview and structure: What is the full profile of Horizon Valley Multispecialty Hospital, including bed count, location type, and accreditations?")
-
-    ask("Hospital overview and structure: How is the hospital’s top-level governance structured, and what are the main leadership roles and their responsibilities?")
-
-    ask("Hospital overview and structure: List all clinical and non-clinical departments in the hospital and briefly describe the role of each.")
-
-    ask("Departments and workflows: Describe the complete workflow of a patient visit in the Emergency Department from arrival to disposition.")
-
-    ask("Departments and workflows: What are the different ICUs in the hospital, how many beds does each have, and what are the typical admission criteria for ICU patients?")
-
-    ask("Departments and workflows: What services and procedures are offered by the Cardiology department, including approximate annual procedure volumes?")
-
-    ask("Departments and workflows: How is the Labor and Delivery unit organized, and what services does the OB/GYN department provide?")
-
-    ask("Patient data, EMR, and orders: What fields are stored in the Master Patient Index (MPI) and in an inpatient admission record for this hospital?")
-
-    ask("Patient data, EMR, and orders: How are visits/encounters modeled, and what are the possible visit types and dispositions for a patient?")
-
-    ask("Patient data, EMR, and orders: What information is recorded for lab orders and lab results, including key fields and status values?")
-
-    ask("Patient data, EMR, and orders: How is medication information modeled, from medication master data to prescriptions and the Medication Administration Record?")
-
-    ask("Support services and operations: What are the roles and target turnaround times (TAT) for the laboratory and radiology services?")
-
-    ask("Support services and operations: Explain the role and main responsibilities of the Medical Records Department (MRD) and CSSD in daily hospital operations?")
-
-    ask("Support services and operations: Describe the typical workflows for OPD visits, inpatient admissions, and discharges in this hospital.")
-
-    ask("Security, compliance, and IT: What core IT systems are used in the hospital (HIS/EMR, LIS, RIS/PACS, etc.), and what user roles access them?")
-
-    ask("Security, compliance, and IT: How are role-based access control, audit logs, and data encryption described for this hospital’s EMR environment?")
-
-    ask("Finance, quality, and protocols: What are the main billing components and payer types, and how is the revenue cycle structured from admission to final payment?")
-
-    ask("Finance, quality, and protocols: Which quality and patient safety programs exist in the hospital, and what KPIs are tracked to measure clinical quality and safety?")
-
-    ask("Finance, quality, and protocols: Describe the sepsis early management protocol and the acute chest pain pathway defined for this hospital.")
-
-    ask("RAG system: What key entities should be indexed in a RAG system for this hospital, and what typical questions should staff be able to ask it?")
-
 
     # ask("Can you name all the board members")
     print(qdrant.count("chunks"))
