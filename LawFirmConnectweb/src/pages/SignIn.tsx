@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+// ... icons ...
 
 const LogoIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" className="w-8 h-8 text-blue-600" stroke="currentColor" strokeWidth="2">
@@ -27,6 +30,13 @@ const ShieldIcon = () => (
 
 const SignIn: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
+
+    const handleLogin = (e: React.FormEvent) => {
+        e.preventDefault();
+        // Simulate login and redirect to portal
+        navigate('/portal');
+    }
 
     return (
         <div className="min-h-screen bg-slate-100 flex items-center justify-center p-14">
@@ -48,7 +58,7 @@ const SignIn: React.FC = () => {
                             Welcome back. Please log in to access your case files, secure messaging, and billing information.
                         </p>
 
-                        <form className="space-y-5">
+                        <form className="space-y-5" onSubmit={handleLogin}>
                             <div className="space-y-4">
                                 <div>
                                     <label htmlFor="email" className="block text-xs font-bold text-slate-900 mb-1.5">Email Address / Username</label>
@@ -109,7 +119,8 @@ const SignIn: React.FC = () => {
                                 type="submit" 
                                 className="w-full flex items-center justify-center gap-2 py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all"
                             >
-                                <LockIcon /> Secure Login
+                                <LockIcon />
+                                 Secure Login
                             </button>
                             
                             <div className="text-center mt-6">
@@ -123,7 +134,8 @@ const SignIn: React.FC = () => {
                         
                         <div className="flex flex-col gap-2">
                              <div className="flex items-center gap-2 text-xs font-bold text-emerald-600 tracking-wider">
-                                <ShieldIcon /> 256-BIT SSL SECURE CONNECTION
+                                <ShieldIcon />
+                                 256-BIT SSL SECURE CONNECTION
                              </div>
                              <p className="text-[10px] text-slate-400 leading-normal">
                                  Unauthorized access is prohibited. All activity is monitored and logged for security purposes. By logging in, you agree to our <a href="#" className="underline hover:text-slate-500">Terms of Service</a> and <a href="#" className="underline hover:text-slate-500">Privacy Policy</a>.
