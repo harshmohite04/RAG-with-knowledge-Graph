@@ -95,8 +95,8 @@ const verifyEmail = async (req, res, next) => {
         }
 
         if (validOtp.expiresAt < Date.now()) {
-             res.status(400);
-             throw new Error('OTP expired.');
+            res.status(400);
+            throw new Error('OTP expired.');
         }
 
         const isMatch = await bcrypt.compare(otp, validOtp.otp);
@@ -152,8 +152,34 @@ const loginUser = async (req, res, next) => {
     }
 };
 
+// @desc    Get current user info
+// @route   GET /auth/me
+// @access  Private
+const getCurrentUser = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user._id).select('-password');
+
+        if (!user) {
+            res.status(404);
+            throw new Error('User not found');
+        }
+
+        res.json({
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phone: user.phone,
+            role: user.role
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     registerUser,
     verifyEmail,
-    loginUser
+    loginUser,
+    getCurrentUser
 };

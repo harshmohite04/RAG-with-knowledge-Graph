@@ -14,6 +14,7 @@ const caseRoutes = require('./src/routes/caseRoutes');
 const scheduleRoutes = require('./src/routes/scheduleRoutes');
 const messageRoutes = require('./src/routes/messageRoutes');
 const contactRoutes = require('./src/routes/contactRoutes');
+const teamRoutes = require('./src/routes/teamRoutes');
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use('/cases', caseRoutes);
 app.use('/schedule', scheduleRoutes);
 app.use('/messages', messageRoutes);
 app.use('/contact', contactRoutes);
+app.use('/team', teamRoutes);
 app.use('/uploads', express.static('uploads'));
 
 // Health Check

@@ -38,7 +38,7 @@ const PortalCalendar: React.FC = () => {
         try {
             const res = await api.get('/schedule');
             setBookings(res.data); // Assuming GET /schedule returns user's bookings
-            
+
             // Also need to get lawyers to book with. 
             // Since we don't have a public endpoint for 'list lawyers', I'll just hardcode or fetch if user has active cases with lawyers.
             // Let's rely on the user having a case.
@@ -48,10 +48,10 @@ const PortalCalendar: React.FC = () => {
             // User schema doesn't have 'assignedLawyer'. Case has 'lawyerId'.
             // I'll fetch cases to find associated lawyers.
             const casesRes = await api.get('/cases');
-            const lawyerIds = [...new Set(casesRes.data.map((c:any) => c.lawyerId).filter(Boolean))];
+            const lawyerIds = [...new Set(casesRes.data.map((c: any) => c.lawyerId).filter(Boolean))];
             if (lawyerIds.length > 0) {
-                 setLawyerId(lawyerIds[0] as string); // Default to first found lawyer
-            } 
+                setLawyerId(lawyerIds[0] as string); // Default to first found lawyer
+            }
             // If no cases/lawyers, we might have an issue creating a booking for a specific person. 
             // The Seeder created a Lawyer. I could hardcode that ID for "General Inquiry"?
             // Or I can add a quick endpoint OR just fail gracefully if no lawyer found.
@@ -97,7 +97,7 @@ const PortalCalendar: React.FC = () => {
                     <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Calendar</h2>
                     <p className="text-slate-500 mt-1">Manage your appointments and court dates.</p>
                 </div>
-                <button 
+                <button
                     onClick={() => setShowModal(true)}
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 rounded-lg text-sm font-bold text-white hover:bg-blue-700 shadow-md transition-all"
                 >
@@ -125,11 +125,10 @@ const PortalCalendar: React.FC = () => {
                                             <h4 className="font-bold text-slate-900 text-lg">
                                                 {booking.notes || 'Appointment'}
                                             </h4>
-                                            <span className={`px-2.5 py-1 text-xs font-bold rounded-full ${
-                                                booking.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' : 
-                                                booking.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
-                                                'bg-slate-100 text-slate-500'
-                                            }`}>
+                                            <span className={`px-2.5 py-1 text-xs font-bold rounded-full ${booking.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
+                                                    booking.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
+                                                        'bg-slate-100 text-slate-500'
+                                                }`}>
                                                 {booking.status}
                                             </span>
                                         </div>
@@ -142,7 +141,7 @@ const PortalCalendar: React.FC = () => {
                                                 <LocationIcon />
                                                 Video Call / Office
                                             </div>
-                                             {/* If we had lawyer name populated, show it here */}
+                                            {/* If we had lawyer name populated, show it here */}
                                         </div>
                                     </div>
                                 </div>
@@ -160,8 +159,8 @@ const PortalCalendar: React.FC = () => {
                         <form onSubmit={handleCreateBooking}>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-slate-700 mb-1">Date</label>
-                                <input 
-                                    type="date" 
+                                <input
+                                    type="date"
                                     required
                                     className="w-full border-slate-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                                     value={newDate}
@@ -170,8 +169,8 @@ const PortalCalendar: React.FC = () => {
                             </div>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-slate-700 mb-1">Time</label>
-                                <input 
-                                    type="time" 
+                                <input
+                                    type="time"
                                     required
                                     className="w-full border-slate-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                                     value={newTime}
@@ -180,7 +179,7 @@ const PortalCalendar: React.FC = () => {
                             </div>
                             <div className="mb-6">
                                 <label className="block text-sm font-medium text-slate-700 mb-1">Purpose / Notes</label>
-                                <textarea 
+                                <textarea
                                     className="w-full border-slate-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                                     rows={3}
                                     value={notes}
@@ -189,15 +188,15 @@ const PortalCalendar: React.FC = () => {
                                 ></textarea>
                             </div>
                             <div className="flex justify-end gap-3">
-                                <button 
-                                    type="button" 
+                                <button
+                                    type="button"
                                     onClick={() => setShowModal(false)}
                                     className="px-4 py-2 border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50"
                                 >
                                     Cancel
                                 </button>
-                                <button 
-                                    type="submit" 
+                                <button
+                                    type="submit"
                                     className="px-4 py-2 bg-blue-600 rounded-lg text-sm font-bold text-white hover:bg-blue-700"
                                 >
                                     Submit Request
