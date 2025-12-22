@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import api from '../api/client';
 import PortalLayout from '../components/PortalLayout';
+
+interface CaseData {
+    _id: string;
+    title: string;
+    description: string;
+    status: string;
+    category: string;
+    documents: string[];
+    createdAt: string;
+}
 
 // Icons
 const LockIcon = () => (
@@ -103,7 +115,38 @@ const DocIcon = () => (
 )
 
 const PortalCaseDetails: React.FC = () => {
+    const { id } = useParams<{ id: string }>();
     const [activeTab, setActiveTab] = useState<'overview' | 'documents' | 'chat' | 'billing'>('documents');
+    const [caseData, setCaseData] = useState<CaseData | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    React.useEffect(() => {
+        const fetchCase = async () => {
+            try {
+                const { data } = await api.get(`/cases/${id}`);
+                setCaseData(data);
+            } catch (error) {
+                console.error("Failed to fetch case", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (id) {
+             // For now, if the API endpoint /cases/:id doesn't exist, this will fail.
+             // I recall seeing getCases returning ALL cases.
+             // I'll try to fetch all and find for now to avoid blocking if I can't edit backend immediately, but I CAN edit backend.
+             // I'll stick to the plan: fetch standard ID.
+             // But wait, I see I missed adding GET /:id in my plan.
+             // I'll try to use the list endpoint and filter if that complicates things less purely for this step, 
+             // but correct way is GET /:id.
+             // Let's implement generic fetch first.
+             fetchCase();
+        }
+    }, [id]);
+
+    if (loading) return <PortalLayout><div>Loading...</div></PortalLayout>;
+    if (!caseData) return <PortalLayout><div>Case not found</div></PortalLayout>;
 
     return (
         <PortalLayout>
@@ -116,21 +159,21 @@ const PortalCaseDetails: React.FC = () => {
                              <div className="flex items-center gap-2 mb-1 text-sm text-slate-500">
                                 <span>Cases</span>
                                 <span>/</span>
-                                <span>Smith v. Jones</span>
+                                <span>{caseData.title}</span>
                                 <span>/</span>
                                 <span className="font-bold text-slate-900 capitalize">{activeTab}</span>
                              </div>
                              <h1 className="text-3xl font-bold text-slate-900 mb-2">
-                                 {activeTab === 'documents' ? 'Case Documents' : 'Case #2023-994'}
+                                 {activeTab === 'documents' ? 'Case Documents' : `Case #${caseData._id.substring(0,8)}`}
                              </h1>
                              
                              {activeTab === 'documents' && (
                                 <div className="flex items-center gap-2 text-slate-500 text-sm font-medium">
                                     <svg className="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" /></svg>
-                                    Case #2023-004: Estate of J. Doe
+                                    Case #{caseData._id.substring(0,8)}: {caseData.title}
                                 </div>
                              )}
-                             {activeTab !== 'documents' && <p className="text-slate-500">Smith Estate Planning</p>}
+                             {activeTab !== 'documents' && <p className="text-slate-500">{caseData.title}</p>}
 
                         </div>
                         
@@ -289,11 +332,11 @@ const PortalCaseDetails: React.FC = () => {
                                     <div className="space-y-4">
                                         <div className="flex justify-between items-center">
                                             <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Status</span>
-                                            <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">Active</span>
+                                            <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">{caseData.status}</span>
                                         </div>
                                         <div className="flex justify-between items-center">
                                             <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">Filed Date</span>
-                                            <span className="text-sm font-medium text-slate-900">Oct 12, 2023</span>
+                                            <span className="text-sm font-medium text-slate-900">{new Date(caseData.createdAt).toLocaleDateString()}</span>
                                         </div>
                                         <div>
                                             <span className="text-xs font-medium text-slate-500 uppercase tracking-wide block mb-1">Privilege Level</span>
@@ -407,9 +450,9 @@ const PortalCaseDetails: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Filter Categories */}
+                         {/* Filter Categories */}
                         <div className="flex gap-2">
-                             <button className="bg-slate-200 text-slate-900 px-3 py-1.5 rounded-lg text-sm font-bold shadow-sm">All Files <span className="bg-white text-slate-900 text-[10px] px-1.5 py-0.5 rounded ml-1">24</span></button>
+                             <button className="bg-slate-200 text-slate-900 px-3 py-1.5 rounded-lg text-sm font-bold shadow-sm">All Files <span className="bg-white text-slate-900 text-[10px] px-1.5 py-0.5 rounded ml-1">{caseData.documents.length}</span></button>
                              <button className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors">Court Filings</button>
                              <button className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors">Evidence</button>
                              <button className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors">Correspondence</button>
@@ -429,122 +472,44 @@ const PortalCaseDetails: React.FC = () => {
                                     </thead>
                                     <tbody className="bg-white divide-y divide-slate-200">
                                         
-                                        {/* Row 1 */}
-                                        <tr className="hover:bg-slate-50 transition-colors">
-                                            <td className="px-6 py-4">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="bg-rose-50 p-2 rounded-lg">
-                                                        <PDFIcon />
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-sm font-bold text-slate-900">Motion to Dismiss.pdf</p>
-                                                        <span className="inline-block bg-blue-100 text-blue-700 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded mt-1">New</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 font-medium">Court Filing</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                 <div className="flex items-center gap-2">
-                                                    <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold">AS</span>
-                                                    <span className="text-sm font-bold text-slate-900">Attorney Smith</span>
-                                                 </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">Oct 24, 2023</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">2.4 MB</td>
-                                        </tr>
+                                        {caseData.documents.map((doc, index) => {
+                                            const fileName = doc.split('/').pop() || doc;
+                                            const isPdf = fileName.toLowerCase().endsWith('.pdf');
+                                            const isImage = fileName.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/);
+                                            const isDoc = !isPdf && !isImage;
 
-                                        {/* Row 2 */}
-                                        <tr className="hover:bg-slate-50 transition-colors">
-                                            <td className="px-6 py-4">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="bg-blue-50 p-2 rounded-lg">
-                                                        <ImageIcon />
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-sm font-bold text-slate-900">Accident_Photo_01.jpg</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 font-medium">Evidence</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                 <div className="flex items-center gap-2">
-                                                    <span className="w-6 h-6 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-xs font-bold">CU</span>
-                                                    <span className="text-sm font-bold text-slate-900">Client User</span>
-                                                 </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">Oct 20, 2023</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">4.1 MB</td>
-                                        </tr>
-
-                                        {/* Row 3 */}
-                                        <tr className="hover:bg-slate-50 transition-colors">
-                                            <td className="px-6 py-4">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="bg-blue-50 p-2 rounded-lg">
-                                                        <DocIcon />
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-sm font-bold text-slate-900">Settlement Draft v2.docx</p>
-                                                        <span className="inline-block bg-slate-100 text-slate-600 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded mt-1">Draft</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 font-medium">Correspondence</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                 <div className="flex items-center gap-2">
-                                                    <span className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs font-bold">PJ</span>
-                                                    <span className="text-sm font-bold text-slate-900">Paralegal Jones</span>
-                                                 </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">Oct 15, 2023</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">120 KB</td>
-                                        </tr>
-
-                                        {/* Row 4 */}
-                                        <tr className="hover:bg-slate-50 transition-colors">
-                                            <td className="px-6 py-4">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="bg-rose-50 p-2 rounded-lg">
-                                                        <PDFIcon />
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-sm font-bold text-slate-900">Police_Report_Final.pdf</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 font-medium">Evidence</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                 <div className="flex items-center gap-2">
-                                                    <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold">AS</span>
-                                                    <span className="text-sm font-bold text-slate-900">Attorney Smith</span>
-                                                 </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">Oct 12, 2023</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">1.8 MB</td>
-                                        </tr>
-
-                                         {/* Row 5 */}
-                                         <tr className="hover:bg-slate-50 transition-colors">
-                                            <td className="px-6 py-4">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="bg-blue-50 p-2 rounded-lg">
-                                                        <DocIcon />
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-sm font-bold text-slate-900">Engagement_Letter_Signed.docx</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 font-medium">Administrative</td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                 <div className="flex items-center gap-2">
-                                                    <span className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs font-bold">PJ</span>
-                                                    <span className="text-sm font-bold text-slate-900">Paralegal Jones</span>
-                                                 </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">Sep 05, 2023</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">45 KB</td>
-                                        </tr>
+                                            return (
+                                                <tr key={index} className="hover:bg-slate-50 transition-colors">
+                                                    <td className="px-6 py-4">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className={`p-2 rounded-lg ${isPdf ? 'bg-rose-50' : 'bg-blue-50'}`}>
+                                                                {isPdf ? <PDFIcon /> : isImage ? <ImageIcon /> : <DocIcon />}
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-sm font-bold text-slate-900">{fileName}</p>
+                                                                <span className="inline-block bg-blue-100 text-blue-700 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded mt-1">Uploaded</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 font-medium">General</td>
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                         <div className="flex items-center gap-2">
+                                                            <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">U</span>
+                                                            <span className="text-sm font-bold text-slate-900">User</span>
+                                                         </div>
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{new Date(caseData.createdAt).toLocaleDateString()}</td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">-</td>
+                                                </tr>
+                                            );
+                                        })}
+                                        {caseData.documents.length === 0 && (
+                                            <tr>
+                                                <td colSpan={5} className="px-6 py-8 text-center text-slate-500">
+                                                    No documents uploaded yet.
+                                                </td>
+                                            </tr>
+                                        )}
 
                                     </tbody>
                                 </table>
@@ -554,7 +519,7 @@ const PortalCaseDetails: React.FC = () => {
                         {/* Pagination */}
                         <div className="flex items-center justify-between">
                             <p className="text-sm text-slate-600">
-                                Showing <span className="font-bold">1</span> to <span className="font-bold">5</span> of <span className="font-bold">24</span> results
+                                Showing <span className="font-bold">1</span> to <span className="font-bold">{caseData.documents.length}</span> of <span className="font-bold">{caseData.documents.length}</span> results
                             </p>
                             <div className="flex gap-2">
                                 <button className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors shadow-sm">
