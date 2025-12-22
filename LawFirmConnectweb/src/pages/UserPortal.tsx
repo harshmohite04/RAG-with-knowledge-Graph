@@ -19,11 +19,7 @@ const MessageIcon = () => (
         <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
     </svg>
 )
-const UploadIcon = () => (
-    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-    </svg>
-)
+
 const FolderIcon = () => (
     <svg className="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
         <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
@@ -79,14 +75,7 @@ const UserPortal: React.FC = () => {
                             <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Welcome back, {userName}</h2>
                             <p className="text-slate-500 mt-1">Here is the latest on your active legal matters.</p>
                         </div>
-                        <div className="flex gap-3">
-                            <button className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 shadow-sm transition-all">
-                                <UploadIcon /> Upload Document
-                            </button>
-                            <Link to="/portal/messages" className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 rounded-lg text-sm font-medium text-white hover:bg-blue-700 shadow-sm transition-all">
-                                <MessageIcon /> Message Attorney
-                            </Link>
-                        </div>
+
                     </div>
 
                     {/* Stats Grid */}
