@@ -41,6 +41,21 @@ const BellIcon = () => (
 
 const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const location = useLocation();
+    const [user, setUser] = React.useState<any>(null);
+    const [initials, setInitials] = React.useState('U');
+
+    React.useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            setUser(parsedUser);
+            if (parsedUser.firstName && parsedUser.lastName) {
+                setInitials(`${parsedUser.firstName[0]}${parsedUser.lastName[0]}`.toUpperCase());
+            } else if (parsedUser.firstName) {
+                 setInitials(parsedUser.firstName[0].toUpperCase());
+            }
+        }
+    }, []);
 
     const isActive = (path: string) => {
         return location.pathname === path || (path !== '/portal' && location.pathname.startsWith(path));
@@ -52,10 +67,9 @@ const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             {/* Sidebar */}
             <aside className="w-64 bg-white border-r border-slate-200 fixed inset-y-0 left-0 flex flex-col z-10 transition-transform">
                 {/* Logo */}
-                <div className="h-20 flex items-center px-6 gap-3">
+                <div className="h-20 flex items-center px-6 gap-3 cursor-pointer" onClick={() => window.location.href = '/'}>
                     <div className="bg-amber-900/10 p-2 rounded-lg">
-                       {/* Using a generic SVG for the logo placeholder to match image style */}
-                        <svg className="w-6 h-6 text-amber-900" viewBox="0 0 24 24" fill="currentColor">
+                       <svg className="w-6 h-6 text-amber-900" viewBox="0 0 24 24" fill="currentColor">
                            <path d="M12 2L1 21h22L12 2zm0 3.516L20.297 19H3.703L12 5.516z M11 16h2v2h-2v-2zm0-6h2v4h-2v-4z"/>
                         </svg>
                     </div>
@@ -84,23 +98,29 @@ const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                         <div className="flex items-center gap-3">
                             <MessageIcon /> Messages
                         </div>
-                        <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">1</span>
+                         {/* Badge can be dynamic if we fetch stats here too, but for now simple link */}
                     </Link>
                 </nav>
 
                 {/* User Profile */}
                 <div className="p-4 border-t border-slate-100">
                     <div className="flex items-center gap-3">
-                        <img 
-                            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100&h=100" 
-                            alt="Profile" 
-                            className="w-10 h-10 rounded-full object-cover ring-2 ring-white shadow-sm"
-                        />
-                        <div className="flex-1 min-w-0">
-                            <p className="text-sm font-bold text-slate-900 truncate">Sarah Jenkins</p>
-                            <p className="text-xs text-slate-500 truncate">Client</p>
+                         <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm ring-2 ring-white shadow-sm">
+                            {initials}
                         </div>
-                        <button className="text-slate-400 hover:text-slate-600">
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm font-bold text-slate-900 truncate">{user ? `${user.firstName} ${user.lastName}` : 'Loading...'}</p>
+                            <p className="text-xs text-slate-500 truncate">{user?.role === 'lawyer' ? 'Attorney' : 'Client'}</p>
+                        </div>
+                        <button 
+                            onClick={() => {
+                                localStorage.removeItem('token');
+                                localStorage.removeItem('user');
+                                window.location.href = '/signin';
+                            }}
+                            className="text-slate-400 hover:text-red-600 transition-colors"
+                            title="Logout"
+                        >
                             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
                         </button>
                     </div>

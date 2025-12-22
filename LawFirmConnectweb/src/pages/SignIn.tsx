@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../api/client';
 
 // ... icons ...
 
@@ -31,11 +32,32 @@ const ShieldIcon = () => (
 const SignIn: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Simulate login and redirect to portal
-        navigate('/portal');
+        setError('');
+        setIsLoading(true);
+
+        try {
+            const { data } = await api.post('/auth/login', formData);
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data));
+            navigate('/portal');
+        } catch (err: any) {
+            setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -45,7 +67,7 @@ const SignIn: React.FC = () => {
                 {/* Left Side: Form */}
                  <div className="flex flex-col p-8 sm:p-12 lg:p-16 overflow-y-auto">
                     {/* Branding */}
-                    <div className="flex items-center gap-2 mb-8">
+                    <div className="flex items-center gap-2 mb-8 cursor-pointer" onClick={() => navigate('/')}>
                         <div className="bg-blue-50 p-1.5 rounded-lg">
                            <LogoIcon />
                         </div>
@@ -58,6 +80,12 @@ const SignIn: React.FC = () => {
                             Welcome back. Please log in to access your case files, secure messaging, and billing information.
                         </p>
 
+                        {error && (
+                            <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
+                                {error}
+                            </div>
+                        )}
+
                         <form className="space-y-5" onSubmit={handleLogin}>
                             <div className="space-y-4">
                                 <div>
@@ -68,6 +96,8 @@ const SignIn: React.FC = () => {
                                         type="email" 
                                         autoComplete="email" 
                                         required 
+                                        value={formData.email}
+                                        onChange={handleInputChange}
                                         className="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                         placeholder="e.g. name@example.com"
                                     />
@@ -82,6 +112,8 @@ const SignIn: React.FC = () => {
                                             type={showPassword ? "text" : "password"} 
                                             autoComplete="current-password" 
                                             required 
+                                            value={formData.password}
+                                            onChange={handleInputChange}
                                             className="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all pr-12"
                                             placeholder="Enter your password"
                                         />
@@ -117,15 +149,19 @@ const SignIn: React.FC = () => {
 
                             <button 
                                 type="submit" 
-                                className="w-full flex items-center justify-center gap-2 py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all"
+                                disabled={isLoading}
+                                className="w-full flex items-center justify-center gap-2 py-3.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
                             >
-                                <LockIcon />
-                                 Secure Login
+                                {isLoading ? 'Logging In...' : (
+                                    <>
+                                        <LockIcon /> Secure Login
+                                    </>
+                                )}
                             </button>
                             
                             <div className="text-center mt-6">
                                 <p className="text-sm text-slate-500">
-                                    First time here? <a href="#" className="font-bold text-blue-600 hover:text-blue-700">Activate your account</a>
+                                    First time here? <a href="/signup" className="font-bold text-blue-600 hover:text-blue-700">Activate your account</a>
                                 </p>
                             </div>
                         </form>

@@ -1,6 +1,7 @@
 import React from 'react';
-import PortalLayout from '../components/PortalLayout';
 import { Link } from 'react-router-dom';
+import api from '../api/client';
+import PortalLayout from '../components/PortalLayout';
 
 const CaseIcon = () => (
     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -39,6 +40,30 @@ const LockIcon = () => (
 )
 
 const PortalCases: React.FC = () => {
+    const [cases, setCases] = React.useState<any[]>([]);
+    const [loading, setLoading] = React.useState(true);
+    const [filter, setFilter] = React.useState('All'); // Simple filter
+
+    React.useEffect(() => {
+        const fetchCases = async () => {
+            try {
+                const res = await api.get('/cases');
+                setCases(res.data);
+            } catch (err) {
+                console.error("Failed to load cases", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchCases();
+    }, []);
+
+    const filteredCases = filter === 'All' ? cases : cases.filter((c: any) => c.status === filter);
+
+    if (loading) {
+         return <PortalLayout><div className="flex justify-center p-10">Loading Cases...</div></PortalLayout>;
+    }
+
     return (
         <PortalLayout>
             
@@ -48,9 +73,9 @@ const PortalCases: React.FC = () => {
                     <h2 className="text-3xl font-bold text-slate-900 tracking-tight">My Legal Matters</h2>
                     <p className="text-slate-500 mt-1">Overview of your active and archived cases.</p>
                 </div>
-                <button className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 rounded-lg text-sm font-bold text-white hover:bg-blue-700 shadow-md transition-all">
+                <Link to="/portal/start-case" className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 rounded-lg text-sm font-bold text-white hover:bg-blue-700 shadow-md transition-all">
                     <PlusIcon /> Start New Case
-                </button>
+                </Link>
             </div>
 
             {/* Stats Overview */}
@@ -58,16 +83,17 @@ const PortalCases: React.FC = () => {
                 <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex items-center justify-between">
                     <div>
                         <p className="text-sm font-medium text-slate-500">Active Cases</p>
-                        <p className="text-3xl font-bold text-slate-900 mt-2">3</p>
+                        <p className="text-3xl font-bold text-slate-900 mt-2">{cases.filter(c => c.status !== 'Closed').length}</p>
                     </div>
                     <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-blue-600">
                         <CaseIcon />
                     </div>
                 </div>
+                 {/* Placeholder stats */}
                  <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex items-center justify-between">
                     <div>
-                        <p className="text-sm font-medium text-slate-500">Pending Actions</p>
-                        <p className="text-3xl font-bold text-slate-900 mt-2">1</p>
+                        <p className="text-sm font-medium text-slate-500">Total Cases</p>
+                        <p className="text-3xl font-bold text-slate-900 mt-2">{cases.length}</p>
                     </div>
                     <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-orange-500">
                         <ClipboardIcon />
@@ -75,8 +101,8 @@ const PortalCases: React.FC = () => {
                 </div>
                  <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex items-center justify-between">
                     <div>
-                        <p className="text-sm font-medium text-slate-500">Upcoming Events</p>
-                        <p className="text-3xl font-bold text-slate-900 mt-2">2</p>
+                        <p className="text-sm font-medium text-slate-500">Closed Cases</p>
+                        <p className="text-3xl font-bold text-slate-900 mt-2">{cases.filter(c => c.status === 'Closed').length}</p>
                     </div>
                     <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-emerald-500">
                         <CalendarIcon />
@@ -97,9 +123,23 @@ const PortalCases: React.FC = () => {
                     />
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100 transition-colors">
-                        <FilterIcon /> All Statuses
-                        <svg className="w-4 h-4 ml-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                    <button 
+                        onClick={() => setFilter('All')}
+                        className={`flex items-center gap-2 px-4 py-2.5 border rounded-lg text-sm font-medium transition-colors ${filter === 'All' ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'}`}
+                    >
+                        <FilterIcon /> All
+                    </button>
+                    <button 
+                        onClick={() => setFilter('Open')}
+                        className={`px-4 py-2.5 border rounded-lg text-sm font-medium transition-colors ${filter === 'Open' ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'}`}
+                    >
+                        Active
+                    </button>
+                     <button 
+                        onClick={() => setFilter('Closed')}
+                        className={`px-4 py-2.5 border rounded-lg text-sm font-medium transition-colors ${filter === 'Closed' ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'}`}
+                    >
+                        Closed
                     </button>
                 </div>
             </div>
@@ -110,193 +150,82 @@ const PortalCases: React.FC = () => {
                     <table className="min-w-full divide-y divide-slate-200">
                         <thead className="bg-slate-50">
                             <tr>
-                                <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Case Name / Ref ID</th>
+                                <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Case Name / Desc</th>
                                 <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Lead Attorney</th>
                                 <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
-                                <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Next Hearing</th>
+                                <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Date Created</th>
                                 <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Last Update</th>
                                 <th scope="col" className="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Action</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-slate-200">
                             
-                            {/* Row 1 */}
-                            <tr className="hover:bg-slate-50 transition-colors">
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="flex items-center">
-                                        <div className="flex-shrink-0 h-8 w-8 bg-blue-50 rounded-lg flex items-center justify-center mr-4">
-                                            <LockIcon />
-                                        </div>
-                                        <div>
-                                            <div className="text-sm font-bold text-slate-900 hover:text-blue-600 transition-colors">
-                                                <Link to="/portal/cases/1">Smith Trust (#4492)</Link>
+                            {filteredCases.map((caseItem: any) => (
+                                <tr key={caseItem._id} className="hover:bg-slate-50 transition-colors">
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="flex items-center">
+                                            <div className="flex-shrink-0 h-8 w-8 bg-blue-50 rounded-lg flex items-center justify-center mr-4">
+                                                <LockIcon />
                                             </div>
-                                            <div className="text-xs text-slate-500">Estate Planning</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="flex items-center">
-                                        <img className="h-8 w-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=100&h=100" alt="" />
-                                        <div className="ml-3">
-                                            <div className="text-sm font-medium text-slate-900">Sarah Jenkins, Esq.</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <span className="px-2.5 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-emerald-100 text-emerald-800">
-                                        Active
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-slate-900">Nov 12,</div>
-                                    <div className="text-xs text-slate-500">2023</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                                    Draft sent for review
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <Link to="/portal/cases/1" className="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg font-bold transition-colors">Details</Link>
-                                </td>
-                            </tr>
-
-                            {/* Row 2 */}
-                             <tr className="hover:bg-slate-50 transition-colors">
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="flex items-center">
-                                        <div className="flex-shrink-0 h-8 w-8 bg-blue-50 rounded-lg flex items-center justify-center mr-4">
-                                            <LockIcon />
-                                        </div>
-                                        <div>
-                                            <div className="text-sm font-bold text-slate-900 hover:text-blue-600 transition-colors">
-                                                <Link to="/portal/cases/2">TechFlow Merger (#9921)</Link>
+                                            <div>
+                                                <div className="text-sm font-bold text-slate-900 hover:text-blue-600 transition-colors">
+                                                    <Link to={`/portal/cases/${caseItem._id}`}>{caseItem.title}</Link>
+                                                </div>
+                                                <div className="text-xs text-slate-500 truncate max-w-[150px]">{caseItem.description}</div>
                                             </div>
-                                            <div className="text-xs text-slate-500">Corporate Law</div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="flex items-center">
-                                        <img className="h-8 w-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100&h=100" alt="" />
-                                        <div className="ml-3">
-                                            <div className="text-sm font-medium text-slate-900">Michael Ross, Esq.</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <span className="px-2.5 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-blue-100 text-blue-800">
-                                        Pending
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-slate-400">--</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                                    Awaiting signature
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <Link to="/portal/cases/2" className="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg font-bold transition-colors">Details</Link>
-                                </td>
-                            </tr>
-
-                            {/* Row 3 */}
-                             <tr className="hover:bg-slate-50 transition-colors">
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="flex items-center">
-                                        <div className="flex-shrink-0 h-8 w-8 bg-blue-50 rounded-lg flex items-center justify-center mr-4">
-                                            <LockIcon />
-                                        </div>
-                                        <div>
-                                            <div className="text-sm font-bold text-slate-900 hover:text-blue-600 transition-colors">
-                                                <Link to="/portal/cases/3">Personal Injury (#1023)</Link>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="flex items-center">
+                                            <div className="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500">
+                                                {caseItem.lawyerId ? 'LT' : 'NA'}
                                             </div>
-                                            <div className="text-xs text-slate-500">Litigation</div>
+                                            <div className="ml-3">
+                                                {/* Should populate lawyer name, assuming populated or default */}
+                                                <div className="text-sm font-medium text-slate-900">{caseItem.lawyerId ? 'Marcus Thorne' : 'Unassigned'}</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="flex items-center">
-                                        <img className="h-8 w-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100&h=100" alt="" />
-                                        <div className="ml-3">
-                                            <div className="text-sm font-medium text-slate-900">Jessica Pearson, Esq.</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <span className="px-2.5 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-orange-100 text-orange-800 border border-orange-200">
-                                        Action Req.
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-slate-900">Oct 30,</div>
-                                    <div className="text-xs text-slate-500">2023</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                                    Sign deposition forms
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button className="text-white bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-lg font-bold transition-colors shadow-sm">Review</button>
-                                </td>
-                            </tr>
-
-                            {/* Row 4 */}
-                             <tr className="hover:bg-slate-50 transition-colors">
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="flex items-center">
-                                        <div className="flex-shrink-0 h-8 w-8 bg-slate-100 rounded-lg flex items-center justify-center mr-4">
-                                            <LockIcon />
-                                        </div>
-                                        <div>
-                                            <div className="text-sm font-bold text-slate-400">123 Main St Purchase (#3321)</div>
-                                            <div className="text-xs text-slate-400">Real Estate</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="flex items-center">
-                                        <img className="h-8 w-8 rounded-full object-cover grayscale opacity-60" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100&h=100" alt="" />
-                                        <div className="ml-3">
-                                            <div className="text-sm font-medium text-slate-400">Louis Litt, Esq.</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <span className="px-2.5 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-slate-100 text-slate-500">
-                                        Closed
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm text-slate-400">--</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
-                                    Closing complete
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button className="text-slate-500 hover:text-slate-700 bg-white border border-slate-200 hover:border-slate-300 px-3 py-1.5 rounded-lg font-bold transition-colors">Archive</button>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <span className={`px-2.5 py-1 inline-flex text-xs leading-5 font-bold rounded-full ${
+                                            caseItem.status === 'Open' ? 'bg-emerald-100 text-emerald-800' :
+                                            caseItem.status === 'Closed' ? 'bg-slate-100 text-slate-500' : 
+                                            'bg-blue-100 text-blue-800'
+                                        }`}>
+                                            {caseItem.status}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="text-sm text-slate-900">{new Date(caseItem.createdAt).toLocaleDateString()}</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                                        {new Date(caseItem.updatedAt).toLocaleDateString()}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <Link to={`/portal/cases/${caseItem._id}`} className="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg font-bold transition-colors">Details</Link>
+                                    </td>
+                                </tr>
+                            ))}
+                            
+                            {filteredCases.length === 0 && (
+                                <tr>
+                                    <td colSpan={6} className="px-6 py-10 text-center text-slate-500">
+                                        No cases found.
+                                    </td>
+                                </tr>
+                            )}
 
                         </tbody>
                     </table>
                 </div>
 
-                {/* Pagination */}
+                {/* Pagination (Static for now) */}
                 <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-slate-200 sm:px-6">
                     <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                         <div>
                             <p className="text-sm text-slate-700">
-                                Showing <span className="font-bold">1</span> to <span className="font-bold">4</span> of <span className="font-bold">12</span> cases
+                                Showing <span className="font-bold">1</span> to <span className="font-bold">{filteredCases.length}</span> of <span className="font-bold">{filteredCases.length}</span> cases
                             </p>
-                        </div>
-                        <div>
-                            <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                                <a href="#" className="relative inline-flex items-center px-4 py-2 rounded-l-md border border-slate-300 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50">
-                                    Previous
-                                </a>
-                                <a href="#" className="relative inline-flex items-center px-4 py-2 rounded-r-md border border-slate-300 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50">
-                                    Next
-                                </a>
-                            </nav>
                         </div>
                     </div>
                 </div>
