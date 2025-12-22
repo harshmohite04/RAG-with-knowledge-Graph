@@ -30,6 +30,7 @@ app.use('/cases', caseRoutes);
 app.use('/schedule', scheduleRoutes);
 app.use('/messages', messageRoutes);
 app.use('/contact', contactRoutes);
+app.use('/uploads', express.static('uploads'));
 
 // Health Check
 app.get('/', (req, res) => {

@@ -59,10 +59,19 @@ const StartCase: React.FC = () => {
         setLoading(true);
         try {
             // Mapping category to backend enum if needed, but assuming exact match for now
-            await api.post('/cases', {
-                title: formData.title,
-                description: formData.description,
-                category: formData.category
+            const formDataToSend = new FormData();
+            formDataToSend.append('title', formData.title);
+            formDataToSend.append('description', formData.description);
+            formDataToSend.append('category', formData.category);
+            
+            formData.files.forEach(file => {
+                formDataToSend.append('files', file);
+            });
+
+            await api.post('/cases', formDataToSend, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             });
             navigate('/portal/cases');
         } catch (error) {
@@ -174,13 +183,49 @@ const StartCase: React.FC = () => {
                                         <h3 className="text-xl font-bold text-slate-900">Case Documents</h3>
                                     </div>
                                     
-                                    <div className="border-2 border-dashed border-slate-200 rounded-xl p-10 text-center hover:bg-slate-50 transition-colors cursor-pointer group">
+                                    <div 
+                                        className="border-2 border-dashed border-slate-200 rounded-xl p-10 text-center hover:bg-slate-50 transition-colors cursor-pointer group"
+                                        onClick={() => document.getElementById('file-upload')?.click()}
+                                    >
+                                        <input 
+                                            type="file" 
+                                            id="file-upload" 
+                                            multiple 
+                                            className="hidden"
+                                            onChange={(e) => {
+                                                if (e.target.files) {
+                                                    setFormData({
+                                                        ...formData, 
+                                                        files: [...formData.files, ...Array.from(e.target.files)]
+                                                    });
+                                                }
+                                            }}
+                                        />
                                         <div className="group-hover:scale-110 transition-transform duration-300">
                                             <UploadIcon />
                                         </div>
                                         <p className="mt-4 text-sm font-bold text-slate-900">Click to upload <span className="font-normal text-slate-500">or drag and drop</span></p>
                                         <p className="text-xs text-slate-400 mt-1">PDF, DOCX, JPG (MAX. 10MB)</p>
                                     </div>
+
+                                    {formData.files.length > 0 && (
+                                        <div className="space-y-2">
+                                            {formData.files.map((file, index) => (
+                                                <div key={index} className="flex items-center justify-between bg-slate-50 p-3 rounded text-sm">
+                                                    <span className="truncate">{file.name}</span>
+                                                    <button 
+                                                        onClick={() => setFormData({
+                                                            ...formData,
+                                                            files: formData.files.filter((_, i) => i !== index)
+                                                        })}
+                                                        className="text-red-500 font-bold ml-2"
+                                                    >
+                                                        Remove
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
 
                                     <div className="bg-blue-50 p-4 rounded-lg flex gap-3">
                                         <svg className="w-5 h-5 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>
@@ -217,9 +262,21 @@ const StartCase: React.FC = () => {
                                             <button onClick={() => setStep(1)} className="text-xs font-bold text-blue-600 hover:underline">Edit</button>
                                         </div>
                                         <div>
-                                            <p className="text-xs font-bold text-slate-500 uppercase mb-1">Description</p>
                                             <p className="text-sm text-slate-700 leading-relaxed">{formData.description}</p>
                                         </div>
+                                        {formData.files.length > 0 && (
+                                            <div>
+                                                <p className="text-xs font-bold text-slate-500 uppercase mb-1">Documents</p>
+                                                <div className="space-y-1">
+                                                    {formData.files.map((file, idx) => (
+                                                        <p key={idx} className="text-sm text-slate-900 flex items-center gap-2">
+                                                            <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
+                                                            {file.name}
+                                                        </p>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div className="bg-green-50 p-4 rounded-lg flex gap-3 border border-green-100">

@@ -32,14 +32,21 @@ const getCases = async (req, res, next) => {
 // @access  Private
 const createCase = async (req, res, next) => {
     try {
-        const { title, description, lawyerId } = req.body;
+        const { title, description, category, lawyerId } = req.body;
+
+        let documents = [];
+        if (req.files) {
+            documents = req.files.map(file => `/uploads/${file.filename}`);
+        }
 
         const newCase = await Case.create({
             title,
             description,
+            category,
             clientId: req.user._id, // Assuming creator is the client
             lawyerId: lawyerId || null, // Optional at creation
-            status: 'Open'
+            status: 'Open',
+            documents
         });
 
         res.status(201).json(newCase);
@@ -89,4 +96,37 @@ const updateCase = async (req, res, next) => {
     }
 };
 
-module.exports = { getCases, createCase, updateCase };
+// @desc    Get single case
+// @route   GET /cases/:id
+// @access  Private
+const getCaseById = async (req, res, next) => {
+    try {
+        const cases = await Case.findById(req.params.id)
+            .populate('clientId', 'firstName lastName email phone')
+            .populate('lawyerId', 'firstName lastName email phone');
+
+        if (!cases) {
+            res.status(404);
+            throw new Error('Case not found');
+        }
+
+        // Security check: ensure user owns the case (client or lawyer)
+        if (req.user.role !== 'admin' && 
+            cases.clientId._id.toString() !== req.user._id.toString() && 
+            cases.lawyerId?._id.toString() !== req.user._id.toString()) {
+            
+            // Allow if just created and not assigned yet? 
+            // If client created it, clientId matches.
+            // If lawyer is null, and user is lawyer... they shouldn't see it unless they are picking it up (not implemented yet).
+            // Strict check for now.
+            res.status(403);
+            throw new Error('Not authorized to view this case');
+        }
+
+        res.json(cases);
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { getCases, createCase, updateCase, getCaseById };
