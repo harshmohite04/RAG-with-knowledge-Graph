@@ -42,7 +42,11 @@ const PdfIcon = () => (
     </svg>
 )
 
+import { dummyBilling, dummyCases } from '../data/dummyData';
+
 const PortalBilling: React.FC = () => {
+    const [billingData] = React.useState(dummyBilling);
+    const [searchQuery, setSearchQuery] = React.useState('');
     return (
         <PortalLayout>
             
@@ -118,6 +122,8 @@ const PortalBilling: React.FC = () => {
                         <input 
                             type="text" 
                             placeholder="Search by invoice # or matter..." 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                             className="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg leading-5 bg-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
                         />
                     </div>
@@ -147,101 +153,53 @@ const PortalBilling: React.FC = () => {
                         </thead>
                         <tbody className="bg-white divide-y divide-slate-200">
                             
-                            {/* Row 1 */}
-                            <tr className="hover:bg-slate-50 transition-colors group">
-                                <td className="px-6 py-5 whitespace-nowrap">
-                                    <div className="text-sm font-bold text-slate-900">#INV-2023-089</div>
-                                </td>
-                                <td className="px-6 py-5 whitespace-nowrap">
-                                    <div className="text-sm text-slate-600 font-medium text-blue-600">Oct 01, 2023</div>
-                                </td>
-                                <td className="px-6 py-5 whitespace-nowrap">
-                                     <div className="text-sm font-medium text-red-500">Oct 15, 2023</div>
-                                </td>
-                                <td className="px-6 py-5">
-                                    <div className="text-sm font-bold text-slate-900">Estate Planning Consultation</div>
-                                    <div className="text-xs text-slate-500 mt-0.5">Matter: Anderson Estate</div>
-                                </td>
-                                <td className="px-6 py-5 whitespace-nowrap">
-                                    <div className="text-sm font-bold text-slate-900">$2,500.00</div>
-                                </td>
-                                <td className="px-6 py-5 whitespace-nowrap text-center">
-                                    <span className="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-red-100 text-red-800">
-                                        Overdue
-                                    </span>
-                                </td>
-                                <td className="px-6 py-5 whitespace-nowrap text-right text-sm font-medium">
-                                    <div className="flex items-center justify-end gap-3">
-                                        <PdfIcon />
-                                        <button className="text-blue-600 hover:text-blue-800 font-bold hover:underline">Pay Now</button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                             {/* Row 2 */}
-                             <tr className="hover:bg-slate-50 transition-colors group">
-                                <td className="px-6 py-5 whitespace-nowrap">
-                                    <div className="text-sm font-bold text-slate-900">#INV-2023-092</div>
-                                </td>
-                                <td className="px-6 py-5 whitespace-nowrap">
-                                    <div className="text-sm text-slate-600 font-medium text-blue-600">Oct 25, 2023</div>
-                                </td>
-                                <td className="px-6 py-5 whitespace-nowrap">
-                                     <div className="text-sm font-medium text-slate-500">Nov 08, 2023</div>
-                                </td>
-                                <td className="px-6 py-5">
-                                    <div className="text-sm font-bold text-slate-900">Document Review</div>
-                                    <div className="text-xs text-slate-500 mt-0.5">Matter: Property Acquisition</div>
-                                </td>
-                                <td className="px-6 py-5 whitespace-nowrap">
-                                    <div className="text-sm font-bold text-slate-900">$1,750.00</div>
-                                </td>
-                                <td className="px-6 py-5 whitespace-nowrap text-center">
-                                    <span className="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-yellow-100 text-yellow-800 border border-yellow-200">
-                                        Pending
-                                    </span>
-                                </td>
-                                <td className="px-6 py-5 whitespace-nowrap text-right text-sm font-medium">
-                                    <div className="flex items-center justify-end gap-3">
-                                        <PdfIcon />
-                                        <button className="text-blue-600 hover:text-blue-800 font-bold hover:underline">Pay Now</button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                             {/* Row 3 */}
-                             <tr className="hover:bg-slate-50 transition-colors group">
-                                <td className="px-6 py-5 whitespace-nowrap">
-                                    <div className="text-sm font-bold text-slate-900">#INV-2023-088</div>
-                                </td>
-                                <td className="px-6 py-5 whitespace-nowrap">
-                                    <div className="text-sm text-slate-600 font-medium text-blue-600">Sep 15, 2023</div>
-                                </td>
-                                <td className="px-6 py-5 whitespace-nowrap">
-                                     <div className="text-sm font-medium text-slate-500">Sep 29, 2023</div>
-                                </td>
-                                <td className="px-6 py-5">
-                                    <div className="text-sm font-bold text-slate-900">Initial Retainer Fee</div>
-                                    <div className="text-xs text-slate-500 mt-0.5">Matter: General Counsel</div>
-                                </td>
-                                <td className="px-6 py-5 whitespace-nowrap">
-                                    <div className="text-sm font-bold text-slate-900">$5,000.00</div>
-                                </td>
-                                <td className="px-6 py-5 whitespace-nowrap text-center">
-                                    <span className="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-emerald-100 text-emerald-800">
-                                        Partial
-                                    </span>
-                                </td>
-                                <td className="px-6 py-5 whitespace-nowrap text-right text-sm font-medium">
-                                    <div className="flex items-center justify-end gap-3">
-                                        <PdfIcon />
-                                        <div className="text-right">
-                                            <button className="text-blue-600 hover:text-blue-800 font-bold hover:underline block">Pay</button>
-                                            <span className="text-[10px] text-slate-400 font-medium">Balance</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                            {billingData.filter(b => b.id.toLowerCase().includes(searchQuery.toLowerCase()) || b.description.toLowerCase().includes(searchQuery.toLowerCase())).map((bill: any) => {
+                                const relatedCase = dummyCases.find((c: any) => c._id === bill.caseId);
+                                const dueDate = new Date(new Date(bill.date).getTime() + 14 * 24 * 60 * 60 * 1000); // Mock due date
+                                
+                                return (
+                                    <tr key={bill.id} className="hover:bg-slate-50 transition-colors group">
+                                        <td className="px-6 py-5 whitespace-nowrap">
+                                            <div className="text-sm font-bold text-slate-900">#{bill.id}</div>
+                                        </td>
+                                        <td className="px-6 py-5 whitespace-nowrap">
+                                            <div className="text-sm text-slate-600 font-medium text-blue-600">{new Date(bill.date).toLocaleDateString([], {month: 'short', day: '2-digit', year: 'numeric'})}</div>
+                                        </td>
+                                        <td className="px-6 py-5 whitespace-nowrap">
+                                            <div className="text-sm font-medium text-slate-500">{dueDate.toLocaleDateString([], {month: 'short', day: '2-digit', year: 'numeric'})}</div>
+                                        </td>
+                                        <td className="px-6 py-5">
+                                            <div className="text-sm font-bold text-slate-900">{bill.description}</div>
+                                            <div className="text-xs text-slate-500 mt-0.5">Matter: {relatedCase ? relatedCase.title : 'General'}</div>
+                                        </td>
+                                        <td className="px-6 py-5 whitespace-nowrap">
+                                            <div className="text-sm font-bold text-slate-900">${bill.amount.toFixed(2)}</div>
+                                        </td>
+                                        <td className="px-6 py-5 whitespace-nowrap text-center">
+                                            <span className={`px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full ${
+                                                bill.status === 'Overdue' ? 'bg-red-100 text-red-800' :
+                                                bill.status === 'Paid' ? 'bg-emerald-100 text-emerald-800' :
+                                                'bg-yellow-100 text-yellow-800'
+                                            }`}>
+                                                {bill.status}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-5 whitespace-nowrap text-right text-sm font-medium">
+                                            <div className="flex items-center justify-end gap-3">
+                                                <PdfIcon />
+                                                <button className="text-blue-600 hover:text-blue-800 font-bold hover:underline">
+                                                    {bill.status === 'Paid' ? 'Receipt' : 'Pay Now'}
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                            {billingData.length === 0 && (
+                                <tr>
+                                    <td colSpan={7} className="px-6 py-10 text-center text-slate-500">No invoices found.</td>
+                                </tr>
+                            )}
 
                         </tbody>
                     </table>

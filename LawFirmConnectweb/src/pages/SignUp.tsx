@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../api/client';
+
 
 const LogoIcon = () => (
     <svg viewBox="0 0 24 24" fill="none" className="w-8 h-8 text-blue-600" stroke="currentColor" strokeWidth="2">
@@ -62,17 +62,12 @@ const SignUp: React.FC = () => {
         }
 
         setIsLoading(true);
-        try {
-            await api.post('/auth/register', formData);
-            // OTP step skipped for now
-            // setStep('verify');
+        // Mock Registration
+        setTimeout(() => {
             alert('Account created successfully! Please log in.');
             navigate('/signin');
-        } catch (err: any) {
-             setError(err.response?.data?.message || 'Registration failed. Please try again.');
-        } finally {
             setIsLoading(false);
-        }
+        }, 1500);
     };
 
     // const handleVerify = ... (removed)

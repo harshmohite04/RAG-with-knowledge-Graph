@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../api/client';
+
 import PortalLayout from '../components/PortalLayout';
 
 // Icons
@@ -57,28 +57,11 @@ const StartCase: React.FC = () => {
 
     const handleSubmit = async () => {
         setLoading(true);
-        try {
-            // Mapping category to backend enum if needed, but assuming exact match for now
-            const formDataToSend = new FormData();
-            formDataToSend.append('title', formData.title);
-            formDataToSend.append('description', formData.description);
-            formDataToSend.append('category', formData.category);
-            
-            formData.files.forEach(file => {
-                formDataToSend.append('files', file);
-            });
-
-            await api.post('/cases', formDataToSend, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
+        // Mock API call
+        setTimeout(() => {
+            alert("Case Created Successfully! (Demo Mode - Data not persisted)");
             navigate('/portal/cases');
-        } catch (error) {
-            console.error("Failed to create case", error);
-            alert("Failed to create case. Please try again.");
-            setLoading(false);
-        }
+        }, 1500);
     };
 
     const categories = [

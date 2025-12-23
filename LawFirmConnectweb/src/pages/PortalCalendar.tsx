@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import api from '../api/client';
+import { dummyCalendarEvents } from '../data/dummyData';
 import PortalLayout from '../components/PortalLayout';
 const PlusIcon = () => (
     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -24,7 +24,7 @@ const PortalCalendar: React.FC = () => {
     const [newDate, setNewDate] = useState('');
     const [newTime, setNewTime] = useState('');
     const [notes, setNotes] = useState('');
-    const [lawyerId, setLawyerId] = useState(''); // In a real app, strict relation needed. 
+ 
     // For demo, we might need to fetch available lawyers or just pick the first one from user's case or a hardcoded ID/Email for now.
     // Or we can fetch 'lawyers' list. For simplicity in this demo, let's just create a 'General Consultation' or similar.
     // Wait, the backend Create Booking requires 'lawyerId'.
@@ -35,57 +35,34 @@ const PortalCalendar: React.FC = () => {
     }, []);
 
     const fetchData = async () => {
-        try {
-            const res = await api.get('/schedule');
-            setBookings(res.data); // Assuming GET /schedule returns user's bookings
-            
-            // Also need to get lawyers to book with. 
-            // Since we don't have a public endpoint for 'list lawyers', I'll just hardcode or fetch if user has active cases with lawyers.
-            // Let's rely on the user having a case.
-            // Actually, for the demo, I will just CREATE a booking with the first available ID if possible, or maybe add a 'Lawyer' select
-            // if I have an endpoint for it. I don't.
-            // I'll check my 'me' profile to see if I am assigned a lawyer?
-            // User schema doesn't have 'assignedLawyer'. Case has 'lawyerId'.
-            // I'll fetch cases to find associated lawyers.
-            const casesRes = await api.get('/cases');
-            const lawyerIds = [...new Set(casesRes.data.map((c:any) => c.lawyerId).filter(Boolean))];
-            if (lawyerIds.length > 0) {
-                 setLawyerId(lawyerIds[0] as string); // Default to first found lawyer
-            } 
-            // If no cases/lawyers, we might have an issue creating a booking for a specific person. 
-            // The Seeder created a Lawyer. I could hardcode that ID for "General Inquiry"?
-            // Or I can add a quick endpoint OR just fail gracefully if no lawyer found.
+        // Mock data fetch
+        setBookings(dummyCalendarEvents);
+        
+        // Mock finding a lawyer
+        // Just default to 'L1' for demo
 
-        } catch (err) {
-            console.error("Failed to fetch schedule", err);
-        } finally {
-            setLoading(false);
-        }
+        setLoading(false);
     };
 
     const handleCreateBooking = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!lawyerId) {
-            alert("No attorney found to book with. Please ensure you have an active case.");
-            return;
-        }
-        try {
-            const dateTime = new Date(`${newDate}T${newTime}`);
-            await api.post('/schedule', {
-                lawyerId,
-                date: dateTime.toISOString(),
-                notes
-            });
-            setShowModal(false);
-            setNewDate('');
-            setNewTime('');
-            setNotes('');
-            fetchData(); // Refresh
-            alert("Appointment requested!");
-        } catch (error) {
-            console.error("Booking failed", error);
-            alert("Failed to request appointment. Slot might be taken.");
-        }
+        
+        const dateTime = new Date(`${newDate}T${newTime}`);
+        const newBooking = {
+            _id: Date.now(),
+            date: dateTime.toISOString(),
+            notes: notes || 'New Appointment',
+            status: 'Pending',
+            bookings: [], // extra fields to match whatever interface?
+            // Actually the map uses booking.date, booking.notes, booking.status
+        };
+
+        setBookings([...bookings, newBooking]);
+        setShowModal(false);
+        setNewDate('');
+        setNewTime('');
+        setNotes('');
+        alert("Appointment requested!");
     };
 
     if (loading) return <PortalLayout><div className="flex justify-center p-10">Loading Schedule...</div></PortalLayout>;
@@ -115,7 +92,7 @@ const PortalCalendar: React.FC = () => {
                         {bookings.map((booking: any) => {
                             const date = new Date(booking.date);
                             return (
-                                <div key={booking._id} className="p-6 flex flex-col sm:flex-row gap-6 hover:bg-slate-50 transition-colors">
+                                <div key={booking.id || booking._id} className="p-6 flex flex-col sm:flex-row gap-6 hover:bg-slate-50 transition-colors">
                                     <div className="flex-shrink-0 flex flex-col items-center justify-center w-16 h-16 bg-blue-50 text-blue-600 rounded-xl border border-blue-100">
                                         <span className="text-xs font-bold uppercase">{date.toLocaleDateString([], { month: 'short' })}</span>
                                         <span className="text-xl font-bold">{date.getDate()}</span>

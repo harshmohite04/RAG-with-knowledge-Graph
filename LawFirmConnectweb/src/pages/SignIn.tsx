@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../api/client';
+
 
 // ... icons ...
 
@@ -48,16 +48,23 @@ const SignIn: React.FC = () => {
         setError('');
         setIsLoading(true);
 
-        try {
-            const { data } = await api.post('/auth/login', formData);
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data));
+        // Mock Login
+        setTimeout(() => {
+            // Simulate successful login
+            const mockUser = {
+                id: '12345',
+                firstName: 'Demo',
+                lastName: 'User',
+                email: formData.email,
+                role: 'client'
+            };
+            const mockToken = 'mock-jwt-token';
+            
+            localStorage.setItem('token', mockToken);
+            localStorage.setItem('user', JSON.stringify(mockUser));
             navigate('/portal');
-        } catch (err: any) {
-            setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
-        } finally {
             setIsLoading(false);
-        }
+        }, 1500);
     }
 
     return (

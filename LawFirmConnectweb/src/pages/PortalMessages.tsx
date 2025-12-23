@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import api from '../api/client';
+import { dummyMessages } from '../data/dummyData';
 import PortalLayout from '../components/PortalLayout';
 
 // Icons
@@ -43,10 +43,6 @@ const PortalMessages: React.FC = () => {
         
         // Fetch all messages to build conversation list
         fetchMessages();
-
-        // Poll for new messages every 10s (simple real-time sim)
-        const interval = setInterval(fetchMessages, 10000);
-        return () => clearInterval(interval);
     }, []);
 
     // Scroll to bottom of chat
@@ -55,68 +51,64 @@ const PortalMessages: React.FC = () => {
     }, [activeMessages]);
 
     const fetchMessages = async () => {
-        try {
-            const res = await api.get('/messages');
-            const allMessages = res.data;
+        // Mock fetch from dummyMessages
+        const tempConvos: any = {};
+        
+        dummyMessages.forEach((msg: any) => {
+            // Group by sender (if sender is 'You', we need to know who the other person is - 
+            // but dummyMessages doesn't strictly have 'receiver'. 
+            // For simplicity, let's assume we group by 'caseId' or just use 'sender' if not 'You'.
+            // Actually, my dummyMessages structure for Chat tab in Case Details was slightly different than a general inbox.
+            // Let's assume for inbox we group by 'sender' who is NOT 'You'. 
+            // If sender is 'You', we can't easily know who it was sent to unless I add receiver field.
+            // I'll filter out 'You' messages for conversation creation for now, or just assume each message belongs to a 'Case' and group by Case/Sender.
             
-             const tempConvos: any = {};
-             
-             const myId = JSON.parse(localStorage.getItem('user') || '{}').id;
+            // Let's group by Case ID for now as it maps to 'Legal Team' etc.
+            // Or just generic 'sender'.
+            let contactName = msg.sender;
+            if (contactName === 'You') return; // Skip my messages for creating conversion heads
 
-             allMessages.forEach((msg: any) => {
-                 const otherId = msg.senderId === myId ? msg.receiverId : msg.senderId;
-                 if (!otherId) return;
-
-                 if (!tempConvos[otherId]) {
-                     tempConvos[otherId] = {
-                         contactId: otherId,
-                         messages: [],
-                         lastMessage: null,
-                         name: 'Legal Contact' // Placeholder until I can fetch name
-                     };
-                 }
-                 tempConvos[otherId].messages.push(msg);
-             });
-
-             
-             // Sort messages in each convo
-             Object.values(tempConvos).forEach((c: any) => {
-                 c.messages.sort((a: any, b: any) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
-                 c.lastMessage = c.messages[c.messages.length - 1];
-             });
-
-             setConversations(Object.values(tempConvos));
-             
-             // If selection exists, update active messages
-             if (selectedContactId && tempConvos[selectedContactId]) {
-                 setActiveMessages(tempConvos[selectedContactId].messages);
-             } else if (!selectedContactId && Object.keys(tempConvos).length > 0) {
-                 // Auto select first
-                  const firstId = Object.keys(tempConvos)[0];
-                  setSelectedContactId(firstId);
-                  setActiveMessages(tempConvos[firstId].messages);
+             if (!tempConvos[contactName]) {
+                 tempConvos[contactName] = {
+                     contactId: contactName, // Use name as ID for simplicity
+                     messages: [],
+                     lastMessage: null,
+                     name: contactName
+                 };
              }
+             tempConvos[contactName].messages.push({
+                 _id: msg.id,
+                 content: msg.content,
+                 senderId: msg.sender, // Name as ID
+                 timestamp: msg.time, // This is a string like '10:30 AM', grouping sort might fail.
+                 // I'll leave as is for display
+             });
+        });
 
-        } catch (error) {
-            console.error("Failed to fetch messages", error);
-        }
+         setConversations(Object.values(tempConvos));
+         
+         if (selectedContactId && tempConvos[selectedContactId]) {
+             setActiveMessages(tempConvos[selectedContactId].messages);
+         } else if (!selectedContactId && Object.keys(tempConvos).length > 0) {
+              const firstId = Object.keys(tempConvos)[0];
+              setSelectedContactId(firstId);
+              setActiveMessages(tempConvos[firstId].messages);
+         }
     };
 
     const handleSendMessage = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!inputMessage.trim() || !selectedContactId) return;
 
-        try {
-            await api.post('/messages', {
-                receiverId: selectedContactId,
-                content: inputMessage
-            });
-            setInputMessage('');
-            fetchMessages(); // Refresh immediately
-        } catch (error) {
-            console.error("Failed to send message", error);
-            alert("Failed to send message.");
-        }
+        const newMessage = {
+            _id: Date.now(),
+            content: inputMessage,
+            senderId: 'You',
+            timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+        };
+
+        setActiveMessages([...activeMessages, newMessage]);
+        setInputMessage('');
     };
     
     // Select contact handler

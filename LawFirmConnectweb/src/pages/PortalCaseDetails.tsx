@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import api from '../api/client';
+
 import PortalLayout from '../components/PortalLayout';
 
 interface CaseData {
@@ -34,13 +34,7 @@ const DownloadIcon = () => (
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
     </svg>
 )
-const FileIcon = () => (
-    <svg className="w-8 h-8 text-rose-500" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" opacity="0.1"/>
-        <path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/>
-        <path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
-    </svg>
-)
+
 const FileIconBlue = ({ className }: { className?: string }) => (
     <svg className={`w-5 h-5 text-blue-500 ${className || ''}`} fill="currentColor" viewBox="0 0 24 24">
          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" opacity="0.1"/>
@@ -72,11 +66,7 @@ const SearchIcon = () => (
          <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
     </svg>
 )
-const FilterIcon = () => (
-    <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-         <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-    </svg>
-)
+
 const SortIcon = () => (
     <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
@@ -114,39 +104,89 @@ const DocIcon = () => (
     </svg>
 )
 
+import { dummyCases, dummyMessages, dummyBilling, dummyActivities } from '../data/dummyData';
+
+// New Icons for Activity Feed
+const ActivityDocIcon = () => (
+    <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    </svg>
+)
+const ActivityNoteIcon = () => (
+    <svg className="w-5 h-5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+    </svg>
+)
+const ActivityEmailIcon = () => (
+    <svg className="w-5 h-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+    </svg>
+)
+const ActivityPaymentIcon = () => (
+    <svg className="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+)
+const ActivityUserIcon = () => (
+     <svg className="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+    </svg>
+)
+
+// ... (other imports)
+
 const PortalCaseDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const [activeTab, setActiveTab] = useState<'overview' | 'documents' | 'chat' | 'billing'>('documents');
+    const [activeTab, setActiveTab] = useState<'activity' | 'documents' | 'chat' | 'billing'>('activity');
     const [caseData, setCaseData] = useState<CaseData | null>(null);
     const [loading, setLoading] = useState(true);
 
-    React.useEffect(() => {
-        const fetchCase = async () => {
-            try {
-                const { data } = await api.get(`/cases/${id}`);
-                setCaseData(data);
-            } catch (error) {
-                console.error("Failed to fetch case", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const [activitySearchQuery, setActivitySearchQuery] = useState('');
+    const [activityTypeFilter, setActivityTypeFilter] = useState('all');
+    const [activityUserFilter, setActivityUserFilter] = useState('all');
 
-        if (id) {
-             // For now, if the API endpoint /cases/:id doesn't exist, this will fail.
-             // I recall seeing getCases returning ALL cases.
-             // I'll try to fetch all and find for now to avoid blocking if I can't edit backend immediately, but I CAN edit backend.
-             // I'll stick to the plan: fetch standard ID.
-             // But wait, I see I missed adding GET /:id in my plan.
-             // I'll try to use the list endpoint and filter if that complicates things less purely for this step, 
-             // but correct way is GET /:id.
-             // Let's implement generic fetch first.
-             fetchCase();
-        }
+    React.useEffect(() => {
+        // Simulate fetch
+        const foundCase = dummyCases.find((c: any) => c._id === id);
+        
+        const timer = setTimeout(() => {
+            if (foundCase) {
+                setCaseData(foundCase as unknown as CaseData);
+            }
+            setLoading(false);
+        }, 500);
+        return () => clearTimeout(timer);
     }, [id]);
 
     if (loading) return <PortalLayout><div>Loading...</div></PortalLayout>;
     if (!caseData) return <PortalLayout><div>Case not found</div></PortalLayout>;
+
+    const allCaseActivities = dummyActivities.filter(a => a.caseId === caseData._id);
+    
+    // Get unique users for filter dropdown
+    const uniqueUsers = Array.from(new Set(allCaseActivities.map(a => (a as any).user))).filter(Boolean);
+
+    const caseActivities = allCaseActivities
+        .filter(a => {
+            // Search Filter
+            if (activitySearchQuery) {
+                const q = activitySearchQuery.toLowerCase();
+                 if (!a.title.toLowerCase().includes(q) && !a.description.toLowerCase().includes(q)) return false;
+            }
+            
+            // Type Filter
+            if (activityTypeFilter !== 'all') {
+                if (a.type !== activityTypeFilter) return false;
+            }
+
+            // User Filter
+            if (activityUserFilter !== 'all') {
+                if ((a as any).user !== activityUserFilter) return false;
+            }
+
+            return true;
+        })
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     return (
         <PortalLayout>
@@ -181,13 +221,7 @@ const PortalCaseDetails: React.FC = () => {
                         <div className="flex items-center gap-3">
                              {activeTab === 'documents' ? (
                                 <>
-                                    <div className="flex items-center gap-2 bg-green-50 text-green-700 px-3 py-1.5 rounded-lg text-xs font-bold border border-green-100">
-                                         <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
-                                        Encrypted & Secure
-                                    </div>
-                                    <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm transition-colors">
-                                        <CloudUploadIcon /> Upload Document
-                                    </button>
+                                    {/* Moved to content area */}
                                 </>
                              ) : (
                                 <div className="flex gap-2">
@@ -209,15 +243,158 @@ const PortalCaseDetails: React.FC = () => {
                     </div>
 
                     <div className="flex gap-8">
-                        <button onClick={() => setActiveTab('overview')} className={`pb-3 text-sm font-medium transition-colors ${activeTab === 'overview' ? 'text-blue-600 border-b-2 border-blue-600 font-bold' : 'text-slate-500 hover:text-slate-900'}`}>Overview</button>
+                        <button onClick={() => setActiveTab('activity')} className={`pb-3 text-sm font-medium transition-colors ${activeTab === 'activity' ? 'text-blue-600 border-b-2 border-blue-600 font-bold' : 'text-slate-500 hover:text-slate-900'}`}>Activity</button>
                         <button onClick={() => setActiveTab('documents')} className={`pb-3 text-sm font-medium transition-colors ${activeTab === 'documents' ? 'text-blue-600 border-b-2 border-blue-600 font-bold' : 'text-slate-500 hover:text-slate-900'}`}>Documents</button>
                         <button onClick={() => setActiveTab('chat')} className={`pb-3 text-sm font-medium transition-colors ${activeTab === 'chat' ? 'text-blue-600 border-b-2 border-blue-600 font-bold' : 'text-slate-500 hover:text-slate-900'}`}>Chat</button>
                         <button onClick={() => setActiveTab('billing')} className={`pb-3 text-sm font-medium transition-colors ${activeTab === 'billing' ? 'text-blue-600 border-b-2 border-blue-600 font-bold' : 'text-slate-500 hover:text-slate-900'}`}>Billing</button>
                     </div>
                 </div>
 
-
                 {/* CONTENT AREA */}
+                
+                {/* 0. ACTIVITY TAB CONTENT */}
+                {activeTab === 'activity' && (
+                     <div className="flex-1 bg-slate-50 p-6 overflow-y-auto">
+                        <div className="max-w-4xl mx-auto">
+                            {/* Search Activity */}
+                            <div className="mb-8 flex flex-col md:flex-row gap-4">
+                                <div className="relative flex-1">
+                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <SearchIcon />
+                                    </div>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Search activity..." 
+                                        value={activitySearchQuery}
+                                        onChange={(e) => setActivitySearchQuery(e.target.value)}
+                                        className="block w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl leading-5 bg-white shadow-sm placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    />
+                                </div>
+                                <div className="flex gap-4">
+                                     <select 
+                                        value={activityTypeFilter}
+                                        onChange={(e) => setActivityTypeFilter(e.target.value)}
+                                        className="py-3 px-4 border border-slate-200 rounded-xl bg-white text-sm font-medium text-slate-700 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                     >
+                                         <option value="all">All Types</option>
+                                         <option value="document_upload">Documents</option>
+                                         <option value="note_added">Notes</option>
+                                         <option value="email_received">Emails</option>
+                                         <option value="payment_received">Payments</option>
+                                         <option value="lawyer_assigned">Assignments</option>
+                                     </select>
+                                     <select
+                                        value={activityUserFilter}
+                                        onChange={(e) => setActivityUserFilter(e.target.value)}
+                                        className="py-3 px-4 border border-slate-200 rounded-xl bg-white text-sm font-medium text-slate-700 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                                     >
+                                        <option value="all">All Users</option>
+                                        {(uniqueUsers as string[]).map(user => (
+                                            <option key={user} value={user}>{user}</option>
+                                        ))}
+                                     </select>
+                                </div>
+                            </div>
+
+                            {/* Activity Timeline */}
+                            <div className="space-y-6 relative before:absolute before:inset-0 before:ml-6 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
+                                
+                                {caseActivities.length === 0 && (
+                                     <div className="text-center py-10 relative z-10">
+                                        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 mb-4">
+                                            <ListIcon />
+                                        </div>
+                                        <h3 className="text-lg font-medium text-slate-900">No activity yet</h3>
+                                        <p className="text-slate-500">New updates will appear here.</p>
+                                    </div>
+                                )}
+
+                                {caseActivities.map((activity) => (
+                                    <div key={activity.id} className="relative flex items-start group">
+                                         
+                                         {/* Timeline Connector Dot */}
+                                         <div className="absolute left-6 -translate-x-1/2 mt-1.5 w-3 h-3 rounded-full border-2 border-white shadow-sm z-10 
+                                            ${activity.type === 'document_upload' ? 'bg-blue-500' :
+                                              activity.type === 'payment_received' ? 'bg-emerald-500' :
+                                              activity.type === 'email_received' ? 'bg-indigo-500' :
+                                              'bg-slate-400'}">
+                                         </div>
+
+                                        <div className="ml-12 w-full">
+                                            <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                                                <div className="flex justify-between items-start mb-2">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className={`p-2 rounded-lg 
+                                                            ${activity.type === 'document_upload' ? 'bg-blue-100 text-blue-600' :
+                                                              activity.type === 'payment_received' ? 'bg-emerald-100 text-emerald-600' :
+                                                              activity.type === 'email_received' ? 'bg-indigo-100 text-indigo-600' : 
+                                                              activity.type === 'lawyer_assigned' ? 'bg-purple-100 text-purple-600' :
+                                                              'bg-slate-100 text-slate-600'}`}>
+                                                            {activity.type === 'document_upload' && <ActivityDocIcon />}
+                                                            {activity.type === 'payment_received' && <ActivityPaymentIcon />}
+                                                            {activity.type === 'email_received' && <ActivityEmailIcon />}
+                                                            {activity.type === 'note_added' && <ActivityNoteIcon />}
+                                                            {activity.type === 'lawyer_assigned' && <ActivityUserIcon />}
+                                                        </div>
+                                                        <h4 className="font-bold text-slate-900">{activity.title}</h4>
+                                                    </div>
+                                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                                                        {new Date(activity.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                                                    </span>
+                                                </div>
+                                                
+                                                <p className="text-slate-600 text-sm mb-4 leading-relaxed pl-[52px]">
+                                                    {activity.description}
+                                                </p>
+
+                                                {/* Specific Interactions based on type */}
+                                                {(activity.type === 'document_upload' && activity.meta) && (
+                                                    <div className="ml-[52px] bg-slate-50 border border-slate-100 rounded-lg p-3 flex items-center justify-between group-hover:border-blue-100 transition-colors">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="bg-rose-100 p-2 rounded text-rose-500">
+                                                                <PDFIcon /> 
+                                                            </div>
+                                                            <div>
+                                                                <p className="font-bold text-slate-900 text-sm">{activity.meta.fileName}</p>
+                                                                <p className="text-xs text-slate-500">{activity.meta.fileSize} • {activity.meta.fileType}</p>
+                                                            </div>
+                                                        </div>
+                                                        <button className="text-slate-400 hover:text-blue-600 p-2 transition-colors">
+                                                            <DownloadIcon />
+                                                        </button>
+                                                    </div>
+                                                )}
+
+                                                {(activity.type === 'email_received' && activity.meta) && (
+                                                    <div className="ml-[52px] space-y-3">
+                                                        <div className="text-xs text-slate-500">
+                                                            From: <span className="font-medium text-slate-900">{activity.meta.from}</span>
+                                                        </div>
+                                                        <div className="border-l-2 border-slate-200 pl-3 italic text-slate-500 text-sm">
+                                                            {activity.meta.snippet}
+                                                        </div>
+                                                        <div className="flex gap-2 mt-2">
+                                                            <button className="px-3 py-1.5 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg hover:bg-blue-100 transition-colors">Reply</button>
+                                                            <button className="px-3 py-1.5 bg-slate-100 text-slate-600 text-xs font-bold rounded-lg hover:bg-slate-200 transition-colors">Forward</button>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                
+                                {(activity.type === 'payment_received' && activity.meta && activity.meta.amount) && (
+                                    <div className="ml-[52px]">
+                                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                            ${activity.meta.amount.toFixed(2)}
+                                        </span>
+                                    </div>
+                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                     </div>
+                )}
                 
                 {/* 1. CHAT TAB CONTENT */}
                 {activeTab === 'chat' && (
@@ -237,61 +414,29 @@ const PortalCaseDetails: React.FC = () => {
                                 <div className="flex-1 overflow-y-auto p-6 space-y-8 bg-white">
                                     
                                     <div className="flex justify-center">
-                                        <span className="bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1 rounded-full shadow-sm">Today, Oct 24</span>
+                                        <span className="bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1 rounded-full shadow-sm">Recent</span>
                                     </div>
 
-                                    {/* Message 1 */}
-                                    <div className="flex gap-4">
-                                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=100&h=100" alt="Jane Doe" className="w-10 h-10 rounded-full object-cover mt-1" />
-                                        <div className="max-w-2xl">
-                                            <div className="flex items-baseline gap-2 mb-1">
-                                                <span className="text-sm font-bold text-slate-900">Jane Doe</span>
-                                                <span className="text-xs text-slate-400">10:42 AM</span>
-                                            </div>
-                                            <div className="bg-slate-100 p-4 rounded-2xl rounded-tl-none text-slate-800 text-sm leading-relaxed mb-3">
-                                                Good morning. I've uploaded the initial estate draft for your review. Please look it over when you have a moment, particularly section 4 regarding the trust allocation.
-                                            </div>
-                                            
-                                            {/* Attachment Card */}
-                                            <div className="flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-lg p-3 w-fit hover:bg-slate-100 transition-colors cursor-pointer group">
-                                                <div className="bg-rose-50 p-2 rounded text-rose-500">
-                                                    <FileIcon />
+                                    {dummyMessages.filter(m => m.caseId === caseData._id).map(msg => (
+                                        <div key={msg.id} className={`flex gap-4 ${msg.sender === 'You' ? 'flex-row-reverse' : ''}`}>
+                                            {msg.sender !== 'You' && (
+                                                <img src={msg.avatar || "https://ui-avatars.com/api/?name=" + msg.sender} alt={msg.sender} className="w-10 h-10 rounded-full object-cover mt-1" />
+                                            )}
+                                            <div className={`max-w-2xl ${msg.sender === 'You' ? 'items-end flex flex-col' : ''}`}>
+                                                <div className={`flex items-baseline gap-2 mb-1 ${msg.sender === 'You' ? 'flex-row-reverse' : ''}`}>
+                                                    <span className="text-sm font-bold text-slate-900">{msg.sender}</span>
+                                                    <span className="text-xs text-slate-400">{msg.time}</span>
                                                 </div>
-                                                <div className="min-w-0 pr-4">
-                                                    <p className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Smith_Estate_Draft_v1.pdf</p>
-                                                    <p className="text-xs text-slate-500">2.4 MB • PDF Document</p>
+                                                <div className={`${msg.sender === 'You' ? 'bg-blue-600 text-white rounded-tr-none' : 'bg-slate-100 text-slate-800 rounded-tl-none'} p-4 rounded-2xl text-sm leading-relaxed mb-3 shadow-sm`}>
+                                                    {msg.content}
                                                 </div>
-                                                <button className="text-slate-400 hover:text-blue-600">
-                                                    <DownloadIcon />
-                                                </button>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    {/* Message 2 (You) */}
-                                    <div className="flex flex-col items-end">
-                                        <div className="flex items-baseline gap-2 mb-1">
-                                            <span className="text-xs text-slate-400">10:55 AM</span>
-                                            <span className="text-sm font-bold text-slate-900">You</span>
-                                        </div>
-                                        <div className="bg-blue-600 p-4 rounded-2xl rounded-tr-none text-white text-sm leading-relaxed max-w-2xl shadow-sm">
-                                            Thanks Jane. I see the file. I'll review it tonight. Does section 4 cover the charitable donations we discussed?
-                                        </div>
-                                    </div>
-
-                                    {/* Message 3 */}
-                                    <div className="flex gap-4">
-                                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=100&h=100" alt="Jane Doe" className="w-10 h-10 rounded-full object-cover mt-1" />
-                                        <div className="max-w-2xl">
-                                            <div className="flex items-baseline gap-2 mb-1">
-                                                <span className="text-sm font-bold text-slate-900">Jane Doe</span>
-                                                <span className="text-xs text-slate-400">11:02 AM</span>
-                                            </div>
-                                            <div className="bg-slate-100 p-4 rounded-2xl rounded-tl-none text-slate-800 text-sm leading-relaxed">
-                                                Yes, exactly. It's drafted to allow for a flexible percentage as you requested. Let me know if the wording feels right.
-                                            </div>
-                                        </div>
-                                    </div>
+                                    ))}
+                                    
+                                    {dummyMessages.filter(m => m.caseId === caseData._id).length === 0 && (
+                                         <div className="text-center text-slate-500 py-10">No messages yet.</div>
+                                    )}
 
                                 </div>
 
@@ -424,38 +569,41 @@ const PortalCaseDetails: React.FC = () => {
                     <div className="flex-1 bg-slate-50 p-6 flex flex-col gap-6 overflow-hidden">
                         
                         {/* Action Bar */}
-                        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between gap-4">
-                            <div className="relative flex-1 max-w-lg">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <div className="flex flex-col md:flex-row justify-between gap-4">
+                            <div className="relative flex-1">
+                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                     <SearchIcon />
                                 </div>
                                 <input 
                                     type="text" 
                                     placeholder="Search by file name..." 
-                                    className="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-colors"
+                                    className="block w-full pl-11 pr-3 py-3 border border-slate-200 rounded-xl leading-5 bg-white shadow-sm placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                                 />
                             </div>
+                            <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold shadow-sm transition-colors">
+                                <CloudUploadIcon /> Upload Document
+                            </button>
+                        </div>
+
+                         {/* Filter Categories & View Options */}
+                        <div className="flex flex-col md:flex-row justify-between gap-4 items-center">
+                            <div className="flex gap-2 overflow-x-auto pb-1 max-w-full">
+                                <button className="bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm">All Files <span className="bg-slate-600 text-white text-[10px] px-1.5 py-0.5 rounded ml-1">{caseData.documents.length}</span></button>
+                                <button className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap">Court Filings</button>
+                                <button className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap">Evidence</button>
+                                <button className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap">Correspondence</button>
+                            </div>
+
                             <div className="flex items-center gap-3">
-                                <button className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors shadow-sm">
-                                    <FilterIcon /> Filter
+                                <button className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors shadow-sm uppercase tracking-wide">
+                                    <SortIcon /> Date
                                 </button>
-                                <button className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors shadow-sm">
-                                    <SortIcon /> Sort by: Date
-                                </button>
-                                <div className="h-6 w-px bg-slate-200 mx-1"></div>
-                                <div className="flex bg-slate-100 rounded-lg p-0.5">
+                                <div className="h-6 w-px bg-slate-300 mx-1"></div>
+                                <div className="flex bg-slate-200 rounded-lg p-1">
                                     <button className="p-1.5 rounded text-slate-500 hover:text-slate-700 hover:bg-white shadow-sm transition-all"><ViewGridIcon /></button>
                                     <button className="p-1.5 rounded bg-white text-blue-600 shadow transition-all"><ViewListIcon /></button>
                                 </div>
                             </div>
-                        </div>
-
-                         {/* Filter Categories */}
-                        <div className="flex gap-2">
-                             <button className="bg-slate-200 text-slate-900 px-3 py-1.5 rounded-lg text-sm font-bold shadow-sm">All Files <span className="bg-white text-slate-900 text-[10px] px-1.5 py-0.5 rounded ml-1">{caseData.documents.length}</span></button>
-                             <button className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors">Court Filings</button>
-                             <button className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors">Evidence</button>
-                             <button className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors">Correspondence</button>
                         </div>
 
                         {/* Documents List */}
@@ -476,37 +624,46 @@ const PortalCaseDetails: React.FC = () => {
                                             const fileName = doc.split('/').pop() || doc;
                                             const isPdf = fileName.toLowerCase().endsWith('.pdf');
                                             const isImage = fileName.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/);
-                                            const isDoc = !isPdf && !isImage;
+
 
                                             return (
-                                                <tr key={index} className="hover:bg-slate-50 transition-colors">
+                                                <tr key={index} className="hover:bg-slate-50 transition-colors group cursor-pointer">
                                                     <td className="px-6 py-4">
-                                                        <div className="flex items-center gap-3">
-                                                            <div className={`p-2 rounded-lg ${isPdf ? 'bg-rose-50' : 'bg-blue-50'}`}>
+                                                        <div className="flex items-center gap-4">
+                                                            <div className={`p-3 rounded-xl ${isPdf ? 'bg-rose-50 text-rose-500' : 'bg-blue-50 text-blue-500'} group-hover:scale-110 transition-transform`}>
                                                                 {isPdf ? <PDFIcon /> : isImage ? <ImageIcon /> : <DocIcon />}
                                                             </div>
                                                             <div>
-                                                                <p className="text-sm font-bold text-slate-900">{fileName}</p>
-                                                                <span className="inline-block bg-blue-100 text-blue-700 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded mt-1">Uploaded</span>
+                                                                <p className="text-sm font-bold text-slate-900 mb-0.5">{fileName}</p>
+                                                                <div className="flex items-center gap-2">
+                                                                     <span className="inline-block bg-emerald-100 text-emerald-700 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded">Synced</span>
+                                                                     <span className="text-[10px] text-slate-400">v1.2</span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 font-medium">General</td>
                                                     <td className="px-6 py-4 whitespace-nowrap">
                                                          <div className="flex items-center gap-2">
-                                                            <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs font-bold">U</span>
-                                                            <span className="text-sm font-bold text-slate-900">User</span>
+                                                            <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold">JD</div>
+                                                            <span className="text-sm font-bold text-slate-700">Jane Doe</span>
                                                          </div>
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{new Date(caseData.createdAt).toLocaleDateString()}</td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">-</td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">2.4 MB</td>
                                                 </tr>
                                             );
                                         })}
                                         {caseData.documents.length === 0 && (
                                             <tr>
-                                                <td colSpan={5} className="px-6 py-8 text-center text-slate-500">
-                                                    No documents uploaded yet.
+                                                <td colSpan={5} className="px-6 py-12 text-center text-slate-500">
+                                                    <div className="flex flex-col items-center justify-center">
+                                                        <div className="bg-slate-100 p-4 rounded-full mb-3">
+                                                            <CloudUploadIcon />
+                                                        </div>
+                                                        <p className="font-medium text-slate-900">No documents yet</p>
+                                                        <p className="text-sm text-slate-400 max-w-xs mx-auto mt-1">Upload files to share them securely with your legal team.</p>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         )}
@@ -517,19 +674,59 @@ const PortalCaseDetails: React.FC = () => {
                         </div>
 
                         {/* Pagination */}
-                        <div className="flex items-center justify-between">
-                            <p className="text-sm text-slate-600">
-                                Showing <span className="font-bold">1</span> to <span className="font-bold">{caseData.documents.length}</span> of <span className="font-bold">{caseData.documents.length}</span> results
+                        <div className="flex items-center justify-between pt-2">
+                            <p className="text-sm text-slate-500">
+                                Showing <span className="font-bold text-slate-900">1</span> to <span className="font-bold text-slate-900">{caseData.documents.length}</span> of <span className="font-bold text-slate-900">{caseData.documents.length}</span> results
                             </p>
                             <div className="flex gap-2">
-                                <button className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors shadow-sm">
+                                <button className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors shadow-sm disabled:opacity-50" disabled>
                                     ← Previous
                                 </button>
-                                <button className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-900 hover:bg-slate-50 transition-colors shadow-sm">
+                                <button className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-900 hover:bg-slate-50 transition-colors shadow-sm disabled:opacity-50" disabled>
                                     Next →
                                 </button>
                             </div>
                         </div>
+                    </div>
+
+                )}
+
+                {/* 3. BILLING TAB CONTENT */}
+                {activeTab === 'billing' && (
+                    <div className="flex-1 bg-slate-50 p-6 overflow-y-auto">
+                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                             <table className="min-w-full divide-y divide-slate-200">
+                                 <thead className="bg-slate-50">
+                                     <tr>
+                                         <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Invoice ID</th>
+                                         <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Date</th>
+                                         <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Description</th>
+                                         <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Amount</th>
+                                         <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody className="bg-white divide-y divide-slate-200">
+                                     {dummyBilling.filter(b => b.caseId === caseData._id).map((bill) => (
+                                         <tr key={bill.id}>
+                                             <td className="px-6 py-4 text-sm font-medium text-slate-900">{bill.id}</td>
+                                             <td className="px-6 py-4 text-sm text-slate-600">{new Date(bill.date).toLocaleDateString()}</td>
+                                             <td className="px-6 py-4 text-sm text-slate-600">{bill.description}</td>
+                                             <td className="px-6 py-4 text-sm font-bold text-slate-900">${bill.amount.toFixed(2)}</td>
+                                             <td className="px-6 py-4">
+                                                 <span className={`px-2 py-1 rounded text-xs font-bold ${bill.status === 'Paid' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                                                     {bill.status}
+                                                 </span>
+                                             </td>
+                                         </tr>
+                                     ))}
+                                      {dummyBilling.filter(b => b.caseId === caseData._id).length === 0 && (
+                                         <tr>
+                                             <td colSpan={5} className="px-6 py-8 text-center text-slate-500">No billing records found.</td>
+                                         </tr>
+                                     )}
+                                 </tbody>
+                             </table>
+                         </div>
                     </div>
                 )}
             </div>
