@@ -5,7 +5,29 @@ export const dummyCases = [
     description:
       "Comprehensive estate planning including will and trust creation.",
     status: "Open",
-    documents: ["Last_Will_v1.pdf", "Trust_Deed_Draft.docx"],
+    documents: [
+      {
+        name: "Last_Will_v1.pdf",
+        category: "Court Filings",
+        date: "2023-11-01T10:00:00Z",
+        size: "2.4 MB",
+        uploadedBy: "Jane Doe",
+      },
+      {
+        name: "Trust_Deed_Draft.docx",
+        category: "Drafts",
+        date: "2023-11-02T14:30:00Z",
+        size: "1.1 MB",
+        uploadedBy: "John Smith",
+      },
+      {
+        name: "Client_Email_Thread.pdf",
+        category: "Correspondence",
+        date: "2023-10-25T09:15:00Z",
+        size: "0.5 MB",
+        uploadedBy: "Jane Doe",
+      },
+    ],
     lawyerId: "L1",
     clientName: "Robert Johnson",
     createdAt: "2023-11-01T10:00:00Z",
@@ -17,7 +39,22 @@ export const dummyCases = [
     description:
       "Representation in civil dispute regarding property boundaries.",
     status: "Open",
-    documents: ["Property_Map.png", "Complaint_Filed.pdf"],
+    documents: [
+      {
+        name: "Property_Map.png",
+        category: "Evidence",
+        date: "2023-09-15T09:00:00Z",
+        size: "15.4 MB",
+        uploadedBy: "Client",
+      },
+      {
+        name: "Complaint_Filed.pdf",
+        category: "Court Filings",
+        date: "2023-09-20T11:00:00Z",
+        size: "3.2 MB",
+        uploadedBy: "Jane Doe",
+      },
+    ],
     lawyerId: "L1",
     clientName: "Jane Smith",
     createdAt: "2023-09-15T09:00:00Z",
@@ -28,7 +65,15 @@ export const dummyCases = [
     title: "TechCorp Merger Consultation",
     description: "Legal advisory for potential merger with StartupInc.",
     status: "Closed",
-    documents: ["Merger_Agreement_Final.pdf"],
+    documents: [
+      {
+        name: "Merger_Agreement_Final.pdf",
+        category: "Court Filings",
+        date: "2023-06-30T17:00:00Z",
+        size: "5.6 MB",
+        uploadedBy: "Jane Doe",
+      },
+    ],
     lawyerId: "L2",
     clientName: "TechCorp Inc.",
     createdAt: "2023-01-10T08:00:00Z",
@@ -51,7 +96,15 @@ export const dummyCases = [
     title: "Family Law Mediation",
     description: "Divorce mediation sessions and custody agreement drafting.",
     status: "Closed",
-    documents: ["Mediation_Notes.pdf"],
+    documents: [
+      {
+        name: "Mediation_Notes.pdf",
+        category: "Drafts",
+        date: "2023-08-15T16:00:00Z",
+        size: "1.2 MB",
+        uploadedBy: "Sarah Connor",
+      },
+    ],
     lawyerId: "L3",
     clientName: "Sarah Connor",
     createdAt: "2023-05-20T11:00:00Z",

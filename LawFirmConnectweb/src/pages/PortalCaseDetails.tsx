@@ -9,7 +9,13 @@ interface CaseData {
     description: string;
     status: string;
     category: string;
-    documents: string[];
+    documents: {
+        name: string;
+        category: string;
+        date: string;
+        size: string;
+        uploadedBy: string;
+    }[];
     createdAt: string;
 }
 
@@ -24,17 +30,11 @@ const PaperClipIcon = () => (
         <path strokeLinecap="round" strokeLinejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
     </svg>
 )
-const SendIcon = () => (
-    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-         <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-    </svg>
-)
 const DownloadIcon = () => (
     <svg className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
     </svg>
 )
-
 const FileIconBlue = ({ className }: { className?: string }) => (
     <svg className={`w-5 h-5 text-blue-500 ${className || ''}`} fill="currentColor" viewBox="0 0 24 24">
          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" opacity="0.1"/>
@@ -42,18 +42,18 @@ const FileIconBlue = ({ className }: { className?: string }) => (
         <path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
     </svg>
 )
-const CheckCircleIcon = () => (
-    <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-    </svg>
-)
-const BoldIcon = () => <span className="font-serif font-bold text-slate-500 text-lg">B</span>
-const ItalicIcon = () => <span className="font-serif italic text-slate-500 text-lg">I</span>
 const ListIcon = () => (
      <svg className="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
     </svg>
 )
+const CheckCircleIcon = () => (
+    <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+    </svg>
+)
+
+// Document View Icons
 
 // Document View Icons
 const CloudUploadIcon = () => (
@@ -79,7 +79,7 @@ const ViewGridIcon = () => (
 )
 const ViewListIcon = () => (
     <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-        <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+        <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
     </svg>
 )
 const PDFIcon = () => (
@@ -133,10 +133,9 @@ const ActivityUserIcon = () => (
     </svg>
 )
 
-// ... (other imports)
-
 const PortalCaseDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
+
     const [activeTab, setActiveTab] = useState<'activity' | 'documents' | 'chat' | 'billing'>('activity');
     const [caseData, setCaseData] = useState<CaseData | null>(null);
     const [loading, setLoading] = useState(true);
@@ -144,6 +143,55 @@ const PortalCaseDetails: React.FC = () => {
     const [activitySearchQuery, setActivitySearchQuery] = useState('');
     const [activityTypeFilter, setActivityTypeFilter] = useState('all');
     const [activityUserFilter, setActivityUserFilter] = useState('all');
+
+    // Document Tab State
+    const [docSearchQuery, setDocSearchQuery] = useState('');
+    const [docCategoryFilter, setDocCategoryFilter] = useState('All Files');
+    const [docSortOrder, setDocSortOrder] = useState<'newest' | 'oldest'>('newest');
+    const [docViewMode, setDocViewMode] = useState<'list' | 'grid'>('list');
+
+    // Expense Tab State
+    const [showExpenseModal, setShowExpenseModal] = useState(false);
+    const [expenseForm, setExpenseForm] = useState({
+        category: 'Court Fees',
+        description: '',
+        amount: '',
+        date: new Date().toISOString().split('T')[0]
+    });
+
+    const handleAddExpense = (e: React.FormEvent) => {
+        e.preventDefault();
+        alert(`Mock Expense Added:\nCategory: ${expenseForm.category}\nAmount: ₹${expenseForm.amount}\nDate: ${expenseForm.date}`);
+        setShowExpenseModal(false);
+        setExpenseForm({
+            category: 'Court Fees',
+            description: '',
+            amount: '',
+            date: new Date().toISOString().split('T')[0]
+        });
+    };
+
+    const handleFileUpload = () => {
+        if (!caseData) return;
+        const newDoc = {
+            name: `New_Upload_${new Date().getTime()}.pdf`,
+            category: 'Correspondence',
+            date: new Date().toISOString(),
+            size: '0.0 MB',
+            uploadedBy: 'You'
+        };
+        setCaseData({
+            ...caseData,
+            documents: [newDoc, ...caseData.documents]
+        });
+        alert("Document uploaded successfully (mock)!");
+    };
+
+    const handleChatAttachment = () => {
+        const fileNames = ['Evidence_Photo.jpg', 'Contract_Draft_v2.pdf', 'Meeting_Notes.docx'];
+        const randomFile = fileNames[Math.floor(Math.random() * fileNames.length)];
+        alert(`Request to attach "${randomFile}" received! In a real app, this would open the file picker.`);
+    };
 
     React.useEffect(() => {
         // Simulate fetch
@@ -188,6 +236,19 @@ const PortalCaseDetails: React.FC = () => {
         })
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+    // Document Filtering and Sorting
+    const filteredDocuments = caseData.documents
+        .filter(doc => {
+            if (docCategoryFilter !== 'All Files' && doc.category !== docCategoryFilter) return false;
+            if (docSearchQuery && !doc.name.toLowerCase().includes(docSearchQuery.toLowerCase())) return false;
+            return true;
+        })
+        .sort((a, b) => {
+            const dateA = new Date(a.date).getTime();
+            const dateB = new Date(b.date).getTime();
+            return docSortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+        });
+
     return (
         <PortalLayout>
             <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden min-h-[calc(100vh-140px)] flex flex-col">
@@ -203,43 +264,15 @@ const PortalCaseDetails: React.FC = () => {
                                 <span>/</span>
                                 <span className="font-bold text-slate-900 capitalize">{activeTab}</span>
                              </div>
-                             <h1 className="text-3xl font-bold text-slate-900 mb-2">
-                                 {activeTab === 'documents' ? 'Case Documents' : `Case #${caseData._id.substring(0,8)}`}
-                             </h1>
-                             
-                             {activeTab === 'documents' && (
-                                <div className="flex items-center gap-2 text-slate-500 text-sm font-medium">
-                                    <svg className="w-5 h-5 text-slate-400" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" /></svg>
-                                    Case #{caseData._id.substring(0,8)}: {caseData.title}
-                                </div>
-                             )}
-                             {activeTab !== 'documents' && <p className="text-slate-500">{caseData.title}</p>}
+                            <h1 className="text-3xl font-bold text-slate-900 mb-2">
+                                Case: {caseData.title}
+                            </h1>
+
 
                         </div>
                         
-                        {/* Header Actions */}
-                        <div className="flex items-center gap-3">
-                             {activeTab === 'documents' ? (
-                                <>
-                                    {/* Moved to content area */}
-                                </>
-                             ) : (
-                                <div className="flex gap-2">
-                                     <button className="bg-slate-100 hover:bg-slate-200 text-slate-600 p-2 rounded-full transition-colors">
-                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                                        </svg>
-                                     </button>
-                                     <button className="bg-slate-100 hover:bg-slate-200 text-slate-600 p-2 rounded-full transition-colors">
-                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        </svg>
-                                     </button>
-                                     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100&h=100" alt="Avatar" className="w-9 h-9 rounded-full object-cover ml-2" />
-                                </div>
-                             )}
-                        </div>
+                        {/* Header Actions - Removed */}
+                        <div className="flex items-center gap-3"></div>
                     </div>
 
                     <div className="flex gap-8">
@@ -441,27 +474,26 @@ const PortalCaseDetails: React.FC = () => {
                                 </div>
 
                                 {/* Chat Input */}
-                                <div className="p-6 bg-white border-t border-slate-200">
-                                    <div className="border border-slate-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all shadow-sm">
-                                        <div className="flex items-center gap-4 p-2 border-b border-slate-100 bg-slate-50">
-                                            <button className="p-1 hover:bg-slate-200 rounded transition-colors"><BoldIcon /></button>
-                                            <button className="p-1 hover:bg-slate-200 rounded transition-colors"><ItalicIcon /></button>
-                                            <button className="p-1 hover:bg-slate-200 rounded transition-colors"><ListIcon /></button>
-                                            <div className="w-px h-5 bg-slate-300 mx-1"></div>
-                                            <button className="flex items-center gap-1 text-xs font-bold text-slate-600 hover:text-slate-900">
-                                                <PaperClipIcon /> Attach File
+                                <div className="p-4 bg-white border-t border-slate-200">
+                                    <div className="flex items-end gap-3 bg-slate-50 p-3 rounded-2xl border border-slate-200 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all shadow-sm">
+                                        <textarea 
+                                            placeholder="Type a message..." 
+                                            className="flex-1 bg-transparent max-h-32 min-h-[24px] resize-none outline-none text-sm text-slate-700 placeholder-slate-400 py-1"
+                                            rows={1}
+                                            style={{ minHeight: '24px' }}
+                                        ></textarea>
+                                        <div className="flex items-center gap-2 pb-0.5">
+                                            <button 
+                                                onClick={handleChatAttachment}
+                                                className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-full transition-colors" 
+                                                title="Attach File"
+                                            >
+                                                <PaperClipIcon />
                                             </button>
-                                        </div>
-                                        <div className="p-3">
-                                            <textarea 
-                                                placeholder="Type a secure message to your legal team..." 
-                                                className="w-full h-20 resize-none outline-none text-sm text-slate-700 placeholder-slate-400 bg-transparent"
-                                            ></textarea>
-                                        </div>
-                                        <div className="flex justify-between items-center p-3 pt-0">
-                                            <span className="text-[10px] text-slate-400">Press Enter to send</span>
-                                            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 shadow-sm transition-colors">
-                                                Send Securely <SendIcon />
+                                            <button className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-sm transition-colors flex items-center justify-center">
+                                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                                </svg>
                                             </button>
                                         </div>
                                     </div>
@@ -577,10 +609,14 @@ const PortalCaseDetails: React.FC = () => {
                                 <input 
                                     type="text" 
                                     placeholder="Search by file name..." 
+                                    value={docSearchQuery}
+                                    onChange={(e) => setDocSearchQuery(e.target.value)}
                                     className="block w-full pl-11 pr-3 py-3 border border-slate-200 rounded-xl leading-5 bg-white shadow-sm placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                                 />
                             </div>
-                            <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold shadow-sm transition-colors">
+                            <button 
+                                onClick={handleFileUpload}
+                                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold shadow-sm transition-colors">
                                 <CloudUploadIcon /> Upload Document
                             </button>
                         </div>
@@ -588,95 +624,156 @@ const PortalCaseDetails: React.FC = () => {
                          {/* Filter Categories & View Options */}
                         <div className="flex flex-col md:flex-row justify-between gap-4 items-center">
                             <div className="flex gap-2 overflow-x-auto pb-1 max-w-full">
-                                <button className="bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm">All Files <span className="bg-slate-600 text-white text-[10px] px-1.5 py-0.5 rounded ml-1">{caseData.documents.length}</span></button>
-                                <button className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap">Court Filings</button>
-                                <button className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap">Evidence</button>
-                                <button className="bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap">Correspondence</button>
+                                {['All Files', 'Court Filings', 'Evidence', 'Correspondence', 'Drafts'].map((cat) => (
+                                    <button 
+                                        key={cat}
+                                        onClick={() => setDocCategoryFilter(cat)}
+                                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap shadow-sm ${
+                                            docCategoryFilter === cat 
+                                            ? 'bg-slate-800 text-white font-bold' 
+                                            : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                                        }`}
+                                    >
+                                        {cat} 
+                                        {cat === 'All Files' && <span className="bg-slate-600 text-white text-[10px] px-1.5 py-0.5 rounded ml-1">{caseData.documents.length}</span>}
+                                    </button>
+                                ))}
                             </div>
 
                             <div className="flex items-center gap-3">
-                                <button className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors shadow-sm uppercase tracking-wide">
-                                    <SortIcon /> Date
+                                <button 
+                                    onClick={() => setDocSortOrder(prev => prev === 'newest' ? 'oldest' : 'newest')}
+                                    className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50 transition-colors shadow-sm uppercase tracking-wide">
+                                    <SortIcon /> {docSortOrder === 'newest' ? 'Newest' : 'Oldest'}
                                 </button>
                                 <div className="h-6 w-px bg-slate-300 mx-1"></div>
                                 <div className="flex bg-slate-200 rounded-lg p-1">
-                                    <button className="p-1.5 rounded text-slate-500 hover:text-slate-700 hover:bg-white shadow-sm transition-all"><ViewGridIcon /></button>
-                                    <button className="p-1.5 rounded bg-white text-blue-600 shadow transition-all"><ViewListIcon /></button>
+                                    <button 
+                                        onClick={() => setDocViewMode('grid')}
+                                        className={`p-1.5 rounded shadow-sm transition-all ${docViewMode === 'grid' ? 'bg-white text-blue-600 shadow' : 'text-slate-500 hover:text-slate-700 hover:bg-white'}`}>
+                                        <ViewGridIcon />
+                                    </button>
+                                    <button 
+                                        onClick={() => setDocViewMode('list')}
+                                        className={`p-1.5 rounded shadow-sm transition-all ${docViewMode === 'list' ? 'bg-white text-blue-600 shadow' : 'text-slate-500 hover:text-slate-700 hover:bg-white'}`}>
+                                        <ViewListIcon />
+                                    </button>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Documents List */}
-                        <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden flex-1">
-                             <div className="overflow-x-auto">
-                                <table className="min-w-full divide-y divide-slate-200">
-                                    <thead className="bg-slate-50">
-                                        <tr>
-                                            <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Name</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Category</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Uploaded By</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Date Added</th>
-                                            <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Size</th>                                        </tr>
-                                    </thead>
-                                    <tbody className="bg-white divide-y divide-slate-200">
-                                        
-                                        {caseData.documents.map((doc, index) => {
-                                            const fileName = doc.split('/').pop() || doc;
-                                            const isPdf = fileName.toLowerCase().endsWith('.pdf');
-                                            const isImage = fileName.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/);
+                        {/* Documents List or Grid */}
+                        <div className={`bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden flex-1 ${docViewMode === 'list' ? '' : 'p-6 bg-slate-50 border-none shadow-none'}`}>
+                             
+                             {/* GRID VIEW */}
+                             {docViewMode === 'grid' && (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                                    {filteredDocuments.map((doc, index) => {
+                                        const fileName = doc.name;
+                                        const isPdf = fileName.toLowerCase().endsWith('.pdf');
+                                        const isImage = fileName.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/);
+                                        return (
+                                            <div key={index} className="bg-white border border-slate-200 rounded-xl p-4 hover:shadow-md transition-shadow group flex flex-col">
+                                                <div className="flex justify-between items-start mb-3">
+                                                    <div className={`p-3 rounded-xl ${isPdf ? 'bg-rose-50 text-rose-500' : 'bg-blue-50 text-blue-500'}`}>
+                                                        {isPdf ? <PDFIcon /> : isImage ? <ImageIcon /> : <DocIcon />}
+                                                    </div>
+                                                    <button className="text-slate-400 hover:text-blue-600"><DownloadIcon /></button>
+                                                </div>
+                                                <div className="mb-2">
+                                                    <h3 className="text-sm font-bold text-slate-900 truncate" title={fileName}>{fileName}</h3>
+                                                    <p className="text-xs text-slate-500">{new Date(doc.date).toLocaleDateString()}</p>
+                                                </div>
+                                                <div className="mt-auto flex items-center justify-between pt-3 border-t border-slate-100">
+                                                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600">
+                                                        {doc.category}
+                                                    </span>
+                                                    <span className="text-[10px] text-slate-400">{doc.size}</span>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                             )}
+
+                             {/* LIST VIEW */}
+                             {docViewMode === 'list' && (
+                                <div className="overflow-x-auto">
+                                    <table className="min-w-full divide-y divide-slate-200">
+                                        <thead className="bg-slate-50">
+                                            <tr>
+                                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Name</th>
+                                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Category</th>
+                                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Uploaded By</th>
+                                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Date Added</th>
+                                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Size</th>                                        </tr>
+                                        </thead>
+                                        <tbody className="bg-white divide-y divide-slate-200">
+                                            
+                                            {filteredDocuments.map((doc, index) => {
+                                                const fileName = doc.name;
+                                                const isPdf = fileName.toLowerCase().endsWith('.pdf');
+                                                const isImage = fileName.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/);
 
 
-                                            return (
-                                                <tr key={index} className="hover:bg-slate-50 transition-colors group cursor-pointer">
-                                                    <td className="px-6 py-4">
-                                                        <div className="flex items-center gap-4">
-                                                            <div className={`p-3 rounded-xl ${isPdf ? 'bg-rose-50 text-rose-500' : 'bg-blue-50 text-blue-500'} group-hover:scale-110 transition-transform`}>
-                                                                {isPdf ? <PDFIcon /> : isImage ? <ImageIcon /> : <DocIcon />}
-                                                            </div>
-                                                            <div>
-                                                                <p className="text-sm font-bold text-slate-900 mb-0.5">{fileName}</p>
-                                                                <div className="flex items-center gap-2">
-                                                                     <span className="inline-block bg-emerald-100 text-emerald-700 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded">Synced</span>
-                                                                     <span className="text-[10px] text-slate-400">v1.2</span>
+                                                return (
+                                                    <tr key={index} className="hover:bg-slate-50 transition-colors group cursor-pointer">
+                                                        <td className="px-6 py-4">
+                                                            <div className="flex items-center gap-4">
+                                                                <div className={`p-3 rounded-xl ${isPdf ? 'bg-rose-50 text-rose-500' : 'bg-blue-50 text-blue-500'} group-hover:scale-110 transition-transform`}>
+                                                                    {isPdf ? <PDFIcon /> : isImage ? <ImageIcon /> : <DocIcon />}
+                                                                </div>
+                                                                <div>
+                                                                    <p className="text-sm font-bold text-slate-900 mb-0.5">{fileName}</p>
+                                                                    <div className="flex items-center gap-2">
+                                                                        <span className="inline-block bg-emerald-100 text-emerald-700 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded">Synced</span>
+                                                                        <span className="text-[10px] text-slate-400">v1.2</span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 font-medium">
+                                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
+                                                                {doc.category}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold">
+                                                                    {doc.uploadedBy.split(' ').map(n => n[0]).join('')}
+                                                                </div>
+                                                                <span className="text-sm font-bold text-slate-700">{doc.uploadedBy}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{new Date(doc.date).toLocaleDateString()}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{doc.size}</td>
+                                                    </tr>
+                                                );
+                                            })}
+                                            {filteredDocuments.length === 0 && (
+                                                <tr>
+                                                    <td colSpan={5} className="px-6 py-12 text-center text-slate-500">
+                                                        <div className="flex flex-col items-center justify-center">
+                                                            <div className="bg-slate-100 p-4 rounded-full mb-3">
+                                                                <CloudUploadIcon />
+                                                            </div>
+                                                            <p className="font-medium text-slate-900">No documents yet</p>
+                                                            <p className="text-sm text-slate-400 max-w-xs mx-auto mt-1">Upload files to share them securely with your legal team.</p>
                                                         </div>
                                                     </td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 font-medium">General</td>
-                                                    <td className="px-6 py-4 whitespace-nowrap">
-                                                         <div className="flex items-center gap-2">
-                                                            <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold">JD</div>
-                                                            <span className="text-sm font-bold text-slate-700">Jane Doe</span>
-                                                         </div>
-                                                    </td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{new Date(caseData.createdAt).toLocaleDateString()}</td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">2.4 MB</td>
                                                 </tr>
-                                            );
-                                        })}
-                                        {caseData.documents.length === 0 && (
-                                            <tr>
-                                                <td colSpan={5} className="px-6 py-12 text-center text-slate-500">
-                                                    <div className="flex flex-col items-center justify-center">
-                                                        <div className="bg-slate-100 p-4 rounded-full mb-3">
-                                                            <CloudUploadIcon />
-                                                        </div>
-                                                        <p className="font-medium text-slate-900">No documents yet</p>
-                                                        <p className="text-sm text-slate-400 max-w-xs mx-auto mt-1">Upload files to share them securely with your legal team.</p>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        )}
+                                            )}
 
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </tbody>
+                                    </table>
+                                </div>
+                             )}
                         </div>
 
                         {/* Pagination */}
                         <div className="flex items-center justify-between pt-2">
                             <p className="text-sm text-slate-500">
-                                Showing <span className="font-bold text-slate-900">1</span> to <span className="font-bold text-slate-900">{caseData.documents.length}</span> of <span className="font-bold text-slate-900">{caseData.documents.length}</span> results
+                                Showing <span className="font-bold text-slate-900">1</span> to <span className="font-bold text-slate-900">{filteredDocuments.length}</span> of <span className="font-bold text-slate-900">{caseData.documents.length}</span> results
                             </p>
                             <div className="flex gap-2">
                                 <button className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors shadow-sm disabled:opacity-50" disabled>
@@ -694,6 +791,15 @@ const PortalCaseDetails: React.FC = () => {
                 {/* 3. BILLING TAB CONTENT */}
                 {activeTab === 'billing' && (
                     <div className="flex-1 bg-slate-50 p-6 overflow-y-auto">
+                         <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-xl font-bold text-slate-900">Billing & Expenses</h2>
+                            <button 
+                                onClick={() => setShowExpenseModal(true)}
+                                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold shadow-sm transition-colors flex items-center gap-2">
+                                + Add Expense
+                            </button>
+                         </div>
+
                          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                              <table className="min-w-full divide-y divide-slate-200">
                                  <thead className="bg-slate-50">
@@ -727,6 +833,89 @@ const PortalCaseDetails: React.FC = () => {
                                  </tbody>
                              </table>
                          </div>
+
+                         {/* Add Expense Modal */}
+                         {showExpenseModal && (
+                            <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                                <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
+                                    <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                                        <h3 className="font-bold text-lg text-slate-900">Add New Expense</h3>
+                                        <button onClick={() => setShowExpenseModal(false)} className="text-slate-400 hover:text-slate-600">
+                                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                        </button>
+                                    </div>
+                                    <form onSubmit={handleAddExpense} className="p-6 space-y-4">
+                                        <div>
+                                            <label className="block text-sm font-bold text-slate-700 mb-1">Expense Category</label>
+                                            <select 
+                                                className="w-full p-2.5 border border-slate-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                                value={expenseForm.category}
+                                                onChange={e => setExpenseForm({...expenseForm, category: e.target.value})}
+                                            >
+                                                <option>Court Fees</option>
+                                                <option>Stamp Duty</option>
+                                                <option>Notary Charges</option>
+                                                <option>Filing Fees</option>
+                                                <option>Clerk Charges</option>
+                                                <option>Typing / Photocopy</option>
+                                                <option>Travel / Conveyance</option>
+                                                <option>Others</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div>
+                                            <label className="block text-sm font-bold text-slate-700 mb-1">Description</label>
+                                            <textarea 
+                                                className="w-full p-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none h-20"
+                                                placeholder="Enter expense details..."
+                                                value={expenseForm.description}
+                                                onChange={e => setExpenseForm({...expenseForm, description: e.target.value})}
+                                            ></textarea>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-sm font-bold text-slate-700 mb-1">Amount (₹)</label>
+                                                <input 
+                                                    type="number" 
+                                                    className="w-full p-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                                    placeholder="0.00"
+                                                    min="0"
+                                                    step="0.01"
+                                                    required
+                                                    value={expenseForm.amount}
+                                                    onChange={e => setExpenseForm({...expenseForm, amount: e.target.value})}
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-bold text-slate-700 mb-1">Date</label>
+                                                <input 
+                                                    type="date" 
+                                                    className="w-full p-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                                    required
+                                                    value={expenseForm.date}
+                                                    onChange={e => setExpenseForm({...expenseForm, date: e.target.value})}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-bold text-slate-700 mb-1">Receipt Upload</label>
+                                            <div className="border-2 border-dashed border-slate-200 rounded-lg p-4 text-center hover:bg-slate-50 transition-colors cursor-pointer" onClick={() => alert('Mock file picker opened')}>
+                                                <div className="text-blue-500 mb-1 mx-auto"><PDFIcon /></div>
+                                                <p className="text-xs text-slate-500">Click to upload Receipt (Image/PDF)</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="pt-2">
+                                            <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-blue-200 transition-all transform active:scale-95">
+                                                Add Expense
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                         )}
                     </div>
                 )}
             </div>

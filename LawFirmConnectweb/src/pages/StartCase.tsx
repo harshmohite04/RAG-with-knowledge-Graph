@@ -39,6 +39,16 @@ const PhoneIcon = () => (
         <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
     </svg>
 )
+const UserIcon = () => (
+    <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+    </svg>
+)
+const UsersIcon = () => (
+    <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+    </svg>
+)
 
 
 const StartCase: React.FC = () => {
@@ -48,8 +58,11 @@ const StartCase: React.FC = () => {
         title: '',
         category: '',
         description: '',
-        files: [] as File[] // For demo UI only, real upload logic would differ
+        files: [] as File[], // For demo UI only, real upload logic would differ
+        workType: 'single' as 'single' | 'team',
+        teamMembers: [] as string[]
     });
+    const [inviteEmail, setInviteEmail] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleNext = () => setStep(step + 1);
@@ -82,12 +95,13 @@ const StartCase: React.FC = () => {
                 {/* Progress Steps */}
                 <div className="flex items-center justify-between mb-10 relative">
                     <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-200 -z-10"></div>
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-blue-600 transition-all duration-300 -z-10" style={{ width: step === 1 ? '0%' : step === 2 ? '50%' : '100%' }}></div>
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-blue-600 transition-all duration-300 -z-10" style={{ width: `${((step - 1) / 3) * 100}%` }}></div>
 
                     {[
                         { num: 1, label: 'Case Information' },
                         { num: 2, label: 'Upload Documents' },
-                        { num: 3, label: 'Review & Submit' }
+                        { num: 3, label: 'Team Formation' },
+                        { num: 4, label: 'Review & Submit' }
                     ].map((s) => (
                         <div key={s.num} className="flex items-center gap-3 bg-slate-50 px-2">
                             <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-colors ${step >= s.num ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-500'}`}>
@@ -216,11 +230,116 @@ const StartCase: React.FC = () => {
                                             Uploading documents now helps us review your case faster. You can also upload them later in the case details portal.
                                         </p>
                                     </div>
+                                    </div>
+
+                            )}
+
+                            {/* Step 3: Team Formation */}
+                            {step === 3 && (
+                                <div className="space-y-8">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
+                                            <UsersIcon />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-slate-900">Team Formation</h3>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-bold text-slate-700 mb-4">Work Type</label>
+                                        <div className="grid sm:grid-cols-2 gap-6">
+                                            <div 
+                                                onClick={() => setFormData({...formData, workType: 'single'})}
+                                                className={`cursor-pointer border-2 rounded-xl p-8 flex flex-col items-center gap-4 transition-all hover:shadow-md text-center ${formData.workType === 'single' ? 'bg-white border-blue-500 ring-4 ring-blue-50/50' : 'bg-white border-slate-200 hover:border-slate-300'}`}
+                                            >
+                                                <div className={`${formData.workType === 'single' ? 'text-blue-600' : 'text-slate-400'}`}>
+                                                    <UserIcon />
+                                                </div>
+                                                <div>
+                                                    <h4 className={`font-bold text-lg mb-1 ${formData.workType === 'single' ? 'text-blue-900' : 'text-slate-900'}`}>Single</h4>
+                                                    <p className="text-sm text-slate-500">Work on this case alone</p>
+                                                </div>
+                                            </div>
+
+                                            <div 
+                                                onClick={() => setFormData({...formData, workType: 'team'})}
+                                                className={`cursor-pointer border-2 rounded-xl p-8 flex flex-col items-center gap-4 transition-all hover:shadow-md text-center ${formData.workType === 'team' ? 'bg-blue-50 border-blue-500 ring-4 ring-blue-200' : 'bg-white border-slate-200 hover:border-slate-300'}`}
+                                            >
+                                                <div className={`${formData.workType === 'team' ? 'text-blue-600' : 'text-slate-400'}`}>
+                                                    <UsersIcon />
+                                                </div>
+                                                <div>
+                                                    <h4 className={`font-bold text-lg mb-1 ${formData.workType === 'team' ? 'text-blue-900' : 'text-slate-900'}`}>Team</h4>
+                                                    <p className="text-sm text-slate-500">Collaborate with others</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {formData.workType === 'team' && (
+                                        <div className="animate-in fade-in slide-in-from-top-4 duration-300 space-y-4">
+                                            <label className="block text-sm font-bold text-slate-700">Invite Team Members</label>
+                                            <div className="flex gap-2">
+                                                <input 
+                                                    type="email" 
+                                                    placeholder="Enter email address..." 
+                                                    value={inviteEmail}
+                                                    onChange={(e) => setInviteEmail(e.target.value)}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === 'Enter') {
+                                                            e.preventDefault();
+                                                            if (inviteEmail && !formData.teamMembers.includes(inviteEmail)) {
+                                                                setFormData({ ...formData, teamMembers: [...formData.teamMembers, inviteEmail] });
+                                                                setInviteEmail('');
+                                                            }
+                                                        }
+                                                    }}
+                                                    className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                                                />
+                                                <button 
+                                                    onClick={() => {
+                                                        if (inviteEmail && !formData.teamMembers.includes(inviteEmail)) {
+                                                            setFormData({ ...formData, teamMembers: [...formData.teamMembers, inviteEmail] });
+                                                            setInviteEmail('');
+                                                        }
+                                                    }}
+                                                    className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg transition-colors"
+                                                >
+                                                    Add
+                                                </button>
+                                            </div>
+                                            <p className="text-xs text-slate-400">Only registered portal users can be added to the team</p>
+
+                                            {formData.teamMembers.length > 0 && (
+                                                <div className="flex flex-wrap gap-2 mt-3">
+                                                    {formData.teamMembers.map((email) => (
+                                                        <span key={email} className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
+                                                            {email}
+                                                            <button 
+                                                                onClick={() => setFormData({...formData, teamMembers: formData.teamMembers.filter(m => m !== email)})}
+                                                                className="hover:text-blue-900"
+                                                            >
+                                                                ×
+                                                            </button>
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
+
+                                            <div className="bg-yellow-50 border border-yellow-100 rounded-lg p-4 flex gap-3">
+                                                <div className="text-yellow-600 pt-0.5">
+                                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                                                </div>
+                                                <p className="text-sm text-yellow-800">
+                                                    Team members will receive email invitations. Invitations expire after 3 days if not accepted.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             )}
 
-                             {/* Step 3: Review */}
-                             {step === 3 && (
+                             {/* Step 4: Review */}
+                             {step === 4 && (
                                 <div className="space-y-6">
                                      <div className="flex items-center gap-3 mb-6">
                                         <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
@@ -243,6 +362,16 @@ const StartCase: React.FC = () => {
                                                 <p className="font-bold text-slate-900">{formData.category}</p>
                                             </div>
                                             <button onClick={() => setStep(1)} className="text-xs font-bold text-blue-600 hover:underline">Edit</button>
+                                        </div>
+                                        <div className="flex justify-between border-b border-slate-200 pb-4">
+                                            <div>
+                                                <p className="text-xs font-bold text-slate-500 uppercase">Work Type</p>
+                                                <div className="font-bold text-slate-900 capitalize flex items-center gap-2">
+                                                    {formData.workType} 
+                                                    {formData.workType === 'team' && <span className="text-slate-500 font-normal text-sm">({formData.teamMembers.length} members invited)</span>}
+                                                </div>
+                                            </div>
+                                            <button onClick={() => setStep(3)} className="text-xs font-bold text-blue-600 hover:underline">Edit</button>
                                         </div>
                                         <div>
                                             <p className="text-sm text-slate-700 leading-relaxed">{formData.description}</p>
@@ -281,7 +410,7 @@ const StartCase: React.FC = () => {
                                         Back
                                     </button>
                                 )}
-                                {step < 3 ? (
+                                {step < 4 ? (
                                     <button 
                                         onClick={handleNext}
                                         disabled={!formData.title || !formData.category || !formData.description}
