@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import PortalLayout from '../components/PortalLayout';
-
+import AIIconLogo from '../assets/ai-logo.svg'
 interface CaseData {
     _id: string;
     title: string;
@@ -133,10 +133,12 @@ const ActivityUserIcon = () => (
     </svg>
 )
 
+
+
 const PortalCaseDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
 
-    const [activeTab, setActiveTab] = useState<'activity' | 'documents' | 'chat' | 'billing'>('activity');
+    const [activeTab, setActiveTab] = useState<'activity' | 'documents' | 'chat' | 'billing' | 'settings'>('activity');
     const [caseData, setCaseData] = useState<CaseData | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -262,7 +264,7 @@ const PortalCaseDetails: React.FC = () => {
                                 <span>/</span>
                                 <span>{caseData.title}</span>
                                 <span>/</span>
-                                <span className="font-bold text-slate-900 capitalize">{activeTab}</span>
+                                <span className="font-bold text-slate-900 capitalize">{activeTab === 'chat' ? 'AI' : activeTab}</span>
                              </div>
                             <h1 className="text-3xl font-bold text-slate-900 mb-2">
                                 Case: {caseData.title}
@@ -278,8 +280,13 @@ const PortalCaseDetails: React.FC = () => {
                     <div className="flex gap-8">
                         <button onClick={() => setActiveTab('activity')} className={`pb-3 text-sm font-medium transition-colors ${activeTab === 'activity' ? 'text-blue-600 border-b-2 border-blue-600 font-bold' : 'text-slate-500 hover:text-slate-900'}`}>Activity</button>
                         <button onClick={() => setActiveTab('documents')} className={`pb-3 text-sm font-medium transition-colors ${activeTab === 'documents' ? 'text-blue-600 border-b-2 border-blue-600 font-bold' : 'text-slate-500 hover:text-slate-900'}`}>Documents</button>
-                        <button onClick={() => setActiveTab('chat')} className={`pb-3 text-sm font-medium transition-colors ${activeTab === 'chat' ? 'text-blue-600 border-b-2 border-blue-600 font-bold' : 'text-slate-500 hover:text-slate-900'}`}>Chat</button>
+                        <button onClick={() => setActiveTab('chat')} className={`pb-3 text-sm font-medium transition-colors flex items-center gap-2 ${activeTab === 'chat' ? 'text-blue-600 border-b-2 border-blue-600 font-bold' : 'text-slate-500 hover:text-slate-900'}`}>
+                            {/* <AIIcon className={activeTab === 'chat' ? 'text-blue-600' : 'text-slate-400'} /> */}
+                            <img src={AIIconLogo} alt="AI" className={`w-5 h-5 ${activeTab === 'chat' ? '' : 'grayscale opacity-50'}`} />
+                            AI
+                        </button>
                         <button onClick={() => setActiveTab('billing')} className={`pb-3 text-sm font-medium transition-colors ${activeTab === 'billing' ? 'text-blue-600 border-b-2 border-blue-600 font-bold' : 'text-slate-500 hover:text-slate-900'}`}>Billing</button>
+                        <button onClick={() => setActiveTab('settings')} className={`pb-3 text-sm font-medium transition-colors ${activeTab === 'settings' ? 'text-blue-600 border-b-2 border-blue-600 font-bold' : 'text-slate-500 hover:text-slate-900'}`}>Settings</button>
                     </div>
                 </div>
 
@@ -916,6 +923,140 @@ const PortalCaseDetails: React.FC = () => {
                                 </div>
                             </div>
                          )}
+                    </div>
+                )}
+
+                {/* 4. SETTINGS TAB CONTENT */}
+                {activeTab === 'settings' && (
+                    <div className="flex-1 bg-slate-50 p-6 overflow-y-auto">
+                        <div className="max-w-4xl mx-auto space-y-8">
+                            
+                            {/* General Settings */}
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                                <div className="px-6 py-4 border-b border-slate-100 bg-slate-50">
+                                    <h3 className="font-bold text-slate-900">General Settings</h3>
+                                </div>
+                                <div className="p-6 space-y-6">
+                                    <div>
+                                        <label className="block text-sm font-bold text-slate-700 mb-2">Case Name</label>
+                                        <input 
+                                            type="text" 
+                                            defaultValue={caseData.title}
+                                            className="block w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-bold text-slate-700 mb-2">Case Description</label>
+                                        <textarea 
+                                            defaultValue={caseData.description}
+                                            rows={3}
+                                            className="block w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all resize-none"
+                                        ></textarea>
+                                    </div>
+                                    <div className="flex items-center justify-between pt-2">
+                                        <div className="flex flex-col">
+                                            <label className="text-sm font-bold text-slate-700 mb-1">Status</label>
+                                            <span className="text-xs text-slate-500">Current state of the legal matter</span>
+                                        </div>
+                                        <select 
+                                            defaultValue={caseData.status}
+                                            className="px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none"
+                                            onChange={(e) => alert(`Status changed to: ${e.target.value}`)}
+                                        >
+                                            <option value="Open">Open</option>
+                                            <option value="Pending">Pending Review</option>
+                                            <option value="OnHold">On Hold</option>
+                                            <option value="Closed">Closed</option>
+                                        </select>
+                                    </div>
+                                    <div className="flex justify-end pt-4 border-t border-slate-100">
+                                        <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-sm transition-colors text-sm">
+                                            Save Changes
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Notifications */}
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                                <div className="px-6 py-4 border-b border-slate-100 bg-slate-50">
+                                    <h3 className="font-bold text-slate-900">Notifications</h3>
+                                </div>
+                                <div className="p-6 space-y-6">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <h4 className="text-sm font-bold text-slate-900">Email Updates</h4>
+                                            <p className="text-xs text-slate-500">Receive emails about new documents and messages</p>
+                                        </div>
+                                        <label className="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" className="sr-only peer" defaultChecked />
+                                            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                        </label>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <h4 className="text-sm font-bold text-slate-900">SMS Alerts</h4>
+                                            <p className="text-xs text-slate-500">Get text messages for urgent deadlines</p>
+                                        </div>
+                                        <label className="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" className="sr-only peer" />
+                                            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Team Management */}
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                                <div className="px-6 py-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                                    <h3 className="font-bold text-slate-900">Team Management</h3>
+                                    <button 
+                                        className="text-sm text-blue-600 font-bold hover:text-blue-800 transition-colors"
+                                        onClick={() => alert("Add Member Modal would open here")}
+                                    >
+                                        + Add Member
+                                    </button>
+                                </div>
+                                <div className="divide-y divide-slate-100">
+                                    {[
+                                        { name: 'Jane Doe', role: 'Lead Attorney', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=100&h=100' },
+                                        { name: 'John Smith', role: 'Paralegal', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100&h=100' },
+                                        { name: 'Sarah Connor', role: 'Junior Associate', img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=100&h=100' }
+                                    ].map((member, i) => (
+                                        <div key={i} className="px-6 py-4 flex items-center justify-between">
+                                            <div className="flex items-center gap-3">
+                                                <img src={member.img} alt={member.name} className="w-10 h-10 rounded-full object-cover" />
+                                                <div>
+                                                    <p className="text-sm font-bold text-slate-900">{member.name}</p>
+                                                    <p className="text-xs text-slate-500">{member.role}</p>
+                                                </div>
+                                            </div>
+                                            <button 
+                                                className="text-slate-400 hover:text-red-600 text-sm font-medium transition-colors"
+                                                onClick={() => alert(`Remove ${member.name}?`)}
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Danger Zone */}
+                            <div className="bg-red-50 rounded-xl border border-red-100 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                                <div>
+                                    <h3 className="font-bold text-red-700">Delete Case</h3>
+                                    <p className="text-sm text-red-600/80 mt-1">This action cannot be undone. All documents and messages will be permanently removed.</p>
+                                </div>
+                                <button 
+                                    className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg shadow-sm transition-colors text-sm whitespace-nowrap"
+                                    onClick={() => alert("Are you sure you want to delete this case? This action is irreversible.")}
+                                >
+                                    Delete Case
+                                </button>
+                            </div>
+
+                        </div>
                     </div>
                 )}
             </div>

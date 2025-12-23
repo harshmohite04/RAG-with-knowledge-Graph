@@ -1,5 +1,6 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { dummyCases, dummyMessages, dummyCalendarEvents } from '../data/dummyData';
 
 // Icons
 const HomeIcon = () => (
@@ -41,8 +42,15 @@ const BellIcon = () => (
 
 const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [user, setUser] = React.useState<any>(null);
     const [initials, setInitials] = React.useState('U');
+    
+    // Search State
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState<any>({ cases: [], messages: [], events: [], documents: [] });
+    const [showResults, setShowResults] = useState(false);
+    const searchRef = useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
         const storedUser = localStorage.getItem('user');
@@ -55,7 +63,58 @@ const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                  setInitials(parsedUser.firstName[0].toUpperCase());
             }
         }
+
+        // Click outside to close search
+        const handleClickOutside = (event: MouseEvent) => {
+            if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+                setShowResults(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
+
+    // Search Logic
+    useEffect(() => {
+        if (!searchQuery.trim()) {
+            setSearchResults({ cases: [], messages: [], events: [], documents: [] });
+            return;
+        }
+
+        const query = searchQuery.toLowerCase();
+        
+        // Filter Cases
+        const cases = dummyCases.filter((c: any) => 
+            c.title.toLowerCase().includes(query) || 
+            c.description.toLowerCase().includes(query) ||
+            (c.clientName && c.clientName.toLowerCase().includes(query))
+        ).slice(0, 3);
+
+        // Filter Messages
+        const messages = dummyMessages.filter((m: any) => 
+            m.content.toLowerCase().includes(query) || 
+            m.sender.toLowerCase().includes(query)
+        ).slice(0, 3);
+
+        // Filter Events
+        const events = dummyCalendarEvents.filter((e: any) => 
+            e.title.toLowerCase().includes(query)
+        ).slice(0, 3);
+
+        // Filter Documents (flattened from cases)
+        const docs: any[] = [];
+        dummyCases.forEach((c: any) => {
+            if (c.documents) {
+                c.documents.forEach((d: any) => {
+                    if (d.name.toLowerCase().includes(query)) {
+                        docs.push({ ...d, caseId: c._id, caseTitle: c.title });
+                    }
+                });
+            }
+        });
+
+        setSearchResults({ cases, messages, events, documents: docs.slice(0, 3) });
+    }, [searchQuery]);
 
     const isActive = (path: string) => {
         return location.pathname === path || (path !== '/portal' && location.pathname.startsWith(path));
@@ -63,11 +122,13 @@ const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
     return (
         <div className="min-h-screen bg-slate-50 flex font-sans text-slate-900">
+            {/* Sidebar code remains same until Main Content Header */}
+            {/* ... Sidebar ... */}
             
-            {/* Sidebar */}
             <aside className="w-64 bg-white border-r border-slate-200 fixed inset-y-0 left-0 flex flex-col z-10 transition-transform">
                 {/* Logo */}
                 <div className="h-20 flex items-center px-6 gap-3 cursor-pointer" onClick={() => window.location.href = '/'}>
+                    {/* ... Logo SVG ... */}
                     <div className="bg-amber-900/10 p-2 rounded-lg">
                        <svg className="w-6 h-6 text-amber-900" viewBox="0 0 24 24" fill="currentColor">
                            <path d="M12 2L1 21h22L12 2zm0 3.516L20.297 19H3.703L12 5.516z M11 16h2v2h-2v-2zm0-6h2v4h-2v-4z"/>
@@ -98,7 +159,6 @@ const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                         <div className="flex items-center gap-3">
                             <MessageIcon /> Messages
                         </div>
-                         {/* Badge can be dynamic if we fetch stats here too, but for now simple link */}
                     </Link>
                 </nav>
 
@@ -131,18 +191,203 @@ const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             <main className="flex-1 ml-64 min-w-0">
                 
                 {/* Top Header */}
-                <header className="h-20 bg-white border-b border-slate-200 px-8 flex items-center justify-between sticky top-0 z-10">
-                    <div className="w-96 relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <SearchIcon />
+                <header className="h-20 bg-white border-b border-slate-200 px-8 flex items-center sticky top-0 z-20">
+                    <div className="flex-1 flex justify-center">
+                        <div className="w-full max-w-2xl relative" ref={searchRef}>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <SearchIcon />
+                                </div>
+                                <input 
+                                    type="text" 
+                                    value={searchQuery}
+                                    onChange={(e) => {
+                                        setSearchQuery(e.target.value);
+                                        setShowResults(true);
+                                    }}
+                                    onFocus={() => setShowResults(true)}
+                                    placeholder="Look for people, messages, files and more" 
+                                    className="block w-full pl-11 pr-4 py-2.5 border border-slate-200 rounded-xl leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm"
+                                />
+                            </div>
+
+                            {/* Search Results Dropdown */}
+                            {showResults && (
+                                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-slate-100 max-h-[80vh] overflow-y-auto divide-y divide-slate-100 animate-in fade-in slide-in-from-top-2 duration-200">
+                                    
+                                    {!searchQuery.trim() ? (
+                                        // Default View (Suggestions)
+                                        <div className="p-4">
+                                            
+                                            {/* People Section */}
+                                            <div className="mb-6">
+                                                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">People</div>
+                                                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                                                    {['Marcus Thorne', 'Sarah Jenkins', 'Jane Doe', 'Legal Team', 'Robert Johnson'].map((name, i) => (
+                                                        <div 
+                                                            key={i} 
+                                                            className="flex flex-col items-center gap-1 min-w-[70px] cursor-pointer group"
+                                                            onClick={() => {
+                                                                // Redirect to chat with this person
+                                                                navigate(`/portal/messages?contact=${name}`);
+                                                                setShowResults(false);
+                                                            }}
+                                                        >
+                                                            <div className="w-12 h-12 rounded-full bg-slate-100 group-hover:bg-blue-100 text-slate-600 group-hover:text-blue-600 flex items-center justify-center font-bold text-lg transition-colors ring-2 ring-white shadow-sm">
+                                                                {name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                                                            </div>
+                                                            <span className="text-[10px] font-medium text-slate-600 text-center leading-tight group-hover:text-blue-600">
+                                                                {name.split(' ')[0]}<br/>{name.split(' ')[1]}
+                                                            </span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            {/* Recent/Suggested Files */}
+                                             <div>
+                                                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Suggestions</div>
+                                                <div className="space-y-1">
+                                                    {dummyCases[0].documents?.slice(0, 2).map((doc: any, i: number) => (
+                                                        <div 
+                                                            key={i}
+                                                            onClick={() => { navigate(`/portal/cases/${dummyCases[0]._id}?tab=documents`); setShowResults(false); }}
+                                                            className="flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer group"
+                                                        >
+                                                             <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 011.414.586l5.414 5.414a1 1 0 01.586 1.414V19a2 2 0 01-2 2z" /></svg>
+                                                            </div>
+                                                            <div>
+                                                                <div className="text-sm font-medium text-slate-900 group-hover:text-blue-700">{doc.name}</div>
+                                                                <div className="text-xs text-slate-500">Recently modified</div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                     <div 
+                                                        onClick={() => { navigate(`/portal/calendar`); setShowResults(false); }}
+                                                        className="flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer group"
+                                                    >
+                                                         <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                                                            <CalendarIcon />
+                                                        </div>
+                                                        <div>
+                                                            <div className="text-sm font-medium text-slate-900 group-hover:text-purple-700">Upcoming Hearings</div>
+                                                            <div className="text-xs text-slate-500">Check your calendar</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    ) : (
+                                        // Results View
+                                        <>
+                                        {Object.values(searchResults).every((arr: any) => arr.length === 0) ? (
+                                            <div className="p-8 text-center text-slate-500">
+                                                No results found for "{searchQuery}"
+                                            </div>
+                                        ) : (
+                                            <>
+                                                {/* Cases */}
+                                                {searchResults.cases.length > 0 && (
+                                                    <div className="p-2">
+                                                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 py-2">Cases</div>
+                                                        {searchResults.cases.map((c: any) => (
+                                                            <div 
+                                                                key={c._id}
+                                                                onClick={() => { navigate(`/portal/cases/${c._id}`); setShowResults(false); }}
+                                                                className="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-lg cursor-pointer group"
+                                                            >
+                                                                <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                                                    <CaseIcon />
+                                                                </div>
+                                                                <div>
+                                                                    <div className="text-sm font-bold text-slate-900">{c.title}</div>
+                                                                    <div className="text-xs text-slate-500">{c.status} • {c.clientName}</div>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+
+                                                {/* Messages */}
+                                                {searchResults.messages.length > 0 && (
+                                                    <div className="p-2">
+                                                         <div className="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 py-2">Messages</div>
+                                                         {searchResults.messages.map((m: any) => (
+                                                            <div 
+                                                                key={m.id}
+                                                                onClick={() => { navigate(`/portal/messages?contact=${m.sender}`); setShowResults(false); }} // assuming sender is contactId
+                                                                className="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-lg cursor-pointer group"
+                                                            >
+                                                                <div className="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-xs group-hover:bg-orange-500 group-hover:text-white transition-colors">
+                                                                    {m.sender[0]}
+                                                                </div>
+                                                                <div className="flex-1 min-w-0">
+                                                                    <div className="flex justify-between">
+                                                                        <div className="text-sm font-bold text-slate-900 truncate">{m.sender}</div>
+                                                                        <div className="text-xs text-slate-400">{m.time}</div>
+                                                                    </div>
+                                                                    <div className="text-xs text-slate-500 truncate">{m.content}</div>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+
+                                                 {/* Documents */}
+                                                 {searchResults.documents.length > 0 && (
+                                                    <div className="p-2">
+                                                         <div className="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 py-2">Files</div>
+                                                         {searchResults.documents.map((d: any, idx: number) => (
+                                                            <div 
+                                                                key={idx}
+                                                                onClick={() => { navigate(`/portal/cases/${d.caseId}?tab=documents`); setShowResults(false); }}
+                                                                className="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-lg cursor-pointer group"
+                                                            >
+                                                                <div className="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center group-hover:bg-red-500 group-hover:text-white transition-colors">
+                                                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                                                                </div>
+                                                                <div>
+                                                                    <div className="text-sm font-bold text-slate-900">{d.name}</div>
+                                                                    <div className="text-xs text-slate-500">In {d.caseTitle}</div>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+
+                                                  {/* Events */}
+                                                  {searchResults.events.length > 0 && (
+                                                    <div className="p-2">
+                                                         <div className="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 py-2">Calendar</div>
+                                                         {searchResults.events.map((e: any) => (
+                                                            <div 
+                                                                key={e.id}
+                                                                onClick={() => { navigate(`/portal/calendar`); setShowResults(false); }}
+                                                                className="flex items-center gap-3 p-3 hover:bg-slate-50 rounded-lg cursor-pointer group"
+                                                            >
+                                                                <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                                                                    <CalendarIcon />
+                                                                </div>
+                                                                <div>
+                                                                    <div className="text-sm font-bold text-slate-900">{e.title}</div>
+                                                                    <div className="text-xs text-slate-500">{e.date} • {e.time}</div>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+
+                                            </>
+                                        )}
+                                        </>
+                                    )}
+                                </div>
+                            )}
                         </div>
-                        <input 
-                            type="text" 
-                            placeholder="Search cases, documents, or attorneys..." 
-                            className="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
-                        />
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 flex-none ml-4">
                         <button className="relative p-2 text-slate-400 hover:text-slate-500">
                              <span className="absolute top-2 right-2.5 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
                             <BellIcon />

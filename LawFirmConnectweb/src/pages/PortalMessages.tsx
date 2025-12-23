@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { dummyMessages } from '../data/dummyData';
 import PortalLayout from '../components/PortalLayout';
 
@@ -20,57 +21,41 @@ const SendIcon = () => (
 )
 
 const PortalMessages: React.FC = () => {
+    const [searchParams] = useSearchParams();
     const [conversations, setConversations] = useState<any[]>([]);
     const [selectedContactId, setSelectedContactId] = useState<string | null>(null);
     const [activeMessages, setActiveMessages] = useState<any[]>([]);
     const [inputMessage, setInputMessage] = useState('');
     const [userId, setUserId] = useState<string>('');
-    // const [userName, setUserName] = useState<string>(''); // Unused for now
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-     useEffect(() => {
-        // Get user info
+    useEffect(() => {
+        // ... (user info logic same)
         try {
             const userStr = localStorage.getItem('user');
             if (userStr) {
                 const user = JSON.parse(userStr);
                 setUserId(user.id);
-                // setUserName(user.firstName);
             }
         } catch (e) {
             console.error(e);
         }
         
-        // Fetch all messages to build conversation list
         fetchMessages();
     }, []);
 
-    // Scroll to bottom of chat
-    useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [activeMessages]);
+    // ...
 
     const fetchMessages = async () => {
-        // Mock fetch from dummyMessages
         const tempConvos: any = {};
         
         dummyMessages.forEach((msg: any) => {
-            // Group by sender (if sender is 'You', we need to know who the other person is - 
-            // but dummyMessages doesn't strictly have 'receiver'. 
-            // For simplicity, let's assume we group by 'caseId' or just use 'sender' if not 'You'.
-            // Actually, my dummyMessages structure for Chat tab in Case Details was slightly different than a general inbox.
-            // Let's assume for inbox we group by 'sender' who is NOT 'You'. 
-            // If sender is 'You', we can't easily know who it was sent to unless I add receiver field.
-            // I'll filter out 'You' messages for conversation creation for now, or just assume each message belongs to a 'Case' and group by Case/Sender.
-            
-            // Let's group by Case ID for now as it maps to 'Legal Team' etc.
-            // Or just generic 'sender'.
             let contactName = msg.sender;
-            if (contactName === 'You') return; // Skip my messages for creating conversion heads
-
+            if (contactName === 'You') return; 
+            
              if (!tempConvos[contactName]) {
                  tempConvos[contactName] = {
-                     contactId: contactName, // Use name as ID for simplicity
+                     contactId: contactName, 
                      messages: [],
                      lastMessage: null,
                      name: contactName
@@ -79,15 +64,20 @@ const PortalMessages: React.FC = () => {
              tempConvos[contactName].messages.push({
                  _id: msg.id,
                  content: msg.content,
-                 senderId: msg.sender, // Name as ID
-                 timestamp: msg.time, // This is a string like '10:30 AM', grouping sort might fail.
-                 // I'll leave as is for display
+                 senderId: msg.sender, 
+                 timestamp: msg.time, 
              });
         });
 
          setConversations(Object.values(tempConvos));
          
-         if (selectedContactId && tempConvos[selectedContactId]) {
+         // Check for contact param
+         const contactParam = searchParams.get('contact');
+         
+         if (contactParam && tempConvos[contactParam]) {
+             setSelectedContactId(contactParam);
+             setActiveMessages(tempConvos[contactParam].messages);
+         } else if (selectedContactId && tempConvos[selectedContactId]) {
              setActiveMessages(tempConvos[selectedContactId].messages);
          } else if (!selectedContactId && Object.keys(tempConvos).length > 0) {
               const firstId = Object.keys(tempConvos)[0];
@@ -118,6 +108,8 @@ const PortalMessages: React.FC = () => {
          if (convo) setActiveMessages(convo.messages);
     }
 
+    const selectedConversation = conversations.find(c => c.contactId === selectedContactId);
+
     return (
         <PortalLayout>
             <div className="flex h-[calc(100vh-140px)] bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
@@ -128,7 +120,7 @@ const PortalMessages: React.FC = () => {
                     {/* Header */}
                     <div className="p-4 border-b border-slate-200 bg-white">
                         <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-bold text-slate-900">Messages</h2>
+                            <h2 className="text-xl font-bold text-slate-900">Chat</h2>
                             {/* New Message button currently just a placeholder as we don't have a 'user directory' to pick from yet */}
                         </div>
                         <div className="relative">
@@ -137,7 +129,7 @@ const PortalMessages: React.FC = () => {
                             </div>
                             <input 
                                 type="text" 
-                                placeholder="Search messages..." 
+                                placeholder="Search chats..." 
                                 className="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-lg leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-colors"
                             />
                         </div>
@@ -148,7 +140,7 @@ const PortalMessages: React.FC = () => {
                         <div className="divide-y divide-slate-100">
                             
                             {conversations.length === 0 && (
-                                <div className="p-4 text-center text-slate-500 text-sm">No messages yet.</div>
+                                <div className="p-4 text-center text-slate-500 text-sm">No chats yet.</div>
                             )}
 
                             {conversations.map((convo: any) => (
@@ -191,9 +183,24 @@ const PortalMessages: React.FC = () => {
                     {/* Chat Header */}
                     <div className="h-20 px-6 border-b border-slate-200 flex justify-between items-center bg-white">
                         <div className="flex items-center gap-3">
-                            <h3 className="font-bold text-slate-900 flex items-center gap-2">
-                                {selectedContactId ? 'Conversation' : 'Select a message'}
-                            </h3>
+                            {selectedConversation ? (
+                                <div className="flex flex-col">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <h3 className="font-bold text-slate-900 text-lg">{selectedConversation.name}</h3>
+                                        <span className="flex items-center gap-1 text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-100">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                            Available
+                                        </span>
+                                    </div>
+                                    <div className="flex gap-6 text-sm">
+                                        <button className="font-bold text-slate-900 border-b-2 border-blue-600 pb-2 px-1">Chat</button>
+                                        <button className="font-medium text-slate-500 hover:text-slate-700 pb-2 px-1 transition-colors">Shared</button>
+                                        <button className="font-medium text-slate-500 hover:text-slate-700 pb-2 px-1 transition-colors">Storyline</button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <h3 className="font-bold text-slate-900">Select a chat</h3>
+                            )}
                         </div>
                     </div>
 

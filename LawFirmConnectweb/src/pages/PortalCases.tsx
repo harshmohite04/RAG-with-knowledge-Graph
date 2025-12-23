@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import PortalLayout from '../components/PortalLayout';
 
@@ -42,6 +42,7 @@ const LockIcon = () => (
 import { dummyCases } from '../data/dummyData';
 
 const PortalCases: React.FC = () => {
+    const navigate = useNavigate();
     const [cases] = React.useState<any[]>(dummyCases);
     const [loading, setLoading] = React.useState(true);
     const [filter, setFilter] = React.useState('All');
@@ -165,7 +166,14 @@ const PortalCases: React.FC = () => {
                         <tbody className="bg-white divide-y divide-slate-200">
                             
                             {filteredCases.map((caseItem: any) => (
-                                <tr key={caseItem._id} className="hover:bg-slate-50 transition-colors">
+                                <tr 
+                                    key={caseItem._id} 
+                                    onClick={(e) => {
+                                        if ((e.target as HTMLElement).closest('a') || (e.target as HTMLElement).closest('button')) return;
+                                        navigate(`/portal/cases/${caseItem._id}`);
+                                    }}
+                                    className="hover:bg-slate-50 transition-colors cursor-pointer"
+                                >
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
                                             <div className="flex-shrink-0 h-8 w-8 bg-blue-50 rounded-lg flex items-center justify-center mr-4">
@@ -180,14 +188,17 @@ const PortalCases: React.FC = () => {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="flex items-center">
-                                            <div className="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500">
-                                                {caseItem.lawyerId ? 'LT' : 'NA'}
-                                            </div>
-                                            <div className="ml-3">
-                                                {/* Should populate lawyer name, assuming populated or default */}
-                                                <div className="text-sm font-medium text-slate-900">{caseItem.lawyerId ? 'Marcus Thorne' : 'Unassigned'}</div>
-                                            </div>
+                                        <div className="flex items-center group cursor-pointer">
+                                            <Link to={caseItem.lawyerId ? `/portal/messages?contact=Marcus Thorne` : '#'} className="flex items-center">
+                                                <div className="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
+                                                    {caseItem.lawyerId ? 'MT' : 'NA'}
+                                                </div>
+                                                <div className="ml-3">
+                                                    <div className="text-sm font-medium text-slate-900 group-hover:text-blue-600 group-hover:underline transition-colors">
+                                                        {caseItem.lawyerId ? 'Marcus Thorne' : 'Unassigned'}
+                                                    </div>
+                                                </div>
+                                            </Link>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
