@@ -1,6 +1,7 @@
 # API Curl Commands
 
-Use these commands to test the endpoints. Replace variables like `{{TOKEN}}` and `{{CASE_ID}}` with actual values from responses.
+Use these commands to test the API endpoints.
+**Replace** placeholders like `{{TOKEN}}`, `{{CASE_ID}}`, `{{USER_ID}}` with actual values returned from previous requests.
 
 ## 1. Authentication
 
@@ -28,16 +29,30 @@ curl -X POST http://localhost:3000/api/auth/login \
   }'
 ```
 
-_Response will contain a `token`. Export it for subsequent requests:_
-`export TOKEN="your_jwt_token"`
+> **Note:** Copy the `token` from the response and export it:
+> `export TOKEN="your_jwt_token_here"`
 
-## 2. User & Profile
+---
 
-### Get Profile
+## 2. Users
+
+### Get My Profile
 
 ```bash
 curl -X GET http://localhost:3000/api/users/profile \
   -H "Authorization: Bearer $TOKEN"
+```
+
+### Update My Profile
+
+```bash
+curl -X PUT http://localhost:3000/api/users/profile \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "fullName": "Updated Name",
+    "bio": "Specializing in corporate law."
+  }'
 ```
 
 ### Search Users
@@ -47,9 +62,18 @@ curl -X GET "http://localhost:3000/api/users/search?email=lawyer" \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-## 3. Case Management
+---
 
-### Create Case
+## 3. Cases
+
+### Get All Cases (Dashboard)
+
+```bash
+curl -X GET "http://localhost:3000/api/cases?status=Open" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+### Create Case (JSON Payload)
 
 ```bash
 curl -X POST http://localhost:3000/api/cases \
@@ -61,23 +85,30 @@ curl -X POST http://localhost:3000/api/cases \
     "legalMatter": "Litigation",
     "description": "Property dispute case.",
     "status": "Open",
-    "assignedTeam": "[{\"user\":\"UserId_Here\",\"role\":\"Paralegal\"}]"
+    "assignedTeam": "[{\"user\":\"{{USER_ID}}\",\"role\":\"Paralegal\"}]"
   }'
 ```
 
-_Start with empty team if you don't have other User IDs yet._
+> **Note:** `assignedTeam` must be a JSON string here.
 
-### Get All Cases (Dashboard)
+### Create Case (Internal Multipart with Files)
+
+_Requires `case-docs.pdf` in current directory._
 
 ```bash
-curl -X GET "http://localhost:3000/api/cases?status=Open" \
-  -H "Authorization: Bearer $TOKEN"
+curl -X POST http://localhost:3000/api/cases \
+  -H "Authorization: Bearer $TOKEN" \
+  -F "title=Estate Planning" \
+  -F "clientName=Jane Doe" \
+  -F "legalMatter=Estate" \
+  -F "description=Will and Trust setup" \
+  -F "assignedTeam=[{\"user\":\"{{USER_ID}}\",\"role\":\"Associate\"}]" \
+  -F "documents=@case-docs.pdf"
 ```
 
 ### Get Single Case
 
 ```bash
-# Export CASE_ID from previous response
 curl -X GET http://localhost:3000/api/cases/{{CASE_ID}} \
   -H "Authorization: Bearer $TOKEN"
 ```
@@ -89,48 +120,66 @@ curl -X PUT http://localhost:3000/api/cases/{{CASE_ID}} \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "description": "Updated description for the case."
+    "status": "In Progress",
+    "description": "Updated case description."
   }'
 ```
 
-## 4. Calendar
-
-### Create Event
+### Delete Case
 
 ```bash
-curl -X POST http://localhost:3000/api/calendar \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Initial Hearing",
-    "date": "2025-12-30",
-    "time": "09:00",
-    "type": "Court",
-    "caseId": "{{CASE_ID}}"
-  }'
-```
-
-### Get Events
-
-```bash
-curl -X GET http://localhost:3000/api/calendar \
+curl -X DELETE http://localhost:3000/api/cases/{{CASE_ID}} \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-## 5. Activities
+---
 
-### Add Activity
+## 4. Case Team
+
+### Add Team Member
 
 ```bash
-curl -X POST http://localhost:3000/api/cases/{{CASE_ID}}/activities \
+curl -X POST http://localhost:3000/api/cases/{{CASE_ID}}/team \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "title": "Client Meeting",
-    "description": "Discussed settlement options.",
-    "type": "note_added"
+    "userId": "{{USER_ID}}",
+    "role": "Paralegal"
   }'
 ```
+
+### Remove Team Member
+
+```bash
+curl -X DELETE http://localhost:3000/api/cases/{{CASE_ID}}/team/{{USER_ID}} \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+---
+
+## 5. Case Documents
+
+### Get Documents
+
+```bash
+curl -X GET http://localhost:3000/api/cases/{{CASE_ID}}/documents \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+### Upload Document
+
+_Requires `evidence.txt` in current directory._
+
+```bash
+curl -X POST http://localhost:3000/api/cases/{{CASE_ID}}/documents/upload \
+  -H "Authorization: Bearer $TOKEN" \
+  -F "file=@evidence.txt" \
+  -F "category=Evidence"
+```
+
+---
+
+## 6. Case Activities
 
 ### Get Activities
 
@@ -139,18 +188,22 @@ curl -X GET http://localhost:3000/api/cases/{{CASE_ID}}/activities \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-## 6. Case Messages (Chat)
-
-### Send Message
+### Add Activity
 
 ```bash
-curl -X POST http://localhost:3000/api/cases/{{CASE_ID}}/messages \
+curl -X POST http://localhost:3000/api/cases/{{CASE_ID}}/activities \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "content": "Drafting the initial motion now."
+    "title": "Client Call",
+    "description": "Discussed strategy.",
+    "type": "call_log"
   }'
 ```
+
+---
+
+## 7. Case Messages (Chat)
 
 ### Get Messages
 
@@ -159,7 +212,27 @@ curl -X GET http://localhost:3000/api/cases/{{CASE_ID}}/messages \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-## 7. Billing
+### Send Message
+
+```bash
+curl -X POST http://localhost:3000/api/cases/{{CASE_ID}}/messages \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "content": "Hello team, please review the latest doc."
+  }'
+```
+
+---
+
+## 8. Billing & Expenses
+
+### Get Billing History
+
+```bash
+curl -X GET http://localhost:3000/api/cases/{{CASE_ID}}/billing \
+  -H "Authorization: Bearer $TOKEN"
+```
 
 ### Add Expense
 
@@ -169,34 +242,45 @@ curl -X POST http://localhost:3000/api/cases/{{CASE_ID}}/billing \
   -H "Content-Type: application/json" \
   -d '{
     "category": "Travel",
-    "description": "Taxi to court",
-    "amount": 45.50
+    "description": "Flight for deposition",
+    "amount": 450.00,
+    "status": "Pending"
   }'
 ```
 
-### Get Billing History
+---
+
+## 9. Calendar
+
+### Get Events
 
 ```bash
-curl -X GET http://localhost:3000/api/cases/{{CASE_ID}}/billing \
+curl -X GET http://localhost:3000/api/calendar \
   -H "Authorization: Bearer $TOKEN"
 ```
 
-## 8. Documents
-
-### Upload Document
-
-_Note: Requires a file named `test.txt` in current directory_
+### Create Event
 
 ```bash
-curl -X POST http://localhost:3000/api/cases/{{CASE_ID}}/documents/upload \
+curl -X POST http://localhost:3000/api/calendar \
   -H "Authorization: Bearer $TOKEN" \
-  -F "file=@test.txt" \
-  -F "category=Evidence"
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Court Hearing",
+    "date": "2025-10-15",
+    "time": "10:00",
+    "type": "Court",
+    "caseId": "{{CASE_ID}}"
+  }'
 ```
 
-### Get Documents
+---
+
+## 10. Global Chats
+
+### Get Conversations
 
 ```bash
-curl -X GET http://localhost:3000/api/cases/{{CASE_ID}}/documents \
+curl -X GET http://localhost:3000/api/chats \
   -H "Authorization: Bearer $TOKEN"
 ```
