@@ -5,6 +5,35 @@ import PortalLayout from '../components/PortalLayout';
 import AIIconLogo from '../assets/ai-logo.svg'
 import { dummyCases } from '../data/dummyData';
 
+interface Document {
+    _id: string;
+    fileName: string;
+    filePath: string;
+    category: 'Court Filings' | 'Evidence' | 'Correspondence' | 'General';
+    uploadedBy: {
+        _id: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+    uploadedAt: string;
+    fileSize: number;
+}
+
+interface ActivityLogItem {
+    _id: string;
+    type: string;
+    description: string;
+    performedBy: {
+        _id: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+    metadata?: any;
+    createdAt: string;
+}
+
 interface CaseData {
     _id: string;
     title: string;
@@ -27,6 +56,7 @@ const PortalCaseDetails: React.FC = () => {
     const location = useLocation();
 
     const [caseData, setCaseData] = useState<CaseData | null>(null);
+    const [currentUser, setCurrentUser] = useState<{ firstName: string; lastName: string } | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -60,12 +90,12 @@ const PortalCaseDetails: React.FC = () => {
     return (
         <PortalLayout>
             <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden min-h-[calc(100vh-140px)] flex flex-col">
-                
+
                 {/* Custom Page Header */}
                 <div className="border-b border-slate-200 px-6 pt-6 pb-0 bg-white">
                     <div className="flex justify-between items-start mb-6">
                         <div>
-                             <div className="flex items-center gap-2 mb-1 text-sm text-slate-500">
+                            <div className="flex items-center gap-2 mb-1 text-sm text-slate-500">
                                 <span>Cases</span>
                                 <span>/</span>
                                 <span>{caseData.title}</span>

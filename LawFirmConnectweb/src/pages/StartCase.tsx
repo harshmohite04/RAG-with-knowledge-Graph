@@ -50,6 +50,35 @@ const UsersIcon = () => (
     </svg>
 )
 
+const TeamIcon = () => (
+    <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+    </svg>
+)
+
+interface TeamMember {
+    email: string;
+    firstName: string;
+    lastName: string;
+    userId?: string;
+    status: 'pending' | 'accepted';
+    expiresAt?: Date;
+}
+
+// Mock API
+const api = {
+    get: async (url: string) => {
+        console.log(`Mock API GET: ${url}`);
+        return { data: { firstName: 'Harsh', lastName: 'User', email: 'harsh@example.com' } };
+    },
+    post: async (url: string, data: any) => {
+        console.log(`Mock API POST: ${url}`, data);
+        if (url.includes('validate')) {
+             return { data: { success: true, user: { email: data.email, firstName: 'Test', lastName: 'User', id: 'temp-id' } } };
+        }
+        return { data: { success: true } };
+    }
+};
 
 const StartCase: React.FC = () => {
     const navigate = useNavigate();
@@ -58,15 +87,89 @@ const StartCase: React.FC = () => {
         title: '',
         category: '',
         description: '',
-        files: [] as File[], // For demo UI only, real upload logic would differ
-        workType: 'single' as 'single' | 'team',
-        teamMembers: [] as string[]
+        files: [] as File[],
+        teamType: 'solo' as 'solo' | 'team',
+        teamMembers: [] as TeamMember[],
+        leadAttorneyEmail: ''
     });
-    const [inviteEmail, setInviteEmail] = useState('');
+    // const [inviteEmail, setInviteEmail] = useState(''); // Removed unused state
     const [loading, setLoading] = useState(false);
+    const [emailInput, setEmailInput] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [validatingEmail, setValidatingEmail] = useState(false);
+    const [currentUser, setCurrentUser] = useState({ firstName: '', lastName: '', email: '' });
+
+    // Get current user info on component mount
+    React.useEffect(() => {
+        const fetchCurrentUser = async () => {
+            try {
+                const response = await api.get('/auth/me');
+                const user = response.data;
+                setCurrentUser({
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email
+                });
+                setFormData(prev => ({
+                    ...prev,
+                    leadAttorneyEmail: user.email
+                }));
+            } catch (error) {
+                console.error('Failed to fetch current user', error);
+            }
+        };
+        fetchCurrentUser();
+    }, []);
 
     const handleNext = () => setStep(step + 1);
     const handleBack = () => setStep(step - 1);
+
+    const validateEmail = async () => {
+        if (!emailInput.trim()) return;
+
+        setValidatingEmail(true);
+        setEmailError('');
+
+        try {
+            const response = await api.post(`/cases/temp/team/validate`, { email: emailInput });
+
+            if (response.data.success) {
+                const user = response.data.user;
+                if (!user) throw new Error('Invalid response from server');
+
+                // Check if already invited
+                const alreadyInvited = formData.teamMembers.some(m => m.email === user.email);
+                if (alreadyInvited) {
+                    setEmailError('This user has already been invited');
+                    setValidatingEmail(false);
+                    return;
+                }
+
+                setFormData({
+                    ...formData,
+                    teamMembers: [...formData.teamMembers, {
+                        email: user.email,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        userId: user.id,
+                        status: 'pending'
+                    }]
+                });
+                setEmailInput('');
+            }
+        } catch (error: any) {
+            setEmailError(error.response?.data?.message || 'Cannot add people outside the portal. User must be registered first.');
+        }
+
+        setValidatingEmail(false);
+    };
+
+    const removeTeamMember = (email: string) => {
+        setFormData({
+            ...formData,
+            teamMembers: formData.teamMembers.filter(m => m.email !== email)
+        });
+    };
 
     const handleSubmit = async () => {
         setLoading(true);
@@ -113,11 +216,11 @@ const StartCase: React.FC = () => {
                 </div>
 
                 <div className="grid lg:grid-cols-3 gap-8">
-                    
+
                     {/* Main Form Area */}
                     <div className="lg:col-span-2">
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
-                            
+
                             {/* Step 1: Case Information */}
                             {step === 1 && (
                                 <div className="space-y-6">
@@ -125,13 +228,13 @@ const StartCase: React.FC = () => {
                                         <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">i</div>
                                         <h3 className="text-xl font-bold text-slate-900">Case Basics</h3>
                                     </div>
-                                    
+
                                     <div>
                                         <label className="block text-sm font-bold text-slate-700 mb-2">Case Name / Reference Title <span className="text-red-500">*</span></label>
-                                        <input 
-                                            type="text" 
+                                        <input
+                                            type="text"
                                             value={formData.title}
-                                            onChange={e => setFormData({...formData, title: e.target.value})}
+                                            onChange={e => setFormData({ ...formData, title: e.target.value })}
                                             placeholder="e.g. Purchase of 123 Main St, or Jones Family Trust"
                                             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                                         />
@@ -142,9 +245,9 @@ const StartCase: React.FC = () => {
                                         <label className="block text-sm font-bold text-slate-700 mb-2">Legal Matter Type <span className="text-red-500">*</span></label>
                                         <div className="grid sm:grid-cols-2 gap-4">
                                             {categories.map(cat => (
-                                                <div 
+                                                <div
                                                     key={cat.id}
-                                                    onClick={() => setFormData({...formData, category: cat.id})}
+                                                    onClick={() => setFormData({ ...formData, category: cat.id })}
                                                     className={`cursor-pointer border rounded-xl p-4 flex flex-col gap-3 transition-all hover:shadow-md ${formData.category === cat.id ? 'bg-blue-50 border-blue-500 ring-1 ring-blue-500' : 'border-slate-200 hover:border-slate-300'}`}
                                                 >
                                                     <div>{cat.icon}</div>
@@ -159,10 +262,10 @@ const StartCase: React.FC = () => {
 
                                     <div>
                                         <label className="block text-sm font-bold text-slate-700 mb-2">Brief Description of the Issue <span className="text-red-500">*</span></label>
-                                        <textarea 
+                                        <textarea
                                             rows={4}
                                             value={formData.description}
-                                            onChange={e => setFormData({...formData, description: e.target.value})}
+                                            onChange={e => setFormData({ ...formData, description: e.target.value })}
                                             placeholder="Please describe the situation, key events, and what outcome you are hoping to achieve..."
                                             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none"
                                         ></textarea>
@@ -171,7 +274,7 @@ const StartCase: React.FC = () => {
                             )}
 
                             {/* Step 2: Upload Documents */}
-                             {step === 2 && (
+                            {step === 2 && (
                                 <div className="space-y-6">
                                     <div className="flex items-center gap-3 mb-6">
                                         <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
@@ -179,20 +282,20 @@ const StartCase: React.FC = () => {
                                         </div>
                                         <h3 className="text-xl font-bold text-slate-900">Case Documents</h3>
                                     </div>
-                                    
-                                    <div 
+
+                                    <div
                                         className="border-2 border-dashed border-slate-200 rounded-xl p-10 text-center hover:bg-slate-50 transition-colors cursor-pointer group"
                                         onClick={() => document.getElementById('file-upload')?.click()}
                                     >
-                                        <input 
-                                            type="file" 
-                                            id="file-upload" 
-                                            multiple 
+                                        <input
+                                            type="file"
+                                            id="file-upload"
+                                            multiple
                                             className="hidden"
                                             onChange={(e) => {
                                                 if (e.target.files) {
                                                     setFormData({
-                                                        ...formData, 
+                                                        ...formData,
                                                         files: [...formData.files, ...Array.from(e.target.files)]
                                                     });
                                                 }
@@ -210,7 +313,7 @@ const StartCase: React.FC = () => {
                                             {formData.files.map((file, index) => (
                                                 <div key={index} className="flex items-center justify-between bg-slate-50 p-3 rounded text-sm">
                                                     <span className="truncate">{file.name}</span>
-                                                    <button 
+                                                    <button
                                                         onClick={() => setFormData({
                                                             ...formData,
                                                             files: formData.files.filter((_, i) => i !== index)
@@ -225,7 +328,7 @@ const StartCase: React.FC = () => {
                                     )}
 
                                     <div className="bg-blue-50 p-4 rounded-lg flex gap-3">
-                                        <svg className="w-5 h-5 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>
+                                        <svg className="w-5 h-5 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1 a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>
                                         <p className="text-xs text-blue-800">
                                             Uploading documents now helps us review your case faster. You can also upload them later in the case details portal.
                                         </p>
@@ -248,74 +351,68 @@ const StartCase: React.FC = () => {
                                         <label className="block text-sm font-bold text-slate-700 mb-4">Work Type</label>
                                         <div className="grid sm:grid-cols-2 gap-6">
                                             <div 
-                                                onClick={() => setFormData({...formData, workType: 'single'})}
-                                                className={`cursor-pointer border-2 rounded-xl p-8 flex flex-col items-center gap-4 transition-all hover:shadow-md text-center ${formData.workType === 'single' ? 'bg-white border-blue-500 ring-4 ring-blue-50/50' : 'bg-white border-slate-200 hover:border-slate-300'}`}
+                                                onClick={() => setFormData({...formData, teamType: 'solo'})}
+                                                className={`cursor-pointer border-2 rounded-xl p-8 flex flex-col items-center gap-4 transition-all hover:shadow-md text-center ${formData.teamType === 'solo' ? 'bg-white border-blue-500 ring-4 ring-blue-50/50' : 'bg-white border-slate-200 hover:border-slate-300'}`}
                                             >
-                                                <div className={`${formData.workType === 'single' ? 'text-blue-600' : 'text-slate-400'}`}>
+                                                <div className={`${formData.teamType === 'solo' ? 'text-blue-600' : 'text-slate-400'}`}>
                                                     <UserIcon />
                                                 </div>
                                                 <div>
-                                                    <h4 className={`font-bold text-lg mb-1 ${formData.workType === 'single' ? 'text-blue-900' : 'text-slate-900'}`}>Single</h4>
+                                                    <h4 className={`font-bold text-lg mb-1 ${formData.teamType === 'solo' ? 'text-blue-900' : 'text-slate-900'}`}>Single</h4>
                                                     <p className="text-sm text-slate-500">Work on this case alone</p>
                                                 </div>
                                             </div>
 
                                             <div 
-                                                onClick={() => setFormData({...formData, workType: 'team'})}
-                                                className={`cursor-pointer border-2 rounded-xl p-8 flex flex-col items-center gap-4 transition-all hover:shadow-md text-center ${formData.workType === 'team' ? 'bg-blue-50 border-blue-500 ring-4 ring-blue-200' : 'bg-white border-slate-200 hover:border-slate-300'}`}
+                                                onClick={() => setFormData({...formData, teamType: 'team'})}
+                                                className={`cursor-pointer border-2 rounded-xl p-8 flex flex-col items-center gap-4 transition-all hover:shadow-md text-center ${formData.teamType === 'team' ? 'bg-blue-50 border-blue-500 ring-4 ring-blue-200' : 'bg-white border-slate-200 hover:border-slate-300'}`}
                                             >
-                                                <div className={`${formData.workType === 'team' ? 'text-blue-600' : 'text-slate-400'}`}>
+                                                <div className={`${formData.teamType === 'team' ? 'text-blue-600' : 'text-slate-400'}`}>
                                                     <UsersIcon />
                                                 </div>
                                                 <div>
-                                                    <h4 className={`font-bold text-lg mb-1 ${formData.workType === 'team' ? 'text-blue-900' : 'text-slate-900'}`}>Team</h4>
+                                                    <h4 className={`font-bold text-lg mb-1 ${formData.teamType === 'team' ? 'text-blue-900' : 'text-slate-900'}`}>Team</h4>
                                                     <p className="text-sm text-slate-500">Collaborate with others</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    {formData.workType === 'team' && (
+                                    {formData.teamType === 'team' && (
                                         <div className="animate-in fade-in slide-in-from-top-4 duration-300 space-y-4">
                                             <label className="block text-sm font-bold text-slate-700">Invite Team Members</label>
                                             <div className="flex gap-2">
                                                 <input 
                                                     type="email" 
                                                     placeholder="Enter email address..." 
-                                                    value={inviteEmail}
-                                                    onChange={(e) => setInviteEmail(e.target.value)}
+                                                    value={emailInput}
+                                                    onChange={(e) => setEmailInput(e.target.value)}
                                                     onKeyDown={(e) => {
                                                         if (e.key === 'Enter') {
                                                             e.preventDefault();
-                                                            if (inviteEmail && !formData.teamMembers.includes(inviteEmail)) {
-                                                                setFormData({ ...formData, teamMembers: [...formData.teamMembers, inviteEmail] });
-                                                                setInviteEmail('');
-                                                            }
+                                                            validateEmail();
                                                         }
                                                     }}
                                                     className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                                                 />
                                                 <button 
-                                                    onClick={() => {
-                                                        if (inviteEmail && !formData.teamMembers.includes(inviteEmail)) {
-                                                            setFormData({ ...formData, teamMembers: [...formData.teamMembers, inviteEmail] });
-                                                            setInviteEmail('');
-                                                        }
-                                                    }}
-                                                    className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg transition-colors"
+                                                    onClick={validateEmail}
+                                                    disabled={validatingEmail || !emailInput}
+                                                    className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg transition-colors disabled:opacity-50"
                                                 >
-                                                    Add
+                                                    {validatingEmail ? 'Adding...' : 'Add'}
                                                 </button>
                                             </div>
+                                            {emailError && <p className="text-xs text-red-500 mt-1">{emailError}</p>}
                                             <p className="text-xs text-slate-400">Only registered portal users can be added to the team</p>
 
                                             {formData.teamMembers.length > 0 && (
                                                 <div className="flex flex-wrap gap-2 mt-3">
-                                                    {formData.teamMembers.map((email) => (
-                                                        <span key={email} className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
-                                                            {email}
+                                                    {formData.teamMembers.map((member) => (
+                                                        <span key={member.email} className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
+                                                            {member.firstName} {member.lastName} ({member.email})
                                                             <button 
-                                                                onClick={() => setFormData({...formData, teamMembers: formData.teamMembers.filter(m => m !== email)})}
+                                                                onClick={() => removeTeamMember(member.email)}
                                                                 className="hover:text-blue-900"
                                                             >
                                                                 ×
@@ -341,7 +438,146 @@ const StartCase: React.FC = () => {
                              {/* Step 4: Review */}
                              {step === 4 && (
                                 <div className="space-y-6">
-                                     <div className="flex items-center gap-3 mb-6">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
+                                            <TeamIcon />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-slate-900">Team Formation</h3>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-bold text-slate-700 mb-3">Work Type</label>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div
+                                                onClick={() => setFormData({ ...formData, teamType: 'solo', teamMembers: [] })}
+                                                className={`cursor-pointer border rounded-xl p-6 text-center transition-all hover:shadow-md ${formData.teamType === 'solo' ? 'bg-blue-50 border-blue-500 ring-1 ring-blue-500' : 'border-slate-200 hover:border-slate-300'}`}
+                                            >
+                                                <div className="flex justify-center mb-3">
+                                                    <svg className="w-10 h-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                    </svg>
+                                                </div>
+                                                <h4 className={`font-bold text-sm ${formData.teamType === 'solo' ? 'text-blue-900' : 'text-slate-900'}`}>Single</h4>
+                                                <p className="text-xs text-slate-500 mt-1">Work on this case alone</p>
+                                            </div>
+                                            <div
+                                                onClick={() => setFormData({ ...formData, teamType: 'team' })}
+                                                className={`cursor-pointer border rounded-xl p-6 text-center transition-all hover:shadow-md ${formData.teamType === 'team' ? 'bg-blue-50 border-blue-500 ring-1 ring-blue-500' : 'border-slate-200 hover:border-slate-300'}`}
+                                            >
+                                                <div className="flex justify-center mb-3">
+                                                    <TeamIcon />
+                                                </div>
+                                                <h4 className={`font-bold text-sm ${formData.teamType === 'team' ? 'text-blue-900' : 'text-slate-900'}`}>Team</h4>
+                                                <p className="text-xs text-slate-500 mt-1">Collaborate with others</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {formData.teamType === 'team' && (
+                                        <>
+                                            <div>
+                                                <label className="block text-sm font-bold text-slate-700 mb-2">Invite Team Members</label>
+                                                <div className="flex gap-2">
+                                                    <input
+                                                        type="email"
+                                                        value={emailInput}
+                                                        onChange={e => {
+                                                            setEmailInput(e.target.value);
+                                                            setEmailError('');
+                                                        }}
+                                                        onKeyPress={e => e.key === 'Enter' && validateEmail()}
+                                                        placeholder="Enter email address..."
+                                                        className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                                                    />
+                                                    <button
+                                                        onClick={validateEmail}
+                                                        disabled={validatingEmail || !emailInput.trim()}
+                                                        className="px-6 py-3 bg-blue-600 text-white rounded-lg font-bold text-sm hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                                    >
+                                                        {validatingEmail ? 'Checking...' : 'Add'}
+                                                    </button>
+                                                </div>
+                                                {emailError && (
+                                                    <p className="text-xs text-red-500 mt-2 flex items-center gap-1">
+                                                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                        </svg>
+                                                        {emailError}
+                                                    </p>
+                                                )}
+                                                <p className="text-xs text-slate-400 mt-1">Only registered portal users can be added to the team</p>
+                                            </div>
+
+                                            {formData.teamMembers.length > 0 && (
+                                                <>
+                                                    <div>
+                                                        <label className="block text-sm font-bold text-slate-700 mb-3">Team Members ({formData.teamMembers.length})</label>
+                                                        <div className="space-y-2">
+                                                            {formData.teamMembers.map((member, index) => (
+                                                                <div key={index} className="flex items-center justify-between bg-slate-50 p-4 rounded-lg border border-slate-200">
+                                                                    <div className="flex items-center gap-3">
+                                                                        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">
+                                                                            {member.firstName[0]}{member.lastName[0]}
+                                                                        </div>
+                                                                        <div>
+                                                                            <p className="text-sm font-bold text-slate-900">{member.firstName} {member.lastName}</p>
+                                                                            <p className="text-xs text-slate-500">{member.email}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="flex items-center gap-3">
+                                                                        <span className="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-bold rounded-full">
+                                                                            Pending Invitation
+                                                                        </span>
+                                                                        <button
+                                                                            onClick={() => removeTeamMember(member.email)}
+                                                                            className="text-red-500 hover:text-red-700 font-bold text-xs"
+                                                                        >
+                                                                            Remove
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <label className="block text-sm font-bold text-slate-700 mb-3">Lead Attorney</label>
+                                                        <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                                                            <select
+                                                                value={formData.leadAttorneyEmail}
+                                                                onChange={e => setFormData({ ...formData, leadAttorneyEmail: e.target.value })}
+                                                                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                                                            >
+                                                                <option value={currentUser.email}>{currentUser.firstName} {currentUser.lastName} (You)</option>
+                                                                {formData.teamMembers.map((member, index) => (
+                                                                    <option key={index} value={member.email}>
+                                                                        {member.firstName} {member.lastName}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                            <p className="text-xs text-slate-500 mt-2">The lead attorney manages the team and can add/remove members</p>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            )}
+
+                                            <div className="bg-amber-50 p-4 rounded-lg flex gap-3 border border-amber-100">
+                                                <svg className="w-5 h-5 text-amber-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                </svg>
+                                                <p className="text-xs text-amber-800">
+                                                    Team members will receive email invitations. Invitations expire after 3 days if not accepted.
+                                                </p>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* Step 4: Review */}
+                            {step === 4 && (
+                                <div className="space-y-6">
+                                    <div className="flex items-center gap-3 mb-6">
                                         <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
                                             <CheckIcon />
                                         </div>
@@ -367,8 +603,8 @@ const StartCase: React.FC = () => {
                                             <div>
                                                 <p className="text-xs font-bold text-slate-500 uppercase">Work Type</p>
                                                 <div className="font-bold text-slate-900 capitalize flex items-center gap-2">
-                                                    {formData.workType} 
-                                                    {formData.workType === 'team' && <span className="text-slate-500 font-normal text-sm">({formData.teamMembers.length} members invited)</span>}
+                                                    {formData.teamType} 
+                                                    {formData.teamType === 'team' && <span className="text-slate-500 font-normal text-sm">({formData.teamMembers.length} members invited)</span>}
                                                 </div>
                                             </div>
                                             <button onClick={() => setStep(3)} className="text-xs font-bold text-blue-600 hover:underline">Edit</button>
@@ -377,8 +613,11 @@ const StartCase: React.FC = () => {
                                             <p className="text-sm text-slate-700 leading-relaxed">{formData.description}</p>
                                         </div>
                                         {formData.files.length > 0 && (
-                                            <div>
-                                                <p className="text-xs font-bold text-slate-500 uppercase mb-1">Documents</p>
+                                            <div className="border-b border-slate-200 pb-4">
+                                                <div className="flex justify-between items-center mb-2">
+                                                    <p className="text-xs font-bold text-slate-500 uppercase">Documents ({formData.files.length})</p>
+                                                    <button onClick={() => setStep(2)} className="text-xs font-bold text-blue-600 hover:underline">Edit</button>
+                                                </div>
                                                 <div className="space-y-1">
                                                     {formData.files.map((file, idx) => (
                                                         <p key={idx} className="text-sm text-slate-900 flex items-center gap-2">
@@ -389,21 +628,65 @@ const StartCase: React.FC = () => {
                                                 </div>
                                             </div>
                                         )}
+                                        <div className="border-t border-slate-200 pt-4">
+                                            <div className="flex justify-between">
+                                                <div>
+                                                    <p className="text-xs font-bold text-slate-500 uppercase">Team Type</p>
+                                                    <p className="font-bold text-slate-900 capitalize">{formData.teamType}</p>
+                                                </div>
+                                                <button onClick={() => setStep(3)} className="text-xs font-bold text-blue-600 hover:underline">Edit</button>
+                                            </div>
+
+                                            <div className="mt-4">
+                                                <p className="text-xs font-bold text-slate-500 uppercase mb-2">Lead Attorney</p>
+                                                <div className="flex items-center gap-2 text-sm">
+                                                    <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xs">
+                                                        {currentUser.firstName[0]}{currentUser.lastName[0]}
+                                                    </div>
+                                                    <span className="text-slate-900 font-bold">
+                                                        {formData.leadAttorneyEmail === currentUser.email
+                                                            ? `${currentUser.firstName} ${currentUser.lastName} (You)`
+                                                            : formData.teamMembers.find(m => m.email === formData.leadAttorneyEmail)
+                                                                ? `${formData.teamMembers.find(m => m.email === formData.leadAttorneyEmail)?.firstName} ${formData.teamMembers.find(m => m.email === formData.leadAttorneyEmail)?.lastName}`
+                                                                : `${currentUser.firstName} ${currentUser.lastName} (You)`
+                                                        }
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            {formData.teamType === 'team' && formData.teamMembers.length > 0 && (
+                                                <div className="mt-4">
+                                                    <p className="text-xs font-bold text-slate-500 uppercase mb-2">Team Members</p>
+                                                    <div className="space-y-2">
+                                                        {formData.teamMembers.map((member, idx) => (
+                                                            <div key={idx} className="flex items-center gap-2 text-sm">
+                                                                <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">
+                                                                    {member.firstName[0]}{member.lastName[0]}
+                                                                </div>
+                                                                <span className="text-slate-900">{member.firstName} {member.lastName}</span>
+                                                                <span className="text-slate-400">•</span>
+                                                                <span className="text-xs text-yellow-700">Invitation Pending</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
 
                                     <div className="bg-green-50 p-4 rounded-lg flex gap-3 border border-green-100">
-                                         <svg className="w-5 h-5 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+                                        <svg className="w-5 h-5 text-green-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
                                         <p className="text-xs text-green-800 font-medium">
                                             Everything looks good! Ready to create your case.
                                         </p>
                                     </div>
                                 </div>
-                             )}
+                            )}
 
                             {/* Footer Buttons */}
                             <div className="flex justify-end gap-3 mt-10 pt-6 border-t border-slate-100">
                                 {step > 1 && (
-                                    <button 
+                                    <button
                                         onClick={handleBack}
                                         className="px-6 py-2.5 border border-slate-300 rounded-lg text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
                                     >
@@ -419,13 +702,13 @@ const StartCase: React.FC = () => {
                                         Next Step
                                     </button>
                                 ) : (
-                                    <button 
+                                    <button
                                         onClick={handleSubmit}
                                         disabled={loading}
                                         className={`px-6 py-2.5 bg-blue-600 rounded-lg text-sm font-bold text-white shadow-md transition-all flex items-center gap-2 ${loading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-blue-700'}`}
                                     >
-                                        {loading ? 'Submitting...' : 'Create Case'}
-                                        {!loading && <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>}
+                                        {loading ? 'Creating Case...' : 'Create Case'}
+                                        {!loading && <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>}
                                     </button>
                                 )}
                             </div>
@@ -435,11 +718,11 @@ const StartCase: React.FC = () => {
 
                     {/* Right Column: Info Cards */}
                     <div className="space-y-6">
-                        
+
                         <div className="bg-blue-50 rounded-xl p-6 border border-blue-100">
                             <div className="flex items-start gap-3">
                                 <div className="pt-0.5 text-blue-600">
-                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1 a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-blue-900 text-sm mb-1">Why do we need this?</h4>
@@ -450,7 +733,7 @@ const StartCase: React.FC = () => {
                             </div>
                         </div>
 
-                         <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+                        <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
                             <div className="flex items-start gap-3 mb-4">
                                 <div className="pt-0.5 text-green-500">
                                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
@@ -468,7 +751,7 @@ const StartCase: React.FC = () => {
                             <p className="text-xs text-slate-500 leading-relaxed mb-4">
                                 If you're unsure how to categorize your case, please give our intake team a call.
                             </p>
-                             <div className="flex items-center gap-2 text-slate-700 font-bold text-sm">
+                            <div className="flex items-center gap-2 text-slate-700 font-bold text-sm">
                                 <PhoneIcon />
                                 +1 (555) 123-4567
                             </div>

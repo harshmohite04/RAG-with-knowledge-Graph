@@ -38,15 +38,23 @@ const LockIcon = () => (
         <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
     </svg>
 )
+const TrashIcon = () => (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+    </svg>
+)
 
 import { dummyCases } from '../data/dummyData';
 
 const PortalCases: React.FC = () => {
     const navigate = useNavigate();
-    const [cases] = React.useState<any[]>(dummyCases);
+    const [cases, setCases] = React.useState<any[]>(dummyCases);
     const [loading, setLoading] = React.useState(true);
     const [filter, setFilter] = React.useState('All');
     const [searchQuery, setSearchQuery] = React.useState('');
+    const [showDeleteModal, setShowDeleteModal] = React.useState(false);
+    const [caseToDelete, setCaseToDelete] = React.useState<any>(null);
+    const [deleting, setDeleting] = React.useState(false);
 
     React.useEffect(() => {
         // Simulate API loading
@@ -56,6 +64,24 @@ const PortalCases: React.FC = () => {
         return () => clearTimeout(timer);
     }, []);
 
+    const handleDeleteClick = (caseItem: any) => {
+        setCaseToDelete(caseItem);
+        setShowDeleteModal(true);
+    };
+
+    const handleDeleteConfirm = () => {
+        if (!caseToDelete) return;
+        setDeleting(true);
+
+        // Simulate API call
+        setTimeout(() => {
+            setCases(cases.filter(c => c._id !== caseToDelete._id));
+            setDeleting(false);
+            setShowDeleteModal(false);
+            setCaseToDelete(null);
+        }, 1000);
+    };
+
     const filteredCases = cases.filter((c: any) => {
         const matchesFilter = filter === 'All' ? true : c.status === filter;
         const matchesSearch = c.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -64,12 +90,12 @@ const PortalCases: React.FC = () => {
     });
 
     if (loading) {
-         return <PortalLayout><div className="flex justify-center p-10">Loading Cases...</div></PortalLayout>;
+        return <PortalLayout><div className="flex justify-center p-10">Loading Cases...</div></PortalLayout>;
     }
 
     return (
         <PortalLayout>
-            
+
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                 <div>
@@ -92,8 +118,8 @@ const PortalCases: React.FC = () => {
                         <CaseIcon />
                     </div>
                 </div>
-                 {/* Placeholder stats */}
-                 <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex items-center justify-between">
+                {/* Placeholder stats */}
+                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex items-center justify-between">
                     <div>
                         <p className="text-sm font-medium text-slate-500">Total Cases</p>
                         <p className="text-3xl font-bold text-slate-900 mt-2">{cases.length}</p>
@@ -102,7 +128,7 @@ const PortalCases: React.FC = () => {
                         <ClipboardIcon />
                     </div>
                 </div>
-                 <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex items-center justify-between">
+                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex items-center justify-between">
                     <div>
                         <p className="text-sm font-medium text-slate-500">Closed Cases</p>
                         <p className="text-3xl font-bold text-slate-900 mt-2">{cases.filter(c => c.status === 'Closed').length}</p>
@@ -115,7 +141,7 @@ const PortalCases: React.FC = () => {
 
             {/* Controls */}
             <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-6 flex flex-col md:flex-row gap-4">
-                 <div className="flex-grow relative">
+                <div className="flex-grow relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <SearchIcon />
                     </div>
@@ -128,19 +154,19 @@ const PortalCases: React.FC = () => {
                     />
                 </div>
                 <div className="flex items-center gap-3">
-                    <button 
+                    <button
                         onClick={() => setFilter('All')}
                         className={`flex items-center gap-2 px-4 py-2.5 border rounded-lg text-sm font-medium transition-colors ${filter === 'All' ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'}`}
                     >
                         <FilterIcon /> All
                     </button>
-                    <button 
+                    <button
                         onClick={() => setFilter('Open')}
                         className={`px-4 py-2.5 border rounded-lg text-sm font-medium transition-colors ${filter === 'Open' ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'}`}
                     >
                         Active
                     </button>
-                     <button 
+                    <button
                         onClick={() => setFilter('Closed')}
                         className={`px-4 py-2.5 border rounded-lg text-sm font-medium transition-colors ${filter === 'Closed' ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'}`}
                     >
@@ -164,7 +190,7 @@ const PortalCases: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-slate-200">
-                            
+
                             {filteredCases.map((caseItem: any) => (
                                 <tr 
                                     key={caseItem._id} 
@@ -202,11 +228,10 @@ const PortalCases: React.FC = () => {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`px-2.5 py-1 inline-flex text-xs leading-5 font-bold rounded-full ${
-                                            caseItem.status === 'Open' ? 'bg-emerald-100 text-emerald-800' :
-                                            caseItem.status === 'Closed' ? 'bg-slate-100 text-slate-500' : 
-                                            'bg-blue-100 text-blue-800'
-                                        }`}>
+                                        <span className={`px-2.5 py-1 inline-flex text-xs leading-5 font-bold rounded-full ${caseItem.status === 'Open' ? 'bg-emerald-100 text-emerald-800' :
+                                            caseItem.status === 'Closed' ? 'bg-slate-100 text-slate-500' :
+                                                'bg-blue-100 text-blue-800'
+                                            }`}>
                                             {caseItem.status}
                                         </span>
                                     </td>
@@ -217,11 +242,19 @@ const PortalCases: React.FC = () => {
                                         {new Date(caseItem.updatedAt).toLocaleDateString()}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <Link to={`/portal/cases/${caseItem._id}`} className="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg font-bold transition-colors">Details</Link>
+                                        <div className="flex items-center justify-end gap-2">
+                                            <Link to={`/portal/cases/${caseItem._id}`} className="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg font-bold transition-colors">Details</Link>
+                                            <button
+                                                onClick={() => handleDeleteClick(caseItem)}
+                                                className="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg font-bold transition-colors inline-flex items-center gap-1.5"
+                                            >
+                                                <TrashIcon />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
-                            
+
                             {filteredCases.length === 0 && (
                                 <tr>
                                     <td colSpan={6} className="px-6 py-10 text-center text-slate-500">
@@ -245,6 +278,50 @@ const PortalCases: React.FC = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Delete Confirmation Modal */}
+            {showDeleteModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-xl max-w-md w-full shadow-2xl">
+                        <div className="p-6">
+                            <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
+                                <TrashIcon />
+                                <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                            </div>
+                            <h3 className="text-xl font-bold text-slate-900 text-center mb-2">Delete Case</h3>
+                            <p className="text-sm text-slate-600 text-center mb-4">
+                                Are you sure you want to delete <span className="font-bold text-slate-900">"{caseToDelete?.title}"</span>?
+                            </p>
+                            <div className="bg-red-50 border border-red-100 rounded-lg p-3 mb-6">
+                                <p className="text-xs text-red-800 text-center font-medium">
+                                    This action cannot be undone. This will permanently delete the case and all related documents.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="px-6 pb-6 flex gap-3">
+                            <button
+                                onClick={() => {
+                                    setShowDeleteModal(false);
+                                    setCaseToDelete(null);
+                                }}
+                                disabled={deleting}
+                                className="flex-1 px-4 py-2.5 border border-slate-300 rounded-lg text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-50"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleDeleteConfirm}
+                                disabled={deleting}
+                                className="flex-1 px-4 py-2.5 bg-red-600 rounded-lg text-sm font-bold text-white hover:bg-red-700 shadow-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {deleting ? 'Deleting...' : 'Delete Permanently'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
         </PortalLayout>
     );
