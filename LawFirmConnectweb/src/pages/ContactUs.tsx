@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from '../api/client'; // Assuming there is an api client
+
 
 // Icons
 const LocationIcon = () => (
@@ -64,16 +64,12 @@ const ContactUs: React.FC = () => {
         setLoading(true);
         setStatus('idle');
         
-        try {
-            await api.post('/contact', formData);
+        // Mock Form Submission
+        setTimeout(() => {
             setStatus('success');
             setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-        } catch (error) {
-            console.error("Failed to submit inquiry", error);
-            setStatus('error');
-        } finally {
             setLoading(false);
-        }
+        }, 1500);
     };
 
     const faqs = [

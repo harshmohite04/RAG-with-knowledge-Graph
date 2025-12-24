@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../api/client';
+
 import PortalLayout from '../components/PortalLayout';
 
 // Icons
@@ -39,6 +39,17 @@ const PhoneIcon = () => (
         <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
     </svg>
 )
+const UserIcon = () => (
+    <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+    </svg>
+)
+const UsersIcon = () => (
+    <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+    </svg>
+)
+
 const TeamIcon = () => (
     <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
         <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -54,6 +65,21 @@ interface TeamMember {
     expiresAt?: Date;
 }
 
+// Mock API
+const api = {
+    get: async (url: string) => {
+        console.log(`Mock API GET: ${url}`);
+        return { data: { firstName: 'Harsh', lastName: 'User', email: 'harsh@example.com' } };
+    },
+    post: async (url: string, data: any) => {
+        console.log(`Mock API POST: ${url}`, data);
+        if (url.includes('validate')) {
+             return { data: { success: true, user: { email: data.email, firstName: 'Test', lastName: 'User', id: 'temp-id' } } };
+        }
+        return { data: { success: true } };
+    }
+};
+
 const StartCase: React.FC = () => {
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
@@ -64,8 +90,9 @@ const StartCase: React.FC = () => {
         files: [] as File[],
         teamType: 'solo' as 'solo' | 'team',
         teamMembers: [] as TeamMember[],
-        leadAttorneyEmail: '' // Will be set to current user's email
+        leadAttorneyEmail: ''
     });
+    // const [inviteEmail, setInviteEmail] = useState(''); // Removed unused state
     const [loading, setLoading] = useState(false);
     const [emailInput, setEmailInput] = useState('');
     const [emailError, setEmailError] = useState('');
@@ -108,6 +135,7 @@ const StartCase: React.FC = () => {
 
             if (response.data.success) {
                 const user = response.data.user;
+                if (!user) throw new Error('Invalid response from server');
 
                 // Check if already invited
                 const alreadyInvited = formData.teamMembers.some(m => m.email === user.email);
@@ -145,43 +173,11 @@ const StartCase: React.FC = () => {
 
     const handleSubmit = async () => {
         setLoading(true);
-        try {
-            const formDataToSend = new FormData();
-            formDataToSend.append('title', formData.title);
-            formDataToSend.append('description', formData.description);
-            formDataToSend.append('category', formData.category);
-            formDataToSend.append('teamType', formData.teamType);
-
-            formData.files.forEach(file => {
-                formDataToSend.append('files', file);
-            });
-
-            const response = await api.post('/cases', formDataToSend, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-
-            // If team type and members exist, send invitations
-            if (formData.teamType === 'team' && formData.teamMembers.length > 0) {
-                const caseId = response.data._id;
-
-                // Send invitations to all team members
-                for (const member of formData.teamMembers) {
-                    try {
-                        await api.post(`/cases/${caseId}/team/invite`, { email: member.email });
-                    } catch (inviteError) {
-                        console.error(`Failed to invite ${member.email}`, inviteError);
-                    }
-                }
-            }
-
+        // Mock API call
+        setTimeout(() => {
+            alert("Case Created Successfully! (Demo Mode - Data not persisted)");
             navigate('/portal/cases');
-        } catch (error) {
-            console.error("Failed to create case", error);
-            alert("Failed to create case. Please try again.");
-            setLoading(false);
-        }
+        }, 1500);
     };
 
     const categories = [
@@ -202,7 +198,7 @@ const StartCase: React.FC = () => {
                 {/* Progress Steps */}
                 <div className="flex items-center justify-between mb-10 relative">
                     <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-200 -z-10"></div>
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-blue-600 transition-all duration-300 -z-10" style={{ width: step === 1 ? '0%' : step === 2 ? '33%' : step === 3 ? '66%' : '100%' }}></div>
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-blue-600 transition-all duration-300 -z-10" style={{ width: `${((step - 1) / 3) * 100}%` }}></div>
 
                     {[
                         { num: 1, label: 'Case Information' },
@@ -337,11 +333,110 @@ const StartCase: React.FC = () => {
                                             Uploading documents now helps us review your case faster. You can also upload them later in the case details portal.
                                         </p>
                                     </div>
-                                </div>
+                                    </div>
+
                             )}
 
                             {/* Step 3: Team Formation */}
                             {step === 3 && (
+                                <div className="space-y-8">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
+                                            <UsersIcon />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-slate-900">Team Formation</h3>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-bold text-slate-700 mb-4">Work Type</label>
+                                        <div className="grid sm:grid-cols-2 gap-6">
+                                            <div 
+                                                onClick={() => setFormData({...formData, teamType: 'solo'})}
+                                                className={`cursor-pointer border-2 rounded-xl p-8 flex flex-col items-center gap-4 transition-all hover:shadow-md text-center ${formData.teamType === 'solo' ? 'bg-white border-blue-500 ring-4 ring-blue-50/50' : 'bg-white border-slate-200 hover:border-slate-300'}`}
+                                            >
+                                                <div className={`${formData.teamType === 'solo' ? 'text-blue-600' : 'text-slate-400'}`}>
+                                                    <UserIcon />
+                                                </div>
+                                                <div>
+                                                    <h4 className={`font-bold text-lg mb-1 ${formData.teamType === 'solo' ? 'text-blue-900' : 'text-slate-900'}`}>Single</h4>
+                                                    <p className="text-sm text-slate-500">Work on this case alone</p>
+                                                </div>
+                                            </div>
+
+                                            <div 
+                                                onClick={() => setFormData({...formData, teamType: 'team'})}
+                                                className={`cursor-pointer border-2 rounded-xl p-8 flex flex-col items-center gap-4 transition-all hover:shadow-md text-center ${formData.teamType === 'team' ? 'bg-blue-50 border-blue-500 ring-4 ring-blue-200' : 'bg-white border-slate-200 hover:border-slate-300'}`}
+                                            >
+                                                <div className={`${formData.teamType === 'team' ? 'text-blue-600' : 'text-slate-400'}`}>
+                                                    <UsersIcon />
+                                                </div>
+                                                <div>
+                                                    <h4 className={`font-bold text-lg mb-1 ${formData.teamType === 'team' ? 'text-blue-900' : 'text-slate-900'}`}>Team</h4>
+                                                    <p className="text-sm text-slate-500">Collaborate with others</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {formData.teamType === 'team' && (
+                                        <div className="animate-in fade-in slide-in-from-top-4 duration-300 space-y-4">
+                                            <label className="block text-sm font-bold text-slate-700">Invite Team Members</label>
+                                            <div className="flex gap-2">
+                                                <input 
+                                                    type="email" 
+                                                    placeholder="Enter email address..." 
+                                                    value={emailInput}
+                                                    onChange={(e) => setEmailInput(e.target.value)}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === 'Enter') {
+                                                            e.preventDefault();
+                                                            validateEmail();
+                                                        }
+                                                    }}
+                                                    className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                                                />
+                                                <button 
+                                                    onClick={validateEmail}
+                                                    disabled={validatingEmail || !emailInput}
+                                                    className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg transition-colors disabled:opacity-50"
+                                                >
+                                                    {validatingEmail ? 'Adding...' : 'Add'}
+                                                </button>
+                                            </div>
+                                            {emailError && <p className="text-xs text-red-500 mt-1">{emailError}</p>}
+                                            <p className="text-xs text-slate-400">Only registered portal users can be added to the team</p>
+
+                                            {formData.teamMembers.length > 0 && (
+                                                <div className="flex flex-wrap gap-2 mt-3">
+                                                    {formData.teamMembers.map((member) => (
+                                                        <span key={member.email} className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
+                                                            {member.firstName} {member.lastName} ({member.email})
+                                                            <button 
+                                                                onClick={() => removeTeamMember(member.email)}
+                                                                className="hover:text-blue-900"
+                                                            >
+                                                                ×
+                                                            </button>
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
+
+                                            <div className="bg-yellow-50 border border-yellow-100 rounded-lg p-4 flex gap-3">
+                                                <div className="text-yellow-600 pt-0.5">
+                                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                                                </div>
+                                                <p className="text-sm text-yellow-800">
+                                                    Team members will receive email invitations. Invitations expire after 3 days if not accepted.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                             {/* Step 4: Review */}
+                             {step === 4 && (
                                 <div className="space-y-6">
                                     <div className="flex items-center gap-3 mb-6">
                                         <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
@@ -504,6 +599,16 @@ const StartCase: React.FC = () => {
                                             </div>
                                             <button onClick={() => setStep(1)} className="text-xs font-bold text-blue-600 hover:underline">Edit</button>
                                         </div>
+                                        <div className="flex justify-between border-b border-slate-200 pb-4">
+                                            <div>
+                                                <p className="text-xs font-bold text-slate-500 uppercase">Work Type</p>
+                                                <div className="font-bold text-slate-900 capitalize flex items-center gap-2">
+                                                    {formData.teamType} 
+                                                    {formData.teamType === 'team' && <span className="text-slate-500 font-normal text-sm">({formData.teamMembers.length} members invited)</span>}
+                                                </div>
+                                            </div>
+                                            <button onClick={() => setStep(3)} className="text-xs font-bold text-blue-600 hover:underline">Edit</button>
+                                        </div>
                                         <div>
                                             <p className="text-sm text-slate-700 leading-relaxed">{formData.description}</p>
                                         </div>
@@ -589,7 +694,7 @@ const StartCase: React.FC = () => {
                                     </button>
                                 )}
                                 {step < 4 ? (
-                                    <button
+                                    <button 
                                         onClick={handleNext}
                                         disabled={!formData.title || !formData.category || !formData.description}
                                         className={`px-6 py-2.5 bg-blue-600 rounded-lg text-sm font-bold text-white shadow-md transition-all ${(!formData.title || !formData.category || !formData.description) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}

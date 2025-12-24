@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import api from '../api/client';
+import { Link, useNavigate } from 'react-router-dom';
+
 import PortalLayout from '../components/PortalLayout';
 
 const CaseIcon = () => (
@@ -44,26 +44,24 @@ const TrashIcon = () => (
     </svg>
 )
 
+import { dummyCases } from '../data/dummyData';
+
 const PortalCases: React.FC = () => {
-    const [cases, setCases] = React.useState<any[]>([]);
+    const navigate = useNavigate();
+    const [cases, setCases] = React.useState<any[]>(dummyCases);
     const [loading, setLoading] = React.useState(true);
-    const [filter, setFilter] = React.useState('All'); // Simple filter
+    const [filter, setFilter] = React.useState('All');
+    const [searchQuery, setSearchQuery] = React.useState('');
     const [showDeleteModal, setShowDeleteModal] = React.useState(false);
     const [caseToDelete, setCaseToDelete] = React.useState<any>(null);
     const [deleting, setDeleting] = React.useState(false);
 
     React.useEffect(() => {
-        const fetchCases = async () => {
-            try {
-                const res = await api.get('/cases');
-                setCases(res.data);
-            } catch (err) {
-                console.error("Failed to load cases", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchCases();
+        // Simulate API loading
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 500);
+        return () => clearTimeout(timer);
     }, []);
 
     const handleDeleteClick = (caseItem: any) => {
@@ -71,25 +69,25 @@ const PortalCases: React.FC = () => {
         setShowDeleteModal(true);
     };
 
-    const handleDeleteConfirm = async () => {
+    const handleDeleteConfirm = () => {
         if (!caseToDelete) return;
-
         setDeleting(true);
-        try {
-            await api.delete(`/cases/${caseToDelete._id}`);
-            // Remove from local state
+
+        // Simulate API call
+        setTimeout(() => {
             setCases(cases.filter(c => c._id !== caseToDelete._id));
+            setDeleting(false);
             setShowDeleteModal(false);
             setCaseToDelete(null);
-        } catch (error: any) {
-            console.error('Failed to delete case', error);
-            alert(error.response?.data?.message || 'Failed to delete case. Please try again.');
-        } finally {
-            setDeleting(false);
-        }
+        }, 1000);
     };
 
-    const filteredCases = filter === 'All' ? cases : cases.filter((c: any) => c.status === filter);
+    const filteredCases = cases.filter((c: any) => {
+        const matchesFilter = filter === 'All' ? true : c.status === filter;
+        const matchesSearch = c.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                              c.description.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesFilter && matchesSearch;
+    });
 
     if (loading) {
         return <PortalLayout><div className="flex justify-center p-10">Loading Cases...</div></PortalLayout>;
@@ -147,9 +145,11 @@ const PortalCases: React.FC = () => {
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <SearchIcon />
                     </div>
-                    <input
-                        type="text"
-                        placeholder="Search by case name or reference ID..."
+                    <input 
+                        type="text" 
+                        placeholder="Search by case name or reference ID..." 
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
                     />
                 </div>
@@ -192,7 +192,14 @@ const PortalCases: React.FC = () => {
                         <tbody className="bg-white divide-y divide-slate-200">
 
                             {filteredCases.map((caseItem: any) => (
-                                <tr key={caseItem._id} className="hover:bg-slate-50 transition-colors">
+                                <tr 
+                                    key={caseItem._id} 
+                                    onClick={(e) => {
+                                        if ((e.target as HTMLElement).closest('a') || (e.target as HTMLElement).closest('button')) return;
+                                        navigate(`/portal/cases/${caseItem._id}`);
+                                    }}
+                                    className="hover:bg-slate-50 transition-colors cursor-pointer"
+                                >
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
                                             <div className="flex-shrink-0 h-8 w-8 bg-blue-50 rounded-lg flex items-center justify-center mr-4">
@@ -207,28 +214,17 @@ const PortalCases: React.FC = () => {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="flex items-center">
-                                            {caseItem.leadAttorneyId ? (
-                                                <>
-                                                    <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-600">
-                                                        {caseItem.leadAttorneyId.firstName?.[0]}{caseItem.leadAttorneyId.lastName?.[0]}
+                                        <div className="flex items-center group cursor-pointer">
+                                            <Link to={caseItem.lawyerId ? `/portal/messages?contact=Marcus Thorne` : '#'} className="flex items-center">
+                                                <div className="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
+                                                    {caseItem.lawyerId ? 'MT' : 'NA'}
+                                                </div>
+                                                <div className="ml-3">
+                                                    <div className="text-sm font-medium text-slate-900 group-hover:text-blue-600 group-hover:underline transition-colors">
+                                                        {caseItem.lawyerId ? 'Marcus Thorne' : 'Unassigned'}
                                                     </div>
-                                                    <div className="ml-3">
-                                                        <div className="text-sm font-medium text-slate-900">
-                                                            {caseItem.leadAttorneyId.firstName} {caseItem.leadAttorneyId.lastName}
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <div className="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500">
-                                                        NA
-                                                    </div>
-                                                    <div className="ml-3">
-                                                        <div className="text-sm font-medium text-slate-900">Unassigned</div>
-                                                    </div>
-                                                </>
-                                            )}
+                                                </div>
+                                            </Link>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">

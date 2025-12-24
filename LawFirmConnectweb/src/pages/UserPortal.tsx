@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../api/client';
+import { dummyCases, dummyMessages, dummyCalendarEvents } from '../data/dummyData';
 import PortalLayout from '../components/PortalLayout';
 
 // Icons
@@ -35,26 +35,47 @@ const UserPortal: React.FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            // Mock Data
             try {
-                // Fetch Stats
-                const { data: homeData } = await api.get('/portal/home');
-                setStats(homeData.stats);
-                setUserName(homeData.user.firstName);
-                
-                // Fetch Active Cases (Limit 2 for dashboard)
-                const { data: casesData } = await api.get('/cases');
-                // Filter open cases and slice
-                const openCases = casesData.filter((c: any) => c.status !== 'Closed').slice(0, 2);
-                setActiveCases(openCases);
-
-                // Determine next hearing from stats (or could fetch full schedule if needed)
-                if (homeData.stats.nextHearing) {
-                    setUpcomingBooking(new Date(homeData.stats.nextHearing));
+                // User Name
+                const userStr = localStorage.getItem('user');
+                if (userStr) {
+                    const user = JSON.parse(userStr);
+                    setUserName(user.firstName || 'User');
+                } else {
+                    setUserName('Client');
                 }
 
+                // Stats
+                const activeCount = dummyCases.filter((c: any) => c.status !== 'Closed').length;
+                const unreadCount = dummyMessages.filter((m: any) => !m.read).length;
+                
+                // Next Hearing
+                // Sort events by date and find first one in future
+                const now = new Date();
+                const futureEvents = dummyCalendarEvents
+                    .map((e: any) => ({ ...e, dateObj: new Date(`${e.date} ${e.time}`) }))
+                    .filter((e: any) => e.dateObj > now)
+                    .sort((a: any, b: any) => a.dateObj.getTime() - b.dateObj.getTime());
+                
+                const nextEvent = futureEvents.length > 0 ? futureEvents[0] : null;
+
+                setStats({
+                    activeCases: activeCount,
+                    unreadMessages: unreadCount,
+                    // nextHearing: nextEvent ? nextEvent.dateObj : null // Storing full date obj
+                });
+
+                setUpcomingBooking(nextEvent ? nextEvent.dateObj : null);
+
+                // Active Cases list
+                const openCases = dummyCases.filter((c: any) => c.status !== 'Closed').slice(0, 2);
+                setActiveCases(openCases);
+
+                setLoading(false);
+
             } catch (error) {
-                console.error("Failed to fetch dashboard data", error);
-            } finally {
+                console.error("Failed to load dashboard", error);
                 setLoading(false);
             }
         };
@@ -167,7 +188,23 @@ const UserPortal: React.FC = () => {
                                     <h3 className="font-bold text-slate-900">Recent Activity</h3>
                                 </div>
                                 <div className="p-6">
-                                     <div className="text-sm text-slate-500">Activity log coming soon...</div>
+                                     <div className="space-y-4">
+                                         {/* Mock Activity List */}
+                                         <div className="flex items-start gap-3">
+                                             <div className="w-2 h-2 rounded-full bg-blue-600 mt-2"></div>
+                                             <div>
+                                                 <p className="text-sm text-slate-900">New document uploaded to <span className="font-medium">Estate Planning</span></p>
+                                                 <p className="text-xs text-slate-500">2 hours ago</p>
+                                             </div>
+                                         </div>
+                                         <div className="flex items-start gap-3">
+                                             <div className="w-2 h-2 rounded-full bg-slate-300 mt-2"></div>
+                                             <div>
+                                                 <p className="text-sm text-slate-900">Invoice #INV-2023-092 created</p>
+                                                 <p className="text-xs text-slate-500">Yesterday</p>
+                                             </div>
+                                         </div>
+                                     </div>
                                 </div>
                             </div>
 

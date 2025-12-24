@@ -15,6 +15,16 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import StartCase from './pages/StartCase';
 import UserPortal from './pages/UserPortal';
+import PortalProfile from './pages/PortalProfile';
+import ProfileInfo from './pages/profile/ProfileInfo';
+import ProfileSecurity from './pages/profile/ProfileSecurity';
+import ProfileNotifications from './pages/profile/ProfileNotifications';
+import CaseActivity from './pages/case-details/CaseActivity';
+import CaseDocuments from './pages/case-details/CaseDocuments';
+import CaseChat from './pages/case-details/CaseChat';
+import CaseBilling from './pages/case-details/CaseBilling';
+import CaseSettings from './pages/case-details/CaseSettings';
+import { Navigate } from 'react-router-dom';
 
 // ScrollToTop component to handle scroll position on route change
 const ScrollToTop = () => {
@@ -46,10 +56,23 @@ const App: React.FC = () => {
             <Route path="/portal" element={<UserPortal />} />
             <Route path="/portal/cases" element={<PortalCases />} />
             <Route path="/portal/start-case" element={<StartCase />} />
-            <Route path="/portal/cases/:id" element={<PortalCaseDetails />} />
+            <Route path="/portal/cases/:id" element={<PortalCaseDetails />}>
+                <Route index element={<Navigate to="activity" replace />} />
+                <Route path="activity" element={<CaseActivity />} />
+                <Route path="documents" element={<CaseDocuments />} />
+                <Route path="chat" element={<CaseChat />} />
+                <Route path="billing" element={<CaseBilling />} />
+                <Route path="settings" element={<CaseSettings />} />
+            </Route>
             <Route path="/portal/billing" element={<PortalBilling />} />
             <Route path="/portal/calendar" element={<PortalCalendar />} />
             <Route path="/portal/messages" element={<PortalMessages />} />
+            <Route path="/portal/profile" element={<PortalProfile />}>
+                <Route index element={<Navigate to="info" replace />} />
+                <Route path="info" element={<ProfileInfo />} />
+                <Route path="security" element={<ProfileSecurity />} />
+                <Route path="notifications" element={<ProfileNotifications />} />
+            </Route>
         </Routes>
        </main>
        {!isAuthPage && <Footer />}
