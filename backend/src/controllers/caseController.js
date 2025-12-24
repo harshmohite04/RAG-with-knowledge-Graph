@@ -36,6 +36,7 @@ exports.updateCase = async (req, res) => {
         if (status) updateFields.status = status;
         if (legalMatter) updateFields.legalMatter = legalMatter;
         if (notifications) updateFields.notifications = notifications;
+        if (req.body.assignedTeam) updateFields.assignedTeam = req.body.assignedTeam;
 
         // Check if user is Lead Attorney or Authorized (TODO: Add check vs req.user)
 

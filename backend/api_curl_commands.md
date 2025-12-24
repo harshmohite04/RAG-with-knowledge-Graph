@@ -82,11 +82,7 @@ curl -X GET http://localhost:3000/api/users/profile \
   "lastName": "Lawyer",
   "email": "lawyer@test.com",
   "phone": "1234567890",
-  "role": "Lawyer",
-  "notificationSettings": {
-    "email": true,
-    "sms": false
-  }
+  "role": "Lawyer"
 }
 ```
 
@@ -111,11 +107,7 @@ curl -X PUT http://localhost:3000/api/users/profile \
   "lastName": "Name",
   "email": "lawyer@test.com",
   "phone": "1234567890",
-  "role": "Lawyer",
-  "notificationSettings": {
-    "email": true,
-    "sms": false
-  }
+  "role": "Lawyer"
 }
 ```
 
@@ -163,6 +155,22 @@ curl -X GET "http://localhost:3000/api/cases?status=Open" \
     "createdAt": "2023-09-01T10:00:00.000Z"
   }
 ]
+```
+
+### Create Case (Internal Multipart with Files)
+
+_Requires `case-docs.pdf` and `contract.docx` in current directory._
+
+```bash
+curl -X POST http://localhost:3000/api/cases \
+  -H "Authorization: Bearer $TOKEN" \
+  -F "title=Estate Planning" \
+  -F "clientName=Jane Doe" \
+  -F "legalMatter=Estate" \
+  -F "description=Will and Trust setup" \
+  -F "assignedTeam=[{\"user\":\"{{USER_ID}}\",\"role\":\"Associate\"}]" \
+  -F "documents=@case-docs.pdf" \
+  -F "documents=@contract.docx"
 ```
 
 ### Create Case (JSON Payload)
@@ -250,8 +258,18 @@ curl -X PUT http://localhost:3000/api/cases/{{CASE_ID}} \
   -H "Content-Type: application/json" \
   -d '{
     "status": "In Progress",
-    "description": "Updated case description."
-  }'
+    "description": "Updated case description.",
+    "assignedTeam": [
+      {
+        "user": "{{USER_ID}}",
+        "role": "Lead Attorney"
+      }
+    ],
+    "notifications": {
+      "email": true,
+      "sms": true
+    }
+    }'
 ```
 
 **Expected Response:**

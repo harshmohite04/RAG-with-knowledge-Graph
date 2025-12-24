@@ -103,7 +103,6 @@ exports.getProfile = async (req, res) => {
         email: user.email,
         phone: user.phone,
         role: user.role,
-        notificationSettings: user.notificationSettings,
       });
     } else {
       res.status(404).json({ error: "User not found" });
