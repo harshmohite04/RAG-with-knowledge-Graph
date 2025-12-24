@@ -47,6 +47,46 @@ import { dummyBilling, dummyCases } from '../data/dummyData';
 const PortalBilling: React.FC = () => {
     const [billingData] = React.useState(dummyBilling);
     const [searchQuery, setSearchQuery] = React.useState('');
+    const [activeTab, setActiveTab] = React.useState<'open' | 'history' | 'retainer'>('open');
+
+    // Dynamic Stats Calculation
+    const totalOutstanding = billingData
+        .filter(b => b.status === 'Pending' || b.status === 'Overdue')
+        .reduce((sum, b) => sum + b.amount, 0);
+
+    const paidInvoices = billingData
+        .filter(b => b.status === 'Paid')
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    
+    const lastPayment = paidInvoices.length > 0 ? paidInvoices[0] : null;
+
+    // Filter Data based on Tabs and Search
+    const filteredData = billingData.filter(bill => {
+        // Search Filter
+        const matchesSearch = 
+            bill.id.toLowerCase().includes(searchQuery.toLowerCase()) || 
+            bill.description.toLowerCase().includes(searchQuery.toLowerCase());
+        
+        if (!matchesSearch) return false;
+
+        // Tab Filter
+        if (activeTab === 'open') {
+            return bill.status === 'Pending' || bill.status === 'Overdue';
+        }
+        if (activeTab === 'history') {
+            return bill.status === 'Paid';
+        }
+        if (activeTab === 'retainer') {
+            // Mock logic for retainer - assuming no data for now or specific description
+            return false; 
+        }
+        return true;
+    });
+
+    const handlePayment = () => {
+        alert("Redirecting to secure payment gateway...");
+    };
+
     return (
         <PortalLayout>
             
@@ -56,7 +96,9 @@ const PortalBilling: React.FC = () => {
                     <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Billing & Invoices</h2>
                     <p className="text-slate-500 mt-1">View your outstanding balance, manage invoices, and view payment history.</p>
                 </div>
-                <button className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 rounded-lg text-sm font-bold text-white hover:bg-blue-700 shadow-md transition-all">
+                <button 
+                    onClick={handlePayment}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 rounded-lg text-sm font-bold text-white hover:bg-blue-700 shadow-md transition-all">
                     <CardIcon /> Make a Payment
                 </button>
             </div>
@@ -69,11 +111,17 @@ const PortalBilling: React.FC = () => {
                         <WalletIcon />
                     </div>
                     <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Outstanding</p>
-                    <p className="text-4xl font-bold text-slate-900 mb-2">$4,250.00</p>
-                    <div className="inline-flex items-center gap-1.5 text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded">
-                        <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
-                        Action Required
-                    </div>
+                    <p className="text-4xl font-bold text-slate-900 mb-2">${totalOutstanding.toFixed(2)}</p>
+                    {totalOutstanding > 0 ? (
+                        <div className="inline-flex items-center gap-1.5 text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded">
+                            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
+                            Action Required
+                        </div>
+                    ) : (
+                         <div className="inline-flex items-center gap-1.5 text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded">
+                            All Caught Up
+                        </div>
+                    )}
                 </div>
 
                 {/* Last Payment */}
@@ -82,8 +130,10 @@ const PortalBilling: React.FC = () => {
                        <CheckCircleIcon />
                     </div>
                     <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Last Payment</p>
-                    <p className="text-4xl font-bold text-slate-900 mb-2">$1,200.00</p>
-                    <p className="text-sm text-slate-500">Paid on Oct 24, 2023</p>
+                    <p className="text-4xl font-bold text-slate-900 mb-2">${lastPayment ? lastPayment.amount.toFixed(2) : '0.00'}</p>
+                    <p className="text-sm text-slate-500">
+                        {lastPayment ? `Paid on ${new Date(lastPayment.date).toLocaleDateString()}` : 'No payments yet'}
+                    </p>
                 </div>
 
                 {/* Unbilled WIP */}
@@ -92,7 +142,7 @@ const PortalBilling: React.FC = () => {
                         <ClipboardClockIcon />
                     </div>
                     <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Unbilled WIP</p>
-                    <p className="text-4xl font-bold text-slate-900 mb-2">$850.00</p>
+                    <p className="text-4xl font-bold text-slate-900 mb-2">$0.00</p>
                     <p className="text-sm text-slate-500">Includes current month hours</p>
                 </div>
             </div>
@@ -101,20 +151,26 @@ const PortalBilling: React.FC = () => {
             <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden min-h-[500px]">
                 
                 {/* Tabs */}
-                <div className="flex border-b border-slate-200">
-                    <button className="px-6 py-4 text-sm font-bold text-blue-600 border-b-2 border-blue-600 bg-blue-50/50">
+                <div className="flex border-b border-slate-200 bg-slate-50/50">
+                    <button 
+                        onClick={() => setActiveTab('open')}
+                        className={`px-6 py-4 text-sm font-bold transition-colors border-b-2 ${activeTab === 'open' ? 'text-blue-600 border-blue-600 bg-white' : 'text-slate-600 border-transparent hover:text-slate-800 hover:bg-slate-100'}`}>
                         Open Invoices
                     </button>
-                    <button className="px-6 py-4 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-50 transition-colors">
+                    <button 
+                        onClick={() => setActiveTab('history')}
+                        className={`px-6 py-4 text-sm font-bold transition-colors border-b-2 ${activeTab === 'history' ? 'text-blue-600 border-blue-600 bg-white' : 'text-slate-600 border-transparent hover:text-slate-800 hover:bg-slate-100'}`}>
                         Payment History
                     </button>
-                    <button className="px-6 py-4 text-sm font-medium text-slate-600 hover:text-slate-800 hover:bg-slate-50 transition-colors">
+                    <button 
+                        onClick={() => setActiveTab('retainer')}
+                        className={`px-6 py-4 text-sm font-bold transition-colors border-b-2 ${activeTab === 'retainer' ? 'text-blue-600 border-blue-600 bg-white' : 'text-slate-600 border-transparent hover:text-slate-800 hover:bg-slate-100'}`}>
                         Retainer Details
                     </button>
                 </div>
 
                 {/* Filters */}
-                <div className="p-5 border-b border-slate-100 flex flex-col md:flex-row gap-4 bg-slate-50/30">
+                <div className="p-5 border-b border-slate-100 flex flex-col md:flex-row gap-4 bg-white">
                      <div className="flex-grow relative">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <SearchIcon />
@@ -140,7 +196,7 @@ const PortalBilling: React.FC = () => {
                 {/* Table */}
                 <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-slate-200">
-                        <thead className="bg-blue-50/40">
+                        <thead className="bg-slate-50">
                             <tr>
                                 <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Invoice #</th>
                                 <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Date Issued</th>
@@ -153,7 +209,7 @@ const PortalBilling: React.FC = () => {
                         </thead>
                         <tbody className="bg-white divide-y divide-slate-200">
                             
-                            {billingData.filter(b => b.id.toLowerCase().includes(searchQuery.toLowerCase()) || b.description.toLowerCase().includes(searchQuery.toLowerCase())).map((bill: any) => {
+                            {filteredData.map((bill: any) => {
                                 const relatedCase = dummyCases.find((c: any) => c._id === bill.caseId);
                                 const dueDate = new Date(new Date(bill.date).getTime() + 14 * 24 * 60 * 60 * 1000); // Mock due date
                                 
@@ -163,7 +219,7 @@ const PortalBilling: React.FC = () => {
                                             <div className="text-sm font-bold text-slate-900">#{bill.id}</div>
                                         </td>
                                         <td className="px-6 py-5 whitespace-nowrap">
-                                            <div className="text-sm text-slate-600 font-medium text-blue-600">{new Date(bill.date).toLocaleDateString([], {month: 'short', day: '2-digit', year: 'numeric'})}</div>
+                                            <div className="text-sm text-slate-600 font-medium">{new Date(bill.date).toLocaleDateString([], {month: 'short', day: '2-digit', year: 'numeric'})}</div>
                                         </td>
                                         <td className="px-6 py-5 whitespace-nowrap">
                                             <div className="text-sm font-medium text-slate-500">{dueDate.toLocaleDateString([], {month: 'short', day: '2-digit', year: 'numeric'})}</div>
@@ -187,17 +243,35 @@ const PortalBilling: React.FC = () => {
                                         <td className="px-6 py-5 whitespace-nowrap text-right text-sm font-medium">
                                             <div className="flex items-center justify-end gap-3">
                                                 <PdfIcon />
-                                                <button className="text-blue-600 hover:text-blue-800 font-bold hover:underline">
-                                                    {bill.status === 'Paid' ? 'Receipt' : 'Pay Now'}
-                                                </button>
+                                                {bill.status !== 'Paid' && (
+                                                    <button 
+                                                        onClick={() => alert(`Initiating payment for ${bill.id}`)}
+                                                        className="text-blue-600 hover:text-blue-800 font-bold hover:underline">
+                                                        Pay Now
+                                                    </button>
+                                                )}
+                                                {bill.status === 'Paid' && (
+                                                    <button className="text-slate-400 hover:text-slate-600 font-medium">
+                                                        Receipt
+                                                    </button>
+                                                )}
                                             </div>
                                         </td>
                                     </tr>
                                 )
                             })}
-                            {billingData.length === 0 && (
+                            
+                            {filteredData.length === 0 && (
                                 <tr>
-                                    <td colSpan={7} className="px-6 py-10 text-center text-slate-500">No invoices found.</td>
+                                    <td colSpan={7} className="px-6 py-12 text-center text-slate-500">
+                                        <div className="flex flex-col items-center justify-center">
+                                            <div className="bg-slate-100 p-4 rounded-full mb-3">
+                                                <CardIcon />
+                                            </div>
+                                            <p className="font-medium text-slate-900">No invoices found</p>
+                                            <p className="text-sm text-slate-400 mt-1">Try adjusting filters or search query</p>
+                                        </div>
+                                    </td>
                                 </tr>
                             )}
 
@@ -205,14 +279,14 @@ const PortalBilling: React.FC = () => {
                     </table>
                 </div>
 
-                 {/* Pagination */}
+                 {/* Pagination - Simplified/Mock for now */}
                  <div className="bg-white px-4 py-4 flex items-center justify-between border-t border-slate-200">
                      <p className="text-sm text-slate-600">
-                        Showing <span className="font-bold">1</span> to <span className="font-bold">3</span> of <span className="font-bold">3</span> results
+                        Showing <span className="font-bold">{filteredData.length > 0 ? 1 : 0}</span> to <span className="font-bold">{filteredData.length}</span> of <span className="font-bold">{filteredData.length}</span> results
                      </p>
                      <div className="flex gap-2">
-                        <button className="px-3 py-1 border border-slate-200 rounded text-sm text-slate-400 font-medium cursor-not-allowed">Previous</button>
-                        <button className="px-3 py-1 border border-slate-200 rounded text-sm text-slate-400 font-medium cursor-not-allowed">Next</button>
+                        <button disabled className="px-3 py-1 border border-slate-200 rounded text-sm text-slate-400 font-medium cursor-not-allowed">Previous</button>
+                        <button disabled className="px-3 py-1 border border-slate-200 rounded text-sm text-slate-400 font-medium cursor-not-allowed">Next</button>
                      </div>
                  </div>
 

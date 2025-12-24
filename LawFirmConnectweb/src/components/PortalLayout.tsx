@@ -168,21 +168,11 @@ const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                          <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm ring-2 ring-white shadow-sm">
                             {initials}
                         </div>
-                        <div className="flex-1 min-w-0">
-                            <p className="text-sm font-bold text-slate-900 truncate">{user ? `${user.firstName} ${user.lastName}` : 'Loading...'}</p>
+                        <div className="flex-1 min-w-0 cursor-pointer" onClick={() => navigate('/portal/profile')}>
+                            <p className="text-sm font-bold text-slate-900 truncate hover:text-blue-600 transition-colors">{user ? `${user.firstName} ${user.lastName}` : 'Loading...'}</p>
                             <p className="text-xs text-slate-500 truncate">{user?.role === 'lawyer' ? 'Attorney' : 'Client'}</p>
                         </div>
-                        <button 
-                            onClick={() => {
-                                localStorage.removeItem('token');
-                                localStorage.removeItem('user');
-                                window.location.href = '/signin';
-                            }}
-                            className="text-slate-400 hover:text-red-600 transition-colors"
-                            title="Logout"
-                        >
-                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-                        </button>
+                       
                     </div>
                 </div>
             </aside>
@@ -313,7 +303,7 @@ const PortalLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                                                 {/* Messages */}
                                                 {searchResults.messages.length > 0 && (
                                                     <div className="p-2">
-                                                         <div className="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 py-2">Messages</div>
+                                                         <div className="text-xs font-bold text-slate-400 uppercase tracking-wider px-3   py-2">Messages</div>
                                                          {searchResults.messages.map((m: any) => (
                                                             <div 
                                                                 key={m.id}
