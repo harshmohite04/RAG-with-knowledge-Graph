@@ -1,8 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send('Message API');
-});
+const messageController = require('../controllers/messageController');
+const { protect } = require('../middlewares/authMiddleware');
+
+router.get('/:contactId', protect, messageController.getMessages);
+router.post('/', protect, messageController.sendMessage);
+router.put('/read/:contactId', protect, messageController.markMessagesRead);
+
 
 module.exports = router;

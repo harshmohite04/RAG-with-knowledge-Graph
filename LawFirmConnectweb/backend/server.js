@@ -19,6 +19,35 @@ const connectDB = async () => {
 
 connectDB();
 
-app.listen(PORT, () => {
+const http = require('http');
+const { Server } = require('socket.io');
+
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:5173", // Frontend URL
+        methods: ["GET", "POST"]
+    }
+});
+
+// Store io instance to be used in controllers
+app.set('socketio', io);
+
+io.on('connection', (socket) => {
+    console.log(`Socket connected: ${socket.id}`);
+
+    // Join user to their own room
+    socket.on('join', (userId) => {
+        socket.join(userId);
+        console.log(`User ${userId} joined room ${userId}`);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Socket disconnected');
+    });
+});
+
+server.listen(PORT, () => {
     console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
 });
+
