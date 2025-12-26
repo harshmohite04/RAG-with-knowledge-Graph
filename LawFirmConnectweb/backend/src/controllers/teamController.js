@@ -364,6 +364,71 @@ const getTeamInvitations = async (req, res, next) => {
     }
 };
 
+// @desc    Directly add a team member (simplified flow)
+// @route   POST /cases/:caseId/team/members
+// @access  Private (Lead Attorney only)
+const addTeamMember = async (req, res, next) => {
+    try {
+        const { caseId } = req.params;
+        const { email, role } = req.body;
+
+        const caseDoc = await Case.findById(caseId);
+        if (!caseDoc) {
+            res.status(404);
+            throw new Error('Case not found');
+        }
+
+        // Check if user is lead attorney
+        if (caseDoc.leadAttorneyId.toString() !== req.user._id.toString()) {
+            res.status(403);
+            throw new Error('Only the lead attorney can add team members');
+        }
+
+        const userToAdd = await User.findOne({ email: email.toLowerCase() });
+        if (!userToAdd) {
+            res.status(404);
+            throw new Error('User not found. They must be registered on the portal first.');
+        }
+
+        // Check if already a member
+        const isAlreadyMember = caseDoc.teamMembers.some(
+            member => member.userId.toString() === userToAdd._id.toString()
+        );
+
+        if (isAlreadyMember) {
+            res.status(400);
+            throw new Error('User is already a team member');
+        }
+
+        // Add to teamMembers
+        caseDoc.teamMembers.push({
+            userId: userToAdd._id,
+            role: role || 'Member',
+            joinedAt: new Date()
+        });
+
+        // Add to assignedLawyers (for visibility logic)
+        if (!caseDoc.assignedLawyers.includes(userToAdd._id)) {
+            caseDoc.assignedLawyers.push(userToAdd._id);
+        }
+
+        await caseDoc.save();
+
+        res.status(201).json({
+            success: true,
+            user: {
+                id: userToAdd._id,
+                firstName: userToAdd.firstName,
+                lastName: userToAdd.lastName,
+                email: userToAdd.email,
+                role: role || 'Member'
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     validateTeamMember,
     inviteTeamMember,
@@ -372,5 +437,6 @@ module.exports = {
     removeTeamMember,
     leaveTeam,
     updateLeadAttorney,
-    getTeamInvitations
+    getTeamInvitations,
+    addTeamMember
 };

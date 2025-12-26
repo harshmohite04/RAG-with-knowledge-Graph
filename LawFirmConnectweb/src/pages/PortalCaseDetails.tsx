@@ -1,75 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 
+import AIIconLogo from '../assets/ai-logo.svg';
 import PortalLayout from '../components/PortalLayout';
-import AIIconLogo from '../assets/ai-logo.svg'
-import { dummyCases } from '../data/dummyData';
-
-interface Document {
-    _id: string;
-    fileName: string;
-    filePath: string;
-    category: 'Court Filings' | 'Evidence' | 'Correspondence' | 'General';
-    uploadedBy: {
-        _id: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-    };
-    uploadedAt: string;
-    fileSize: number;
-}
-
-interface ActivityLogItem {
-    _id: string;
-    type: string;
-    description: string;
-    performedBy: {
-        _id: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-    };
-    metadata?: any;
-    createdAt: string;
-}
-
-interface CaseData {
-    _id: string;
-    title: string;
-    description: string;
-    status: string;
-    category: string;
-    documents: {
-        name: string;
-        category: string;
-        date: string;
-        size: string;
-        uploadedBy: string;
-    }[];
-    createdAt: string;
-}
+import type { Case } from '../services/caseService';
+import caseService from '../services/caseService';
 
 const PortalCaseDetails: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [caseData, setCaseData] = useState<CaseData | null>(null);
-    const [currentUser, setCurrentUser] = useState<{ firstName: string; lastName: string } | null>(null);
+    const [caseData, setCaseData] = useState<Case | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Simulate fetch
-        const foundCase = dummyCases.find((c: any) => c._id === id);
-        
-        const timer = setTimeout(() => {
-            if (foundCase) {
-                setCaseData(foundCase as unknown as CaseData);
+        const fetchCaseDetails = async () => {
+            if (!id) return;
+            try {
+                const data = await caseService.getCaseById(id);
+                setCaseData(data);
+            } catch (error) {
+                console.error("Failed to fetch case details", error);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
-        }, 500);
-        return () => clearTimeout(timer);
+        };
+
+        fetchCaseDetails();
     }, [id]);
 
     // Redirect to default tab (activity) if at root case path

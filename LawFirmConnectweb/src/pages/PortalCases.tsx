@@ -38,51 +38,34 @@ const LockIcon = () => (
         <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
     </svg>
 )
-const TrashIcon = () => (
-    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-    </svg>
-)
 
-import { dummyCases } from '../data/dummyData';
+
+import type { Case } from '../services/caseService';
+import caseService from '../services/caseService';
 
 const PortalCases: React.FC = () => {
     const navigate = useNavigate();
-    const [cases, setCases] = React.useState<any[]>(dummyCases);
+    const [cases, setCases] = React.useState<Case[]>([]);
     const [loading, setLoading] = React.useState(true);
     const [filter, setFilter] = React.useState('All');
     const [searchQuery, setSearchQuery] = React.useState('');
-    const [showDeleteModal, setShowDeleteModal] = React.useState(false);
-    const [caseToDelete, setCaseToDelete] = React.useState<any>(null);
-    const [deleting, setDeleting] = React.useState(false);
 
     React.useEffect(() => {
-        // Simulate API loading
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 500);
-        return () => clearTimeout(timer);
+        const fetchCases = async () => {
+            try {
+                const data = await caseService.getCases();
+                setCases(data);
+            } catch (error) {
+                console.error("Failed to fetch cases", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCases();
     }, []);
 
-    const handleDeleteClick = (caseItem: any) => {
-        setCaseToDelete(caseItem);
-        setShowDeleteModal(true);
-    };
-
-    const handleDeleteConfirm = () => {
-        if (!caseToDelete) return;
-        setDeleting(true);
-
-        // Simulate API call
-        setTimeout(() => {
-            setCases(cases.filter(c => c._id !== caseToDelete._id));
-            setDeleting(false);
-            setShowDeleteModal(false);
-            setCaseToDelete(null);
-        }, 1000);
-    };
-
-    const filteredCases = cases.filter((c: any) => {
+    const filteredCases = cases.filter((c: Case) => {
         const matchesFilter = filter === 'All' ? true : c.status === filter;
         const matchesSearch = c.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                               c.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -92,6 +75,7 @@ const PortalCases: React.FC = () => {
     if (loading) {
         return <PortalLayout><div className="flex justify-center p-10">Loading Cases...</div></PortalLayout>;
     }
+
 
     return (
         <PortalLayout>
@@ -191,7 +175,7 @@ const PortalCases: React.FC = () => {
                         </thead>
                         <tbody className="bg-white divide-y divide-slate-200">
 
-                            {filteredCases.map((caseItem: any) => (
+                            {filteredCases.map((caseItem: Case) => (
                                 <tr 
                                     key={caseItem._id} 
                                     onClick={(e) => {
@@ -215,13 +199,13 @@ const PortalCases: React.FC = () => {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center group cursor-pointer">
-                                            <Link to={caseItem.lawyerId ? `/portal/messages?contact=Marcus Thorne` : '#'} className="flex items-center">
+                                            <Link to={caseItem.leadAttorney ? `/portal/messages?contact=${caseItem.leadAttorney.name}` : '#'} className="flex items-center">
                                                 <div className="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-500 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
-                                                    {caseItem.lawyerId ? 'MT' : 'NA'}
+                                                    {caseItem.leadAttorney ? caseItem.leadAttorney.name.split(' ').map((n:any) => n[0]).join('').substring(0,2).toUpperCase() : 'NA'}
                                                 </div>
                                                 <div className="ml-3">
                                                     <div className="text-sm font-medium text-slate-900 group-hover:text-blue-600 group-hover:underline transition-colors">
-                                                        {caseItem.lawyerId ? 'Marcus Thorne' : 'Unassigned'}
+                                                        {caseItem.leadAttorney ? caseItem.leadAttorney.name : 'Unassigned'}
                                                     </div>
                                                 </div>
                                             </Link>
@@ -239,17 +223,11 @@ const PortalCases: React.FC = () => {
                                         <div className="text-sm text-slate-900">{new Date(caseItem.createdAt).toLocaleDateString()}</div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-                                        {new Date(caseItem.updatedAt).toLocaleDateString()}
+                                        {caseItem.updatedAt ? new Date(caseItem.updatedAt).toLocaleDateString() : '-'}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <div className="flex items-center justify-end gap-2">
                                             <Link to={`/portal/cases/${caseItem._id}`} className="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg font-bold transition-colors">Details</Link>
-                                            <button
-                                                onClick={() => handleDeleteClick(caseItem)}
-                                                className="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg font-bold transition-colors inline-flex items-center gap-1.5"
-                                            >
-                                                <TrashIcon />
-                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -278,50 +256,6 @@ const PortalCases: React.FC = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Delete Confirmation Modal */}
-            {showDeleteModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl max-w-md w-full shadow-2xl">
-                        <div className="p-6">
-                            <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
-                                <TrashIcon />
-                                <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
-                            </div>
-                            <h3 className="text-xl font-bold text-slate-900 text-center mb-2">Delete Case</h3>
-                            <p className="text-sm text-slate-600 text-center mb-4">
-                                Are you sure you want to delete <span className="font-bold text-slate-900">"{caseToDelete?.title}"</span>?
-                            </p>
-                            <div className="bg-red-50 border border-red-100 rounded-lg p-3 mb-6">
-                                <p className="text-xs text-red-800 text-center font-medium">
-                                    This action cannot be undone. This will permanently delete the case and all related documents.
-                                </p>
-                            </div>
-                        </div>
-                        <div className="px-6 pb-6 flex gap-3">
-                            <button
-                                onClick={() => {
-                                    setShowDeleteModal(false);
-                                    setCaseToDelete(null);
-                                }}
-                                disabled={deleting}
-                                className="flex-1 px-4 py-2.5 border border-slate-300 rounded-lg text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors disabled:opacity-50"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleDeleteConfirm}
-                                disabled={deleting}
-                                className="flex-1 px-4 py-2.5 bg-red-600 rounded-lg text-sm font-bold text-white hover:bg-red-700 shadow-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                {deleting ? 'Deleting...' : 'Delete Permanently'}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
 
         </PortalLayout>
     );

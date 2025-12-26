@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import authService from '../services/authService';
 
 
 // ... icons ...
@@ -48,23 +49,14 @@ const SignIn: React.FC = () => {
         setError('');
         setIsLoading(true);
 
-        // Mock Login
-        setTimeout(() => {
-            // Simulate successful login
-            const mockUser = {
-                id: '12345',
-                firstName: 'Demo',
-                lastName: 'User',
-                email: formData.email,
-                role: 'client'
-            };
-            const mockToken = 'mock-jwt-token';
-            
-            localStorage.setItem('token', mockToken);
-            localStorage.setItem('user', JSON.stringify(mockUser));
+        try {
+            await authService.login(formData.email, formData.password);
             navigate('/portal');
+        } catch (err: any) {
+            setError(err.response?.data?.message || 'Invalid email or password');
+        } finally {
             setIsLoading(false);
-        }, 1500);
+        }
     }
 
     return (

@@ -15,7 +15,7 @@ const caseSchema = new mongoose.Schema({
         enum: ['Open', 'In Progress', 'Closed', 'Paused'],
         default: 'Open'
     },
-    category: {
+    legalMatter: {
         type: String,
         enum: ['Family Law', 'Corporate', 'Real Estate', 'Litigation', 'Other'],
         required: true
@@ -25,38 +25,22 @@ const caseSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    lawyerId: {
+    assignedLawyers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-        // optional for now if created by client before assignment? 
-        // Or if lawyer creates it, it's required. Let's make it optional initially.
-    },
+    }],
     documents: [{
-        fileName: {
-            type: String,
-            required: true
-        },
-        filePath: {
-            type: String,
-            required: true
-        },
+        fileName: { type: String, required: true },
+        filePath: { type: String, required: true },
         category: {
             type: String,
             enum: ['Court Filings', 'Evidence', 'Correspondence', 'General'],
             default: 'General'
         },
-        uploadedBy: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-            required: true
-        },
-        uploadedAt: {
-            type: Date,
-            default: Date.now
-        },
-        fileSize: {
-            type: Number
-        }
+        uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+        uploadedAt: { type: Date, default: Date.now },
+        fileSize: { type: Number },
+        recordStatus: { type: Number, enum: [0, 1], default: 1 }
     }],
     teamType: {
         type: String,
@@ -66,25 +50,38 @@ const caseSchema = new mongoose.Schema({
     leadAttorneyId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-        // Defaults to the creator (clientId) initially
     },
     teamMembers: [{
-        userId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        },
-        joinedAt: {
-            type: Date,
-            default: Date.now
-        }
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        role: { type: String, default: 'Member' },
+        joinedAt: { type: Date, default: Date.now }
     }],
     activityLog: [{
-        type: { type: String, required: true, enum: ['case_created', 'document_uploaded', 'document_deleted', 'team_member_invited', 'team_member_joined', 'team_member_left', 'status_changed'] },
+        type: { type: String, required: true },
         description: { type: String, required: true },
         performedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
         metadata: mongoose.Schema.Types.Mixed,
         createdAt: { type: Date, default: Date.now }
-    }]
+    }],
+    billing: [{
+        invoiceId: { type: String }, // or ObjectId
+        amount: { type: Number },
+        description: { type: String },
+        status: { type: String, enum: ['Paid', 'Unpaid', 'Pending'], default: 'Unpaid' },
+        date: { type: Date, default: Date.now },
+        receiptUrl: { type: String } // URL to S3 or local path
+    }],
+    settings: {
+        notifications: {
+            email: { type: Boolean, default: true },
+            sms: { type: Boolean, default: false }
+        }
+    },
+    recordStatus: {
+        type: Number,
+        enum: [0, 1],
+        default: 1
+    }
 }, {
     timestamps: true
 });

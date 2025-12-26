@@ -19,7 +19,13 @@ const teamRoutes = require('./src/routes/teamRoutes');
 const app = express();
 
 // Security and utility middleware
-app.use(cors()); // Allow all for now, or restrict to process.env.CLIENT_URL in production
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+  })
+);
+// Allow all for now, or restrict to process.env.CLIENT_URL in production
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(express.json());

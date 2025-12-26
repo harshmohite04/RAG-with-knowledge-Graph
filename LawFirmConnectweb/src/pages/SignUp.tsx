@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import authService from '../services/authService';
 
 
 const LogoIcon = () => (
@@ -62,12 +63,15 @@ const SignUp: React.FC = () => {
         }
 
         setIsLoading(true);
-        // Mock Registration
-        setTimeout(() => {
+        try {
+            await authService.register(formData);
             alert('Account created successfully! Please log in.');
             navigate('/signin');
+        } catch (err: any) {
+             setError(err.response?.data?.message || 'Registration failed. Please try again.');
+        } finally {
             setIsLoading(false);
-        }, 1500);
+        }
     };
 
     // const handleVerify = ... (removed)

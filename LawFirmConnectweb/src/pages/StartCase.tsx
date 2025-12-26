@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
+import caseService from '../services/caseService';
 
 import PortalLayout from '../components/PortalLayout';
 
@@ -65,21 +67,6 @@ interface TeamMember {
     expiresAt?: Date;
 }
 
-// Mock API
-const api = {
-    get: async (url: string) => {
-        console.log(`Mock API GET: ${url}`);
-        return { data: { firstName: 'Harsh', lastName: 'User', email: 'harsh@example.com' } };
-    },
-    post: async (url: string, data: any) => {
-        console.log(`Mock API POST: ${url}`, data);
-        if (url.includes('validate')) {
-             return { data: { success: true, user: { email: data.email, firstName: 'Test', lastName: 'User', id: 'temp-id' } } };
-        }
-        return { data: { success: true } };
-    }
-};
-
 const StartCase: React.FC = () => {
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
@@ -103,7 +90,9 @@ const StartCase: React.FC = () => {
     React.useEffect(() => {
         const fetchCurrentUser = async () => {
             try {
-                const response = await api.get('/auth/me');
+                // Use imported api instance or helper if authService has getCurrentUser exposed
+                // Assuming we can use internal api for now or authService
+                const response = await api.get('/auth/me'); 
                 const user = response.data;
                 setCurrentUser({
                     firstName: user.firstName,
@@ -130,37 +119,33 @@ const StartCase: React.FC = () => {
         setValidatingEmail(true);
         setEmailError('');
 
-        try {
-            const response = await api.post(`/cases/temp/team/validate`, { email: emailInput });
-
-            if (response.data.success) {
-                const user = response.data.user;
-                if (!user) throw new Error('Invalid response from server');
-
-                // Check if already invited
-                const alreadyInvited = formData.teamMembers.some(m => m.email === user.email);
-                if (alreadyInvited) {
-                    setEmailError('This user has already been invited');
-                    setValidatingEmail(false);
-                    return;
-                }
-
-                setFormData({
-                    ...formData,
-                    teamMembers: [...formData.teamMembers, {
-                        email: user.email,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        userId: user.id,
-                        status: 'pending'
-                    }]
-                });
-                setEmailInput('');
-            }
-        } catch (error: any) {
-            setEmailError(error.response?.data?.message || 'Cannot add people outside the portal. User must be registered first.');
+        // For now, client-side validation only as backend lookup is not ready
+        // TODO: Implement backend user lookup
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailInput)) {
+            setEmailError('Invalid email address format');
+            setValidatingEmail(false);
+            return;
         }
 
+        // Simulate success for demo/MVP
+         const alreadyInvited = formData.teamMembers.some(m => m.email === emailInput);
+         if (alreadyInvited) {
+             setEmailError('This user has already been invited');
+             setValidatingEmail(false);
+             return;
+         }
+
+        setFormData({
+            ...formData,
+            teamMembers: [...formData.teamMembers, {
+                email: emailInput,
+                firstName: 'Guest', // Placeholder
+                lastName: 'User',   // Placeholder
+                status: 'pending'
+            }]
+        });
+        setEmailInput('');
         setValidatingEmail(false);
     };
 
@@ -173,11 +158,35 @@ const StartCase: React.FC = () => {
 
     const handleSubmit = async () => {
         setLoading(true);
-        // Mock API call
-        setTimeout(() => {
-            alert("Case Created Successfully! (Demo Mode - Data not persisted)");
+        try {
+            const data = new FormData();
+            data.append('title', formData.title);
+            data.append('category', formData.category); // Map to legalMatter
+            data.append('legalMatter', formData.category); 
+            data.append('description', formData.description);
+            // Team logic: we might send assignedLawyers as IDs if we had them. 
+            // For now, just sending core fields + files.
+            
+            // Files
+            formData.files.forEach(file => {
+                data.append('files', file);
+            });
+            
+            // Debug: Log FormData contents
+            for (const pair of data.entries()) {
+                console.log('FormData:', pair[0], pair[1]);
+            }
+
+            await caseService.createCase(data);
+            
             navigate('/portal/cases');
-        }, 1500);
+        } catch (error: any) {
+            console.error("Failed to create case", error);
+            const errorMessage = error.response?.data?.message || error.message || "Unknown error";
+            alert(`Failed to create case: ${errorMessage}`);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const categories = [
