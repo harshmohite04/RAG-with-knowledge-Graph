@@ -5,36 +5,31 @@ const Case = require('../models/Case');
 // @access  Private
 const getCases = async (req, res, next) => {
     try {
-        let query = { recordStatus: 1 }; // Only active cases
+        // Default to returning NOTHING to be safe (recordStatus: 0 is effectively "deleted" but here we want to match nothing for active cases first)
+        // Better: Default to a query that returns nothing valid for a normal user unless specific logic adds to it.
+        // OR: Initialize query but rely on the role checks to populate it validly.
+        
 
-        // Filter by role/ownership
-        if (req.user.role === 'lawyer') {
-            // Lawyers see cases where they are assigned or lead
-            query.$or = [
-                { assignedLawyers: req.user._id },
-                { leadAttorneyId: req.user._id },
-                { 'teamMembers.userId': req.user._id }
-            ];
-            // If strictly my cases, maybe just assignedLawyers?
-            // "assignedLawyers" is the new field.
-             query.assignedLawyers = req.user._id; 
-             // Logic might need relaxation if they are just in teamMembers? 
-             // Integrating both for safety.
-             delete query.$or; // Reset for simple check first
-             
-             // Complex OR for inclusivity:
-             query = {
-                 recordStatus: 1,
-                 $or: [
-                     { assignedLawyers: req.user._id },
-                     { leadAttorneyId: req.user._id },
-                     { lawyerId: req.user._id } // Backup
-                 ]
-             };
+        // Unified query: User sees case if they are:
+        // 1. Keeping strictly to "creator" (clientId)
+        // 2. Assigned lawyer or Lead attorney
+        // 3. Team member
+        
+        let query = {
+             recordStatus: 1,
+             $or: [
+                 { clientId: req.user._id },
+                 { assignedLawyers: req.user._id },
+                 { leadAttorneyId: req.user._id },
+                 { 'teamMembers.userId': req.user._id }
+             ]
+        };
 
-        } else if (req.user.role === 'client') {
-            query.clientId = req.user._id;
+        // Optional: Keep Admin override if needed, otherwise Admin also only sees their own.
+        if (req.user.role === 'ADMIN') {
+             query = { recordStatus: 1 };
         }
+
 
         const cases = await Case.find(query)
             .populate('leadAttorneyId', 'firstName lastName email')
@@ -91,7 +86,7 @@ const createCase = async (req, res, next) => {
              }
         }
 
-        if (req.user.role === 'lawyer') {
+        if (req.user.role === 'ATTORNEY') {
             lawyers.push(req.user._id);
             // Ensure uniqueness
             lawyers = [...new Set(lawyers.map(id => id.toString()))];
