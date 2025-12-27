@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { dummyCalendarEvents } from '../data/dummyData';
 import PortalLayout from '../components/PortalLayout';
+import scheduleService from '../services/scheduleService';
+import type { CalendarEvent } from '../services/scheduleService';
 
 // Icons
 const PlusIcon = () => (
@@ -56,7 +57,7 @@ const DescriptionIcon = () => (
 )
 const CalendarIcon = () => (
     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-       <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
     </svg>
 )
 
@@ -67,7 +68,7 @@ const PortalCalendar: React.FC = () => {
     const [miniDate, setMiniDate] = useState(new Date());
     const [viewMode, setViewMode] = useState<'Day' | 'Week' | 'WorkWeek' | 'Month'>('WorkWeek');
     const [showModal, setShowModal] = useState(false);
-    const [bookings, setBookings] = useState<any[]>(dummyCalendarEvents);
+    const [bookings, setBookings] = useState<any[]>([]);
 
     // Form State
     const [eventTitle, setEventTitle] = useState('');
@@ -84,7 +85,27 @@ const PortalCalendar: React.FC = () => {
         const todayStr = new Date().toISOString().split('T')[0];
         setStartDate(todayStr);
         setEndDate(todayStr);
+
+        fetchEvents();
     }, []);
+
+    const fetchEvents = async () => {
+        try {
+            const data = await scheduleService.getEvents();
+            const adapted = data.map(evt => ({
+                id: evt._id,
+                title: evt.title,
+                date: evt.startDate, // ISO string
+                time: evt.startTime,
+                allDay: evt.allDay,
+                type: evt.type || 'Appointment',
+                status: evt.status || 'Scheduled'
+            }));
+            setBookings(adapted);
+        } catch (e) {
+            console.error("Failed to fetch events", e);
+        }
+    }
 
     // Helper: Get days for the mini calendar grid
     const getMiniCalendarDays = (date: Date) => {
@@ -130,26 +151,41 @@ const PortalCalendar: React.FC = () => {
         setViewDate(d);
     };
 
-    const handleAddEvent = (e: React.FormEvent) => {
+    const handleAddEvent = async (e: React.FormEvent) => {
         e.preventDefault();
-        const startDateTime = new Date(`${startDate}T${startTime}`);
-        const newEvent = {
-            id: Date.now(),
-            title: eventTitle || '(No Title)',
-            date: startDateTime.toISOString(),
-            time: `${startTime}`,
-            allDay,
-            type: 'Appointment',
-            status: 'Pending',
-            caseId: '1'
-        };
-        setBookings([...bookings, newEvent]);
-        setShowModal(false);
-        // Reset
-        setEventTitle('');
-        setAttendees('');
-        setLocation('');
-        setDescription('');
+        try {
+            const startDateTime = new Date(`${startDate}T${startTime}`);
+            // End Time
+            const endDateTime = new Date(`${endDate}T${endTime}`);
+
+            const newEvent: any = {
+                title: eventTitle || '(No Title)',
+                startDate: startDateTime.toISOString(), // Backend expects Date/ISO
+                startTime: startTime,
+                endDate: endDateTime.toISOString(),
+                endTime: endTime,
+                allDay,
+                location,
+                description,
+                attendees, // string for now
+                type: 'Appointment',
+                status: 'Scheduled'
+            };
+
+            await scheduleService.createEvent(newEvent);
+            await fetchEvents(); // Refresh
+            setShowModal(false);
+            
+            // Reset
+            setEventTitle('');
+            setAttendees('');
+            setLocation('');
+            setDescription('');
+
+        } catch (error) {
+            console.error("Failed to create event", error);
+            alert("Failed to create event");
+        }
     };
 
     const isSameDate = (d1: Date, d2: Date) => d1.toDateString() === d2.toDateString();
@@ -341,7 +377,11 @@ const PortalCalendar: React.FC = () => {
                                             {/* Events */}
                                             {dayEvents.map(evt => {
                                                 // Just mock position based on loop index for visual variety or static 9AM if fails.
-                                                const topOffset = (9 - 6) * 80; // 9 AM default
+                                                const timeParts = evt.time ? evt.time.split(':') : ['09', '00'];
+                                                const hour = parseInt(timeParts[0]);
+                                                const minute = parseInt(timeParts[1]);
+                                                
+                                                const topOffset = ((hour - 6) + (minute / 60)) * 80; 
                                                 
                                                 return (
                                                     <div 
@@ -349,7 +389,7 @@ const PortalCalendar: React.FC = () => {
                                                         className={`absolute left-1 right-1 p-2 rounded border-l-4 text-xs shadow-sm cursor-pointer hover:shadow-md transition-all
                                                             ${evt.type === 'Court' ? 'bg-blue-50 border-blue-600 text-blue-800' : 'bg-indigo-50 border-indigo-500 text-indigo-800'}
                                                         `}
-                                                        style={{ top: topOffset, height: '70px' }}
+                                                        style={{ top: Math.max(0, topOffset), height: '70px' }}
                                                     >
                                                         <div className="font-bold truncate">{evt.title}</div>
                                                         <div className="opacity-75 truncate">{evt.time || '9:00 AM'}</div>

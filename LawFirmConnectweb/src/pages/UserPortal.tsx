@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { dummyCases, dummyMessages, dummyCalendarEvents } from '../data/dummyData';
 import PortalLayout from '../components/PortalLayout';
+import caseService from '../services/caseService';
+import type { Case, ActivityLog } from '../services/caseService';
+import scheduleService from '../services/scheduleService';
+import type { CalendarEvent } from '../services/scheduleService';
 
 // Icons
 const CaseIcon = () => (
@@ -26,56 +29,126 @@ const FolderIcon = () => (
     </svg>
 )
 
+import { messageService } from '../services/messageService';
+
 const UserPortal: React.FC = () => {
     const [stats, setStats] = useState<any>(null);
-    const [activeCases, setActiveCases] = useState<any[]>([]);
-    const [upcomingBooking, setUpcomingBooking] = useState<any>(null);
+    const [activeCases, setActiveCases] = useState<Case[]>([]);
+    const [activities, setActivities] = useState<ActivityLog[]>([]);
+    const [upcomingBooking, setUpcomingBooking] = useState<Date | null>(null);
     const [loading, setLoading] = useState(true);
     const [userName, setUserName] = useState('');
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
-            // Mock Data
             try {
+                console.log("Fetching dashboard data...");
                 // User Name
                 const userStr = localStorage.getItem('user');
                 if (userStr) {
-                    const user = JSON.parse(userStr);
-                    setUserName(user.firstName || 'User');
+                    try {
+                        const user = JSON.parse(userStr);
+                        setUserName(user.firstName || 'User');
+                    } catch (e) {
+                         console.error("Failed to parse user", e);
+                         setUserName("User");
+                    }
                 } else {
                     setUserName('Client');
                 }
 
-                // Stats
-                const activeCount = dummyCases.filter((c: any) => c.status !== 'Closed').length;
-                const unreadCount = dummyMessages.filter((m: any) => !m.read).length;
+                // 1. Fetch Cases
+                let activeCount = 0;
+                let recentCases: Case[] = [];
+                try {
+                    const casesData = await caseService.getCases();
+                    if (Array.isArray(casesData)) {
+                        const openCases = casesData.filter(c => c.status !== 'Closed');
+                        activeCount = openCases.length;
+                        
+                        // Get most recent active cases
+                        recentCases = openCases
+                            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                            .slice(0, 2);
+                        
+                        setActiveCases(recentCases);
+                    } else {
+                        console.error("getCases returned non-array:", casesData);
+                    }
+                } catch (err) {
+                    console.error("Failed to fetch cases:", err);
+                }
+
+                // 2. Fetch Activities for recent cases
+                let allActivities: ActivityLog[] = [];
+                if (recentCases.length > 0) {
+                    try {
+                        const activityPromises = recentCases.map(c => caseService.getCaseActivity(c._id));
+                        const results = await Promise.all(activityPromises);
+                        results.forEach(logs => {
+                            if (Array.isArray(logs)) {
+                                allActivities = [...allActivities, ...logs];
+                            }
+                        });
+                        
+                        // Sort by date desc
+                        allActivities.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+                        allActivities = allActivities.slice(0, 5); // Top 5
+                    } catch (e) {
+                        console.error("Failed to fetch activities", e);
+                    }
+                }
+                setActivities(allActivities);
+
+                // 3. Fetch Unread Messages Count
+                let unreadCount = 0;
+                try {
+                    const msgData = await messageService.getUnreadCount();
+                    unreadCount = msgData.count || 0;
+                } catch (e) {
+                    console.error("Failed to fetch message count", e);
+                }
                 
-                // Next Hearing
-                // Sort events by date and find first one in future
-                const now = new Date();
-                const futureEvents = dummyCalendarEvents
-                    .map((e: any) => ({ ...e, dateObj: new Date(`${e.date} ${e.time}`) }))
-                    .filter((e: any) => e.dateObj > now)
-                    .sort((a: any, b: any) => a.dateObj.getTime() - b.dateObj.getTime());
-                
-                const nextEvent = futureEvents.length > 0 ? futureEvents[0] : null;
+                // 4. Fetch Calendar Events
+                let nextEventDate: Date | null = null;
+                try {
+                    const eventsData = await scheduleService.getEvents();
+                    if (Array.isArray(eventsData)) {
+                        const now = new Date();
+                        
+                        const futureEvent = eventsData.find((e: CalendarEvent) => {
+                             if (!e.startDate || !e.startTime) return false;
+                             try {
+                                 // Handle date string processing carefully
+                                 const startStr = typeof e.startDate === 'string' ? e.startDate.split('T')[0] : new Date(e.startDate).toISOString().split('T')[0];
+                                 const eventDate = new Date(`${startStr}T${e.startTime}`);
+                                 return eventDate > now;
+                             } catch (err) {
+                                 return false;
+                             }
+                        });
+    
+                        if (futureEvent) {
+                             const startStr = typeof futureEvent.startDate === 'string' ? futureEvent.startDate.split('T')[0] : new Date(futureEvent.startDate).toISOString().split('T')[0];
+                             nextEventDate = new Date(`${startStr}T${futureEvent.startTime}`);
+                        }
+                    }
+                } catch (e) {
+                    console.error("Failed to fetch events", e);
+                }
 
                 setStats({
                     activeCases: activeCount,
                     unreadMessages: unreadCount,
-                    // nextHearing: nextEvent ? nextEvent.dateObj : null // Storing full date obj
                 });
 
-                setUpcomingBooking(nextEvent ? nextEvent.dateObj : null);
-
-                // Active Cases list
-                const openCases = dummyCases.filter((c: any) => c.status !== 'Closed').slice(0, 2);
-                setActiveCases(openCases);
-
+                setUpcomingBooking(nextEventDate);
                 setLoading(false);
 
-            } catch (error) {
-                console.error("Failed to load dashboard", error);
+            } catch (globalError: any) {
+                console.error("Critical error loading dashboard", globalError);
+                setError(globalError.message || "Unknown error");
                 setLoading(false);
             }
         };
@@ -87,6 +160,10 @@ const UserPortal: React.FC = () => {
         return <PortalLayout><div className="flex justify-center p-10">Loading Dashboard...</div></PortalLayout>;
     }
 
+    if (error) {
+         return <PortalLayout><div className="p-10 text-red-600">Error loading dashboard: {error}</div></PortalLayout>;
+    }
+
     return (
         <PortalLayout>
                     
@@ -96,7 +173,6 @@ const UserPortal: React.FC = () => {
                             <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Welcome back, {userName}</h2>
                             <p className="text-slate-500 mt-1">Here is the latest on your active legal matters.</p>
                         </div>
-
                     </div>
 
                     {/* Stats Grid */}
@@ -123,7 +199,9 @@ const UserPortal: React.FC = () => {
                             <div>
                                 <p className="text-sm font-medium text-slate-500">Next Hearing</p>
                                 <p className="text-3xl font-bold text-slate-900 mt-2">
-                                    {upcomingBooking ? upcomingBooking.toLocaleDateString([], { month: 'short', day: 'numeric' }) : 'None'}
+                                    {upcomingBooking && !isNaN(upcomingBooking.getTime()) 
+                                        ? upcomingBooking.toLocaleDateString([], { month: 'short', day: 'numeric' }) 
+                                        : 'None'}
                                 </p>
                             </div>
                             <div className="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center text-purple-600">
@@ -145,7 +223,7 @@ const UserPortal: React.FC = () => {
                                     <Link to="/portal/cases" className="text-sm font-medium text-blue-600 hover:text-blue-700">View All</Link>
                                 </div>
                                 <div className="divide-y divide-slate-100">
-                                    {activeCases.map((caseItem: any) => (
+                                    {activeCases && activeCases.map((caseItem: Case) => (
                                         <div className="p-6" key={caseItem._id}>
                                             <div className="flex items-start justify-between mb-4">
                                                 <div className="flex gap-4">
@@ -154,14 +232,13 @@ const UserPortal: React.FC = () => {
                                                     </div>
                                                     <div>
                                                         <h4 className="font-bold text-slate-900">{caseItem.title}</h4>
-                                                        <p className="text-xs text-slate-500 mt-1">Status: {caseItem.status} • {new Date(caseItem.createdAt).toLocaleDateString()}</p>
+                                                        <p className="text-xs text-slate-500 mt-1">Status: {caseItem.status} • {caseItem.createdAt ? new Date(caseItem.createdAt).toLocaleDateString() : 'N/A'}</p>
                                                     </div>
                                                 </div>
                                                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                                     {caseItem.status}
                                                 </span>
                                             </div>
-                                            {/* Progress bar placeholder - could be dynamic if model had progress */}
                                             <div>
                                                 <div className="flex justify-between text-xs font-medium text-slate-500 mb-1">
                                                     <span>Progress</span>
@@ -179,31 +256,25 @@ const UserPortal: React.FC = () => {
                                 </div>
                             </div>
 
-                             {/* Recent Activity Placeholder - To be implemented fully with activity log later */}
-                             {/* Keeping static for now or hiding to match strict request of 'working solution' */}
-                             {/* User asked for it to work. If I don't have activity log backend, I should probably hide or mock intelligently */}
-                             {/* I will hide it or show a generic 'System Initialized' to keep it clean */}
+                             {/* Recent Activity */}
                             <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                                 <div className="px-6 py-4 border-b border-slate-100">
                                     <h3 className="font-bold text-slate-900">Recent Activity</h3>
                                 </div>
                                 <div className="p-6">
                                      <div className="space-y-4">
-                                         {/* Mock Activity List */}
-                                         <div className="flex items-start gap-3">
-                                             <div className="w-2 h-2 rounded-full bg-blue-600 mt-2"></div>
-                                             <div>
-                                                 <p className="text-sm text-slate-900">New document uploaded to <span className="font-medium">Estate Planning</span></p>
-                                                 <p className="text-xs text-slate-500">2 hours ago</p>
+                                         {activities && activities.map((act, idx) => (
+                                             <div className="flex items-start gap-3" key={idx}>
+                                                 <div className={`w-2 h-2 rounded-full mt-2 ${idx % 2 === 0 ? 'bg-blue-600' : 'bg-slate-300'}`}></div>
+                                                 <div>
+                                                     <p className="text-sm text-slate-900">{act.description}</p>
+                                                     <p className="text-xs text-slate-500">{new Date(act.createdAt).toLocaleString()}</p>
+                                                 </div>
                                              </div>
-                                         </div>
-                                         <div className="flex items-start gap-3">
-                                             <div className="w-2 h-2 rounded-full bg-slate-300 mt-2"></div>
-                                             <div>
-                                                 <p className="text-sm text-slate-900">Invoice #INV-2023-092 created</p>
-                                                 <p className="text-xs text-slate-500">Yesterday</p>
-                                             </div>
-                                         </div>
+                                         ))}
+                                         {activities.length === 0 && (
+                                             <div className="text-sm text-slate-500">No recent activity.</div>
+                                         )}
                                      </div>
                                 </div>
                             </div>
@@ -219,7 +290,7 @@ const UserPortal: React.FC = () => {
                                      <h3 className="font-bold text-slate-900">Upcoming</h3>
                                      <Link to="/portal/calendar" className="text-xs font-bold text-blue-600 tracking-wider">CALENDAR</Link>
                                 </div>
-                                {upcomingBooking ? (
+                                {upcomingBooking && !isNaN(upcomingBooking.getTime()) ? (
                                     <div className="flex gap-4 items-center p-3 bg-slate-50 rounded-lg border border-slate-100">
                                         <div className="text-center bg-white p-2 rounded border border-slate-200 shadow-sm min-w-[50px]">
                                             <span className="block text-xs font-bold text-blue-600 uppercase">{upcomingBooking.toLocaleDateString([], { month: 'short' })}</span>
@@ -236,9 +307,6 @@ const UserPortal: React.FC = () => {
                                     <p className="text-sm text-slate-500">No upcoming appointments.</p>
                                 )}
                              </div>
-
-                             {/* Primary Attorney (Hardcoded for now as relationship isn't strict in User model yet) */}
-                             {/* Ideally fetch from case[0].lawyerId */}
                              
                         </div>
                     </div>

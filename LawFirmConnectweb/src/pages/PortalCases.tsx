@@ -66,9 +66,17 @@ const PortalCases: React.FC = () => {
     }, []);
 
     const filteredCases = cases.filter((c: Case) => {
+        if (!c) return false;
         const matchesFilter = filter === 'All' ? true : c.status === filter;
-        const matchesSearch = c.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                              c.description.toLowerCase().includes(searchQuery.toLowerCase());
+        
+        const title = c.title || '';
+        const description = c.description || '';
+        const id = c._id || '';
+        const query = searchQuery.toLowerCase();
+        
+        const matchesSearch = title.toLowerCase().includes(query) || 
+                              description.toLowerCase().includes(query) ||
+                              id.toLowerCase().includes(query);
         return matchesFilter && matchesSearch;
     });
 

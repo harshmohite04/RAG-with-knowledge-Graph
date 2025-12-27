@@ -15,4 +15,9 @@ export const messageService = {
     const response = await api.put(`/messages/read/${contactId}`);
     return response.data;
   },
+
+  getUnreadCount: async () => {
+    const response = await api.get("/messages/unread/count");
+    return response.data;
+  },
 };

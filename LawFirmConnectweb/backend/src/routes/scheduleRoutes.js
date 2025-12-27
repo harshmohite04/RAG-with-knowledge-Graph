@@ -1,8 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const { getEvents, createEvent, deleteEvent } = require('../controllers/scheduleController');
+const { protect } = require('../middlewares/authMiddleware');
 
-router.get('/', (req, res) => {
-    res.send('Schedule API');
-});
+router.route('/')
+    .get(protect, getEvents)
+    .post(protect, createEvent);
+
+router.route('/:id')
+    .delete(protect, deleteEvent);
 
 module.exports = router;
