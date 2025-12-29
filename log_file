@@ -2485,3 +2485,155 @@ CONTEXT:
 Retriever items: 2
 =============================================
 
+
+
+==============================
+QUERY: What departments are available?
+==============================
+
+ANSWER:
+• Pharmacy
+• Emergency Department 
+• Cardiology 
+• Neurology 
+• Oncology 
+• Dermatology 
+• Gastroenterology 
+• Orthopedics 
+• Pulmonology 
+• Radiology 
+• Rehabilitation 
+• Surgery 
+• Anesthesiology 
+• Critical Care 
+• ICU (Intensive Care Unit) 
+• Pediatric ICU 
+• Neonatal ICU 
+• Labor and Delivery 
+• Maternity Ward 
+• Emergency Department 
+• Operating Room
+
+CONTEXT:
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:118' labels=frozenset({'Chunk'}) properties={'id': 'a69ad9cc-0606-468d-ace7-9a200a3d8014', 'text': 'Medication Storage:\n•\tMain pharmacy: Ambient temperature, controlled environment\n•\tRefrigerated section: 2-8°C for temperature-sensitive drugs\n•\tLocked cabinet: Narcotics, controlled substances\n•\tSecure storage: Psychotropic medications\nControlled Substances Inventory:\nNarcotics (Schedule X - Highly Controlled):\n•\tMorphine\n•\tCodeine\n•\tHydromorphone\nPsychotropic Medications (Schedule Y - Controlled):\n•\tAlprazolam, Lorazepam\n•\tDiazepam\n•\tRanitidine\n•\tMethadone\nStock Management:\n•\tFIFO (First In, First Out) principle\n•\tExpiry date monitoring\n•\tWeekly stock count\n•\tAutomated replenishment alerts\nPrescription Processing:\n1.\tReceipt: Prescription received (written/electronic)\n2.\tVerification: Legality, legitimacy, legibility check', 'source': 'sample1.txt'}> score=0.5669503>
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:157' labels=frozenset({'Chunk'}) properties={'id': '24225afa-675b-4e46-9c01-6411b5a5d2da', 'text': '[5] Medinous. (2025). A detailed view of hospital management system (HMS). Medinous Healthcare Solutions.\n[6] HHS. (2009). Summary of the HIPAA security rule. Department of Health & Human Services.\n[7] GoAID. (2025). List of hospital departments: Detailed information. GoAID Medical Reference Guide.\n[8] LeadSquared. (2025). 11 modules of hospital management system and their functions. LeadSquared Industries Blog.\n[9] HIPAA Journal. (2025). Electronic medical records and HIPAA compliance. HIPAA Journal Technical Guide.\n[10] eCampus Ontario. (2025). General hospital departments: Hospital unit administration. eCampus Ontario Pressbooks.', 'source': 'sample1.txt'}> score=0.5560476>
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:122' labels=frozenset({'Chunk'}) properties={'id': 'ef0a6484-b997-44d0-a7a7-491c2725d049', 'text': '•\tDates (admission, discharge, birth)\n•\tGeographic information (zip codes)\n•\tOccupation\nPermitted Uses & Disclosures:\nWithout Authorization:\n•\tPatient care treatment (coordinated care)\n•\tHealthcare operations (billing, QA, training)\n•\tPublic health activities (disease reporting)\n•\tLaw enforcement (with proper warrant)\n•\tJudicial/administrative proceedings\nWith Authorization:\n•\tAny disclosure not mentioned above\n•\tResearch studies (separate consent)\n•\tMarketing (explicit opt-out available)\n•\tThird-party request\nPatient Rights:\nRight\tImplementation\nAccess\tPatients can request medical records (within 30 days)\nAmendment\tPatients can request correction of errors\nAccounting of Disclosure\tPatient can request who accessed their records\nRestriction\tPatient can request to limit uses/disclosures', 'source': 'sample1.txt'}> score=0.55256224>
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:79' labels=frozenset({'Chunk'}) properties={'id': '7edd4ba1-62b3-4323-a3f0-ad0813ab79fa', 'text': 'Comprehensive Hospital Operations & Management Guide\nHospital Name: Sunrise Multi-Specialty Hospital\nLocation: Pune, Maharashtra, India\nEstablished: 2015\nType: 350-bed Multi-specialty teaching hospital\nNABH Accredited: Yes\nHIPAA Compliant: Yes\n________________________________________\nExecutive Summary\nSunrise Multi-Specialty Hospital is a state-of-the-art healthcare facility providing comprehensive medical services across 25+ departments. This document serves as the authoritative reference for hospital operations, patient management, data structures, regulatory compliance, and departmental workflows. All information is HIPAA-compliant and production-ready for integration into Electronic Medical Record (EMR) and Healthcare Information Systems.\n________________________________________', 'source': 'sample1.txt'}> score=0.5496677>
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:123' labels=frozenset({'Chunk'}) properties={'id': 'f623463c-5134-4ca3-a757-9e075676182f', 'text': 'Accounting of Disclosure\tPatient can request who accessed their records\nRestriction\tPatient can request to limit uses/disclosures\nConfidential Communication\tRequest for specific communication methods\nBreach Notification\tInformed within 60 days if breach occurs', 'source': 'sample1.txt'}> score=0.52993715>
+
+Retriever items: 5
+=============================================
+
+
+
+==============================
+QUERY: What is the hospital name?
+==============================
+
+ANSWER:
+Hospital Name: Sunrise Multi-Specialty Hospital
+
+CONTEXT:
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:79' labels=frozenset({'Chunk'}) properties={'id': '7edd4ba1-62b3-4323-a3f0-ad0813ab79fa', 'text': 'Comprehensive Hospital Operations & Management Guide\nHospital Name: Sunrise Multi-Specialty Hospital\nLocation: Pune, Maharashtra, India\nEstablished: 2015\nType: 350-bed Multi-specialty teaching hospital\nNABH Accredited: Yes\nHIPAA Compliant: Yes\n________________________________________\nExecutive Summary\nSunrise Multi-Specialty Hospital is a state-of-the-art healthcare facility providing comprehensive medical services across 25+ departments. This document serves as the authoritative reference for hospital operations, patient management, data structures, regulatory compliance, and departmental workflows. All information is HIPAA-compliant and production-ready for integration into Electronic Medical Record (EMR) and Healthcare Information Systems.\n________________________________________', 'source': 'sample1.txt'}> score=0.61399436>
+
+Retriever items: 1
+=============================================
+
+
+
+==============================
+QUERY: What is the hospital name?
+==============================
+
+ANSWER:
+Hospital Name: Sunrise Multi-Specialty Hospital
+
+CONTEXT:
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:79' labels=frozenset({'Chunk'}) properties={'id': '7edd4ba1-62b3-4323-a3f0-ad0813ab79fa', 'text': 'Comprehensive Hospital Operations & Management Guide\nHospital Name: Sunrise Multi-Specialty Hospital\nLocation: Pune, Maharashtra, India\nEstablished: 2015\nType: 350-bed Multi-specialty teaching hospital\nNABH Accredited: Yes\nHIPAA Compliant: Yes\n________________________________________\nExecutive Summary\nSunrise Multi-Specialty Hospital is a state-of-the-art healthcare facility providing comprehensive medical services across 25+ departments. This document serves as the authoritative reference for hospital operations, patient management, data structures, regulatory compliance, and departmental workflows. All information is HIPAA-compliant and production-ready for integration into Electronic Medical Record (EMR) and Healthcare Information Systems.\n________________________________________', 'source': 'sample1.txt'}> score=0.61399436>
+
+Retriever items: 1
+=============================================
+
+
+
+==============================
+QUERY: What is the hospital name?
+==============================
+
+ANSWER:
+Hospital Name: Sunrise Multi-Specialty Hospital
+
+CONTEXT:
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:79' labels=frozenset({'Chunk'}) properties={'id': '7edd4ba1-62b3-4323-a3f0-ad0813ab79fa', 'text': 'Comprehensive Hospital Operations & Management Guide\nHospital Name: Sunrise Multi-Specialty Hospital\nLocation: Pune, Maharashtra, India\nEstablished: 2015\nType: 350-bed Multi-specialty teaching hospital\nNABH Accredited: Yes\nHIPAA Compliant: Yes\n________________________________________\nExecutive Summary\nSunrise Multi-Specialty Hospital is a state-of-the-art healthcare facility providing comprehensive medical services across 25+ departments. This document serves as the authoritative reference for hospital operations, patient management, data structures, regulatory compliance, and departmental workflows. All information is HIPAA-compliant and production-ready for integration into Electronic Medical Record (EMR) and Healthcare Information Systems.\n________________________________________', 'source': 'sample1.txt'}> score=0.61399436>
+
+Retriever items: 1
+=============================================
+
+
+
+==============================
+QUERY: What is the hospital name?
+==============================
+
+ANSWER:
+Hospital Name: Sunrise Multi-Specialty Hospital
+
+CONTEXT:
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:79' labels=frozenset({'Chunk'}) properties={'id': '7edd4ba1-62b3-4323-a3f0-ad0813ab79fa', 'text': 'Comprehensive Hospital Operations & Management Guide\nHospital Name: Sunrise Multi-Specialty Hospital\nLocation: Pune, Maharashtra, India\nEstablished: 2015\nType: 350-bed Multi-specialty teaching hospital\nNABH Accredited: Yes\nHIPAA Compliant: Yes\n________________________________________\nExecutive Summary\nSunrise Multi-Specialty Hospital is a state-of-the-art healthcare facility providing comprehensive medical services across 25+ departments. This document serves as the authoritative reference for hospital operations, patient management, data structures, regulatory compliance, and departmental workflows. All information is HIPAA-compliant and production-ready for integration into Electronic Medical Record (EMR) and Healthcare Information Systems.\n________________________________________', 'source': 'sample1.txt'}> score=0.61399436>
+
+Retriever items: 1
+=============================================
+
+
+
+==============================
+QUERY: hello
+==============================
+
+ANSWER:
+I'm ready to help. Go ahead and ask your question.
+
+CONTEXT:
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:112' labels=frozenset({'Chunk'}) properties={'id': 'b966abe7-2165-423c-b224-d63301a27c9a', 'text': '•\tAuscultation: Breath sounds, adventitious sounds\nAbdomen:\n•\tInspection: Shape, scars, distension, visible pulsations\n•\tAuscultation: Bowel sounds\n•\tPalpation: Tenderness, organs, masses, rebound/guarding\n•\tPercussion: Ascites, organomegaly\nNeurological:\n•\tConsciousness (GCS score if altered)\n•\tCranial nerves (I-XII)\n•\tMotor: Strength (MRC grade 0-5), tone, coordination\n•\tSensory: Light touch, pain, temperature, vibration, proprioception\n•\tReflexes: Biceps, triceps, knee, ankle, plantar\n•\tCerebellar signs: Nystagmus, ataxia, dysdiadochokinesia\nAssessment & Plan:\nProvisional Diagnosis:\n•\tPrimary diagnosis (ICD-10 code)\n•\tDifferential diagnoses\nInvestigations Required:\n•\tLabs, imaging, ECG, scans\n•\tJustification for each test\nTreatment Plan:', 'source': 'sample1.txt'}> score=0.48164982>
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:111' labels=frozenset({'Chunk'}) properties={'id': '3826b57b-9ddc-4c4e-8e70-4ccbb306c403', 'text': 'Physical Examination:\nGeneral Examination:\n•\tAppearance, alert/conscious, cooperative, hydration status, nutritional status\n•\tLymph nodes examination (regional and generalized)\n•\tExamination of extremities for edema, clubbing, pallor, cyanosis\nSystem-wise Examination:\nCardiovascular:\n•\tPulse rate, rhythm, character, volume\n•\tBlood pressure (both arms if indicated)\n•\tJVP, hepatojugular reflex\n•\tPalpation: Apical impulse, parasternal impulse\n•\tAuscultation: Heart sounds, murmurs, friction rubs\nRespiratory:\n•\tInspection: Chest symmetry, respiratory pattern\n•\tPalpation: Chest expansion, tactile fremitus\n•\tPercussion: Resonance, dullness\n•\tAuscultation: Breath sounds, adventitious sounds\nAbdomen:\n•\tInspection: Shape, scars, distension, visible pulsations\n•\tAuscultation: Bowel sounds', 'source': 'sample1.txt'}> score=0.47665834>
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:109' labels=frozenset({'Chunk'}) properties={'id': 'ac624401-6178-4972-81de-16434bde55a2', 'text': 'Patient History:\nSection\tData Captured\nChief Complaints\tSymptoms, duration, severity, impact on daily life\nPresent Illness\tHPI of current condition\nPast Medical History\tPrevious diagnoses, hospitalizations, treatments\nPast Surgical History\tSurgeries, dates, complications\nMedication History\tCurrent medications, dosages, frequency, allergies\nDrug Allergy\tSpecific allergies, reaction type, severity\nFamily History\tFirst-degree relatives, conditions, ages of onset\nSocial History\tSmoking, alcohol, drug use, sexual history\nVaccination History\tImmunizations received, dates, providers\nGynecological History\tMenarche, LMP, menopause, obstetric history (for females)', 'source': 'sample1.txt'}> score=0.47526222>
+
+Retriever items: 3
+=============================================
+
+
+
+==============================
+QUERY: can you tell me how many doctors are there
+==============================
+
+ANSWER:
+Based on the provided context, I can answer that:
+
+There is 1 Department Head (Dr. Rohan Patel) and a total of 35 professionals in the Emergency Department (ED).
+
+CONTEXT:
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:83' labels=frozenset({'Chunk'}) properties={'id': 'b74eef66-19d4-46d2-a035-6c6ed5d41d45', 'text': '3.\tPathology\n4.\tPharmacy\n5.\tDietary Services\n6.\tHousekeeping & Sanitation\n7.\tSecurity & Safety\n8.\tHuman Resources\n9.\tFinance & Billing\n10.\tInformation Technology\n11.\tMedical Records & Health Information Management\n________________________________________\nPart 2: Clinical Departments - Detailed Overview\n2.1 Emergency Department (ED)\nDepartment Head: Dr. Rohan Patel\nStaff: 35 professionals\nOperating Hours: 24/7/365\nAnnual Patient Volume: 85,000+ visits\nServices Provided:\n•\tTriage and rapid assessment\n•\tTrauma care and resuscitation\n•\tAcute medical emergencies\n•\tPediatric emergencies\n•\tEmergency obstetrics\n•\tToxicology and overdose management\n•\tBurns treatment\nPhysical Infrastructure:\n•\t15 Emergency Stretchers\n•\t6 Resuscitation bays\n•\t3 Trauma rooms\n•\t1 Pediatric emergency area', 'source': 'sample1.txt'}> score=0.6011271>
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:130' labels=frozenset({'Chunk'}) properties={'id': '46bdbec7-135e-4183-bf76-2769b7042028', 'text': 'Surgical Procedures:\nProcedure\tBase Cost\tAnesthesia\tOT Charges\tTotal\nAppendectomy\t18,000\t8,000\t12,000\t38,000\nCholecystectomy\t22,000\t8,000\t12,000\t42,000\nHysterectomy\t28,000\t10,000\t15,000\t53,000\nCesarean section\t32,000\t10,000\t15,000\t57,000\nCABG (Open heart)\t185,000\t12,000\t20,000\t217,000\n\nEmergency Department Costs:\nSeverity\tBase Fee\tImaging\tTests\tTotal (Avg)\nMinor\t800\t2,000\t2,000\t4,800\nModerate\t1,500\t4,000\t4,000\t9,500\nSevere\t2,500\t8,000\t8,000\t18,500\nCritical\t5,000\t12,000\t15,000\t32,000\n\nOutpatient Consultation:\nSpeciality\tNew Patient\tFollow-up\nGeneral practitioner\t300\t200\nGeneral specialist\t500\t300\nSuper-specialty\t800\t500\nEmergency consultation\t1,000\t700', 'source': 'sample1.txt'}> score=0.59181213>
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:99' labels=frozenset({'Chunk'}) properties={'id': '59671e86-9146-4ce4-b651-07e699a15c1a', 'text': 'Annual Patient Volume: 8,900 deliveries, 3,200 gynecological procedures\nServices:\n•\tAntenatal care\n•\tHigh-risk pregnancy management\n•\tIntrapartum care\n•\tPostpartum care\n•\tGynecological oncology\n•\tReproductive medicine/Infertility\n•\tMinimal invasive gynecology\nMaternity Unit Structure:\nLabor & Delivery:\n•\t6 labor rooms with partograph monitoring\n•\t2 Delivery suites (sterile operating theatres)\n•\tFetal monitoring equipment (NST, CTG - 8 machines)\n•\tImmediate newborn care setup in each room\nAntenatal Ward:\n•\t20 beds for high-risk pregnancies\n•\tBed rest accommodation\n•\tMonitoring: BP monitoring, 24-hour urine collection, NST\nPostnatal Ward:\n•\t10 beds for normal recovery\n•\tMother-baby care setup\n•\tLactation support resources\nDelivery Statistics (Annual):\nParameter\tNumber\nTotal deliveries\t8,900', 'source': 'sample1.txt'}> score=0.58062387>
+
+Retriever items: 3
+=============================================
+
+
+
+==============================
+QUERY: can you tell me again
+==============================
+
+ANSWER:
+I'd be happy to help with your question about Sunrise Multi-Specialty Hospital's policies and procedures. Please go ahead and ask your question, and I'll do my best to provide a clear and accurate answer based on the provided context chunks.
+
+CONTEXT:
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:123' labels=frozenset({'Chunk'}) properties={'id': 'f623463c-5134-4ca3-a757-9e075676182f', 'text': 'Accounting of Disclosure\tPatient can request who accessed their records\nRestriction\tPatient can request to limit uses/disclosures\nConfidential Communication\tRequest for specific communication methods\nBreach Notification\tInformed within 60 days if breach occurs', 'source': 'sample1.txt'}> score=0.4969922>
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:127' labels=frozenset({'Chunk'}) properties={'id': 'd0fea0f1-b63d-4525-b322-6efc0d593e3e', 'text': "Audit Trail:\n•\tEvery PHI access recorded: User ID, timestamp, action, record accessed\n•\tMonthly audit reports: Unusual access patterns flagged\n•\tRetention: 12 months of audit logs maintained\n•\tInvestigation: Any suspicious activity triggers alert\nData Integrity:\n•\tChecksums: Verify data hasn't been altered\n•\tNon-repudiation: Digital signatures for critical documents\n•\tRegular backups: Daily incremental, weekly full\n•\tDisaster recovery: RTO 4 hours, RPO 1 hour\n4.3 Breach Notification Protocol\nBreach Definition:\nUnauthorized acquisition, access, use, or disclosure of PHI that compromises security/privacy.\nAssessment for Breach Risk (HIPAA breach band matrix):\nFactor\tLow Risk\tHigh Risk\nEncrypted?\tYes\tNo\nLikely accessed?\tNo\tYes\nMitigation?\tImplemented\tNot available", 'source': 'sample1.txt'}> score=0.45503277>
+- <Record node=<Node element_id='4:a837cde0-a97d-4c5e-bdb8-038686997772:110' labels=frozenset({'Chunk'}) properties={'id': 'fec26f02-5639-4e91-a57e-1b0b5f7fa395', 'text': '3.2 Clinical Encounter Documentation\nOutpatient Visit Documentation:\nChief Complaint:\n•\tPrimary reason for visit (documented verbatim)\n•\tDuration of symptoms\nHistory of Present Illness (HPI):\n•\tOnset, character, associated symptoms\n•\tAggravating/relieving factors\n•\tFunctional impact\n•\tPrior treatments\nReview of Systems (ROS):\n•\tSystematic inquiry: General, cardiovascular, respiratory, GI, neuro, etc.\n•\tYes/No with elaboration for positive findings\nVital Signs:\nParameter\tNormal Range\tFrequency\nTemperature\t36.5-37.5°C\tAll visits\nHeart Rate\t60-100 bpm\tAll visits\nRespiratory Rate\t12-20 breaths/min\tAll visits\nBlood Pressure\t<120/80 mmHg\tAll visits\nSpO2\t>95% on room air\tAll visits\nBMI\t18.5-24.9 kg/m²\tAll visits\nPain Score\t0-10 (Visual Analog)\tAll visits', 'source': 'sample1.txt'}> score=0.4316088>
+
+Retriever items: 3
+=============================================
+

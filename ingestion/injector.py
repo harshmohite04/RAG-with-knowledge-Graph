@@ -34,14 +34,15 @@ embedder = OllamaEmbeddings(
 
 
 # ------------------ NEO4J HELPERS ------------------
-def create_chunk_node(driver, chunk_id: str, text: str, source: str):
+def create_chunk_node(driver, chunk_id: str, text: str, source: str, case_id: str):
     query = """
     MERGE (c:Chunk {id: $id})
     SET c.text = $text,
-        c.source = $source
+        c.source = $source,
+        c.caseId = $case_id
     """
     with driver.session() as s:
-        s.run(query, id=chunk_id, text=text, source=source)
+        s.run(query, id=chunk_id, text=text, source=source, case_id=case_id)
 
 
 def create_entity_relations(driver, chunk_id: str, text: str):
@@ -121,8 +122,8 @@ def qdrant_upsert(client: QdrantClient, collection: str, vectors: list[list[floa
 
 
 # ------------------ INGEST DOCUMENT ------------------
-def ingest_document(text: str, source_name: str):
-    print(f"\n=== Ingesting: {source_name} ===")
+def ingest_document(text: str, source_name: str, case_id: str):
+    print(f"\n=== Ingesting: {source_name} for Case: {case_id} ===")
 
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=800,
@@ -147,11 +148,12 @@ def ingest_document(text: str, source_name: str):
                 "chunk_id": chunk_id,   # used by QdrantNeo4jRetriever (id_property_external)
                 "text": chunk_text,
                 "source": source_name,
+                "case_id": case_id      # Metadata for filtering
             }
         )
 
         # Store in Neo4j
-        create_chunk_node(driver, chunk_id, chunk_text, source_name)
+        create_chunk_node(driver, chunk_id, chunk_text, source_name, case_id)
         create_entity_relations(driver, chunk_id, chunk_text)
 
     # Upsert into Qdrant
@@ -163,6 +165,7 @@ def ingest_document(text: str, source_name: str):
 # ------------------ MAIN ------------------
 if __name__ == "__main__":
     file_path = "documents/sample1.txt"
+    case_id_arg = "default_case"
 
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"File not found: {file_path}")
@@ -170,4 +173,4 @@ if __name__ == "__main__":
     with open(file_path, "r", encoding="utf-8") as f:
         text = f.read()
 
-    ingest_document(text, source_name="sample1.txt")
+    ingest_document(text, source_name="sample1.txt", case_id=case_id_arg)

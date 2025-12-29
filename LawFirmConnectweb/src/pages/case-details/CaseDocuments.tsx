@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
 import caseService from '../../services/caseService';
+import ragService from '../../services/ragService';
 // Icons
 const SearchIcon = () => (
     <svg className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -115,7 +116,19 @@ const CaseDocuments: React.FC = () => {
                 const formData = new FormData();
                 formData.append('files', pf.file);
                 formData.append('category', pf.category);
+                
+                // 1. Upload to Node.js Backend (Storage)
                 await caseService.uploadDocument(id, formData);
+
+                // 2. Ingest into RAG System (AI)
+                try {
+                    await ragService.ingestDocument(id, pf.file);
+                    console.log(`[RAG] Ingested ${pf.file.name}`);
+                } catch (ragError) {
+                    console.error(`[RAG] Failed to ingest ${pf.file.name}`, ragError);
+                    // Decide if we want to block or just warn. 
+                    // For now, we log but don't stop the UI success state since storage succeeded.
+                }
             }
 
             // Refresh docs (naive re-fetch or rely on the last response)

@@ -1,0 +1,151 @@
+Here is a detailed dummy legal-style case you can directly drop into your RAG KB and then query against.
+
+---
+
+## Case metadata
+
+- Case name: **Riya Sharma v. Meditech Hospital Pvt. Ltd. & Ors.**
+- Court: High Court of Maharashtra, Bench at Mumbai  
+- Case number: Writ PetRacition (Civil) No. 2145 of 2023  
+- Date of judgment: 12 March 2024  
+- Area: Medical negligence, patient rights, hospital liability  
+
+***
+
+## Background facts
+
+Riya Sharma, a 32‑year‑old software engineer, was admitted to Meditech Hospital, Mumbai, on 5 June 2022 for a planned laparoscopic gallbladder removal (cholecystectomy). She had a history of mild asthma but no cardiac issues, and her pre‑operative fitness report declared her fit for surgery.
+
+The hospital gave her a standard consent form, which was:
+- Pre‑printed, generic, and not procedure‑specific.
+- Not explained in detail in any language she fully understood.
+- Signed just 15 minutes before surgery while she was under anxiety and mild pre‑medication.
+
+The surgery was performed by Dr. Ajay Verma (Senior Surgeon) with assistance from a junior resident and an anesthetist, Dr. Nidhi Rao. During the procedure:
+- The **cystic duct** was allegedly misidentified, leading to accidental clipping and partial transection of the **common bile duct**.
+- A sudden drop in blood pressure and oxygen saturation occurred but was not recorded promptly due to a malfunctioning monitor that had not been serviced for three months.
+- The intra‑operative notes were sparse, missing timestamps and clear description of complications.
+
+After surgery, Riya complained of:
+- Severe abdominal pain.
+- Persistent vomiting.
+- Yellowing of eyes and dark urine by Day 2 post‑op.
+
+The nursing staff attributed this to “normal post‑operative discomfort” and did not escalate to the duty doctor for over 18 hours. No ultrasound or liver function tests were ordered until Day 3, when her condition significantly deteriorated and she developed sepsis.
+
+On Day 4, she was shifted to another tertiary care hospital by her family. There, imaging revealed:
+- Injury to the common bile duct.
+- Bile leakage into the peritoneal cavity.
+- Early septic shock.
+
+She underwent emergency reconstructive surgery and spent 14 days in ICU. The second hospital’s discharge summary explicitly mentioned “suspected iatrogenic bile duct injury during laparoscopic cholecystectomy at previous hospital.”
+
+***
+
+## Allegations by the petitioner (Riya Sharma)
+
+Riya filed a petition before the High Court after first approaching the State Medical Council and a consumer forum, alleging:
+
+1. **Medical negligence in surgery**
+   - Failure to follow accepted surgical protocol for identification of the cystic duct and artery.
+   - No use of intra‑operative cholangiography or imaging despite unclear anatomy as per OT nurse’s oral statement.
+   - Inadequate intra‑operative monitoring due to faulty equipment that was knowingly kept in use.
+
+2. **Negligent post‑operative care**
+   - Ignoring classic signs of bile duct injury and sepsis for more than 24 hours.
+   - Failure to order basic investigations (LFT, ultrasound) in a timely manner.
+   - Inadequate staffing in the post‑operative ward and poor supervision by senior doctors.
+
+3. **Defective consent and violation of patient rights**
+   - Consent form was generic, did not mention specific risks such as bile duct injury or need for conversion to open surgery.
+   - Consent was not obtained in an informed manner; risks, alternatives, and possible complications were not adequately explained.
+   - No documentation that risks were explained in Hindi/Marathi which the patient preferred.
+
+4. **Deficiency in record‑keeping**
+   - OT records lacked time‑stamped entries of complications.
+   - Anesthesia chart had overwriting and unexplained gaps.
+   - Equipment maintenance logs for monitors and OT machines were incomplete.
+
+Riya sought:
+- Compensation of ₹1.5 crores for medical expenses, loss of income, and long‑term health impact.
+- Declaration that the hospital violated her fundamental right to life and dignity under Article 21 of the Constitution.
+- Directions for systemic corrective measures and an independent medical audit of the hospital.
+
+***
+
+## Defense by respondents
+
+The hospital and doctors argued:
+
+1. **Known complication, not negligence**
+   - Bile duct injury is a known complication of laparoscopic cholecystectomy even in the hands of competent surgeons.
+   - The surgery was performed in accordance with standard medical practice, and the complication, though unfortunate, does not automatically amount to negligence.
+
+2. **Adequate monitoring and care**
+   - The vitals were “reasonably monitored” and any equipment issues were “temporary and promptly managed”.
+   - Post‑operative symptoms initially appeared within the normal range of post‑surgical recovery, and investigations were ordered as soon as deterioration was detected.
+
+3. **Valid consent**
+   - The consent form, though standard, was sufficient and duly signed by the patient.
+   - The patient and her husband were allegedly informed verbally about potential risks, including bile duct injury and need for further surgery.
+
+4. **No causal link to long‑term damage**
+   - The eventual reconstruction and recovery show that there is no permanent, total disability.
+   - Amount of compensation claimed is excessive and disproportionate.
+
+***
+
+## Issues framed by the Court
+
+1. Whether the conduct of the surgeon and hospital staff fell below the standard of reasonable care expected of a competent medical professional in similar circumstances.
+
+2. Whether the consent obtained from the petitioner amounted to **informed consent** or was merely a formal, inadequate, generic consent.
+
+3. Whether the delay in recognising and treating post‑operative complications constituted negligence.
+
+4. Whether deficiencies in record‑keeping and maintenance of equipment can be considered evidence supporting an inference of negligence.
+
+5. Whether the petitioner is entitled to compensation, and if so, the appropriate quantum and basis for calculation.
+
+***
+
+## Court’s key findings
+
+1. **Breach of standard of care**
+   - Expert evidence showed that when anatomy is unclear or there is difficulty in dissection, it is standard practice either to convert to open surgery or employ intra‑operative imaging.
+   - The surgical notes did not mention any such steps, and the court drew an adverse inference from this omission.
+   - The court held that the surgeon failed to take all reasonable precautions expected in a routine laparoscopic cholecystectomy.
+
+2. **Post‑operative negligence**
+   - Nursing notes clearly recorded repeated complaints of severe pain and vomiting, yet there was no contemporaneous order from a doctor for investigations for more than 18 hours.
+   - The court held that this delay in recognising a serious complication and initiating appropriate diagnostics amounted to negligent post‑operative care.
+
+3. **Invalid informed consent**
+   - The consent form was found to be a generic template used for all surgeries without procedure‑specific risks.
+   - There was no documentation that risks were explained in a language and detail understandable to the patient.
+   - The court held that the hospital failed in its duty to obtain real, informed consent, thereby violating the patient’s right to autonomy and bodily integrity.
+
+4. **Record‑keeping and equipment**
+   - The hospital could not produce recent, verifiable maintenance logs for the malfunctioning monitor.
+   - The court observed that poor record‑keeping and lack of equipment maintenance are systemic failures that strengthen the inference of negligence.
+
+5. **Right to life and dignity**
+   - The court linked the hospital’s conduct to a violation of the petitioner’s right to live with dignity under Article 21, especially given the avoidable nature of the suffering caused.
+
+---
+
+## Final order (operative part)
+
+- The hospital and the operating surgeon were held **jointly and severally liable** for medical negligence.
+- The court awarded:
+  - ₹45 lakhs towards medical expenses (past and reasonably foreseeable future).
+  - ₹35 lakhs towards loss of income and diminished earning capacity.
+  - ₹20 lakhs towards pain, suffering, and loss of amenities of life.
+  - ₹5 lakhs as exemplary damages for systemic negligence and poor record‑keeping.
+- The total compensation of **₹1.05 crores** was to be paid with 8% interest per annum from the date of filing the petition until realisation.
+- The court directed:
+  - An independent audit of the hospital’s consent processes and equipment maintenance within six months.
+  - Mandatory implementation of procedure‑specific consent forms and electronic medical record logs.
+  - Filing of a compliance report before the court.
+
+***

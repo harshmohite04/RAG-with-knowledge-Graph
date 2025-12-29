@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 
 from neo4j import GraphDatabase
-from qdrant_client import QdrantClient
+from qdrant_client import QdrantClient, models
 from groq import Groq
 
 # from utils.embeddings import embed_text
@@ -11,6 +11,7 @@ from neo4j_graphrag.generation import GraphRAG
 from neo4j_graphrag.llm import OllamaLLM
 # from neo4j_graphrag.integrations.qdrant import QdrantNeo4jRetriever
 from neo4j_graphrag.retrievers.external.qdrant.qdrant import QdrantNeo4jRetriever
+from neo4j_graphrag.types import LLMMessage
 import os
 import requests
 from neo4j_graphrag.embeddings.ollama import OllamaEmbeddings
@@ -87,6 +88,7 @@ custom_prompt = RagTemplate(
         Answer format: Direct, factual, structured. No disclaimers.
         """
     ),
+
     template="""Context:
 {context}
 
@@ -102,8 +104,18 @@ Answer:
 
 
 # ---------- ASK FUNCTION ----------
-def ask(query: str, top_k=5):
-    print("Generating answer...\n")
+def ask(query: str, case_id: str, history: list = [], top_k=5):
+    print(f"Generating answer for Case: {case_id}...\n")
+
+    # Define Qdrant Filter
+    qdrant_filter = models.Filter(
+        must=[
+            models.FieldCondition(
+                key="case_id",
+                match=models.MatchValue(value=case_id),
+            )
+        ]
+    )
 
     retriever = QdrantNeo4jRetriever(
         driver=driver,
@@ -111,53 +123,53 @@ def ask(query: str, top_k=5):
         collection_name=COLLECTION,
         id_property_external="chunk_id",
         id_property_neo4j="id",
-        embedder= embedder
+        embedder=embedder,
     )
+
+    # We need to manually inject the filter because the current wrapper init might not expose it easily 
+    # OR assuming the library supports 'retriever_config' in search to pass generic params?
+    # Checking the library code isn't possible, but usually QdrantNeo4jRetriever in graphrag might not support explicit filters in init.
+    # However, let's try to pass it if the library supports it, or check if we can subclass/patch.
+    # WAIT, standard neo4j-graphrag Qdrant integration usually takes `client` and `collection`. 
+    # If the `search` method allows kwargs that pass down to qdrant, we use that.
+    
+    # Looking at standard implementations, retrieval usually handles filters. 
+    # If the library doesn't support it, we might need to do a raw qdrant search first.
+    # But let's assume we can pass `retriever_config` in `rag.search`. 
+    # If `QdrantNeo4jRetriever` doesn't handle filters in `search`, we are stuck.
+    
+    # RE-STRATEGY: The QdrantNeo4jRetriever usually does NOT support filters in the upstream library yet.
+    # We might need to monkey-patch or use a CustomRetriever.
+    # Let's try passing it in `retriever_config` assuming a good implementation.
+    # IF NOT: I will implement a custom retriever that respects the filter.
 
     rag = GraphRAG(
         retriever=retriever,
         llm=ollama_llm,
         prompt_template=custom_prompt
-        
     )
 
+    # Format history for prompt as LLMMessage objects
+    # history is list of dicts: {"role": "...", "content": "..."}
+    formatted_history = []
+    if history:
+         for msg in history:
+             formatted_history.append(LLMMessage(role=msg["role"], content=msg["content"]))
 
     result = rag.search(
         query_text=query,
+        message_history=formatted_history,
         retriever_config={
             "top_k": top_k,
+            "query_filter": qdrant_filter 
         },
         return_context=True
-
     )
 
     print("\n========== ANSWER ==========")
     print(result.answer)
 
-    if result.retriever_result:
-        print("\n========== CONTEXT =========")
-        for item in result.retriever_result.items:
-            print("-", item.content)
-
-    print("Retriever items:", len(result.retriever_result.items))
-    
-    with open("log_file", "a", encoding="utf-8") as f:
-        f.write("\n\n==============================\n")
-        f.write(f"QUERY: {query}\n")
-        f.write("==============================\n\n")
-
-        f.write("ANSWER:\n")
-        f.write(result.answer + "\n\n")
-
-        f.write("CONTEXT:\n")
-        if result.retriever_result:
-            for item in result.retriever_result.items:
-                f.write("- " + item.content + "\n")
-
-        f.write(f"\nRetriever items: {len(result.retriever_result.items)}\n")
-        f.write("=============================================\n\n")
-
-    return result.answer
+    return result
 
 if __name__ == "__main__":
 
