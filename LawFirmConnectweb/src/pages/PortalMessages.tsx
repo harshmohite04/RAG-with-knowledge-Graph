@@ -139,7 +139,7 @@ const PortalMessages: React.FC = () => {
             updateConversationsList(message);
         };
 
-        const readListener = ({ recipientId, contactId }: any) => {
+        const readListener = ({ recipientId }: any) => {
              // contactId is ME (the sender of the original messages)
              // recipientId is the person who read them (the current contact)
              

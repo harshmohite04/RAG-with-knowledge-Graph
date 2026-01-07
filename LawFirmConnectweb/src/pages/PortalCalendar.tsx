@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PortalLayout from '../components/PortalLayout';
 import scheduleService from '../services/scheduleService';
-import type { CalendarEvent } from '../services/scheduleService';
 
 // Icons
 const PlusIcon = () => (
@@ -77,7 +76,7 @@ const PortalCalendar: React.FC = () => {
     const [startTime, setStartTime] = useState('09:00');
     const [endDate, setEndDate] = useState('');
     const [endTime, setEndTime] = useState('10:00');
-    const [allDay, setAllDay] = useState(false);
+    // allDay state removed as unused
     const [location, setLocation] = useState('');
     const [description, setDescription] = useState('');
 
@@ -164,7 +163,7 @@ const PortalCalendar: React.FC = () => {
                 startTime: startTime,
                 endDate: endDateTime.toISOString(),
                 endTime: endTime,
-                allDay,
+                allDay: false,
                 location,
                 description,
                 attendees, // string for now
