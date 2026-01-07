@@ -10,8 +10,12 @@ langchain==0.1.0
 langchain-community==0.0.10
 langchain-openai==0.0.2
 neo4j==5.15.0
-qdrant-client==1.7.0
+# qdrant-client==1.7.0
 sentence-transformers==2.2.2
 openai==1.6.1
 python-dotenv==1.0.0
-qdrant-client 1.6.4
+groq
+neo4j_graphrag
+neo4j_graphrag[ollama]
+langchain_text_splitters
+python-multipart

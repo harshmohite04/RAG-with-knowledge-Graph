@@ -1,0 +1,112 @@
+A short fictional lawyer case is below that you can directly paste into a `.txt` file. Since access to external sources is disabled on this turn, outside citations are not available for this answer.
+
+***
+
+Case Title: Sharma v. BrightWave Technologies Pvt. Ltd.  
+Jurisdiction: Civil Court, Pune (Fictional)  
+Matter: Wrongful Termination and Unpaid Bonuses
+
+Background  
+Ananya Sharma, age 29, worked as a Senior Software Engineer at BrightWave Technologies Pvt. Ltd., an AI product company based in Pune. She joined the company on 1 April 2022 under a written employment contract that promised a fixed salary plus a performance‑linked annual bonus of up to 20% of her CTC, subject to meeting mutually agreed KPIs.
+
+In March 2024, BrightWave secured a major contract to build an AI‑powered document processing system for a chain of private hospitals. Sharma led the backend and ML integration team. The project was delivered on time, and the client signed a letter of appreciation citing “exceptional technical delivery and responsiveness” from Sharma’s team.
+
+Events Leading to Dispute  
+In April 2024, during annual performance reviews, Sharma’s manager verbally praised her work and told her she would receive “the full 20% bonus” for FY 2023–24. However, when salary revision letters were issued, her bonus line item showed “0” and her salary increment was significantly lower than her peers.
+
+Sharma requested a written explanation from HR and her manager. After two weeks without a clear response, she escalated the matter to the CTO, attaching:  
+- Email threads showing the manager’s praise and preliminary bonus discussions.  
+- The client’s appreciation letter.  
+- Internal performance dashboards where her team’s metrics exceeded targets.
+
+Two weeks later, she received a show‑cause notice alleging:  
+1) Failure to follow internal coding standards.  
+2) Unauthorized use of third‑party open‑source libraries.  
+3) “Unprofessional tone” in emails when escalating concerns about her bonus.
+
+Sharma submitted a written response within the deadline, refuting each allegation:  
+- She attached code review logs where her work had been approved by senior engineers.  
+- She pointed to the company’s internal policy permitting open‑source use with proper licenses.  
+- She provided her email threads, which were firm but not abusive, and argued that escalation of a compensation dispute was her right.
+
+Despite this, on 10 June 2024, BrightWave terminated Sharma with immediate effect, citing “gross misconduct” and stating that no bonus was payable and no notice period salary would be given.
+
+Plaintiff’s Position (Sharma)  
+Sharma files a civil suit for:  
+- Declaration that her termination was illegal and void.  
+- Recovery of:  
+  - 20% annual bonus for FY 2023–24.  
+  - Three months’ notice‑period salary as per contract.  
+  - Compensation for mental harassment and reputational damage.  
+
+Her core legal arguments:  
+1) Contractual Breach:  
+   - The written contract promises a performance bonus subject to KPIs.  
+   - Internal performance metrics and client feedback demonstrate she met or exceeded those KPIs.  
+   - The employer has not produced any written KPI evaluation justifying a zero bonus.
+
+2) Lack of Due Process:  
+   - The company issued a show‑cause notice but did not conduct a fair inquiry or interview witnesses.  
+   - No prior written warnings were issued to her at any time during her tenure.  
+   - Termination was immediate and without pay in lieu of notice, contrary to the contract’s requirement of three months’ notice or salary in lieu.
+
+3) Pretextual Misconduct Allegations:  
+   - Misconduct was raised only after she insisted on her bonus and escalated to senior management.  
+   - Code quality and library usage had consistently passed internal reviews, indicating the reasons were an after‑thought to justify a cost‑cutting decision.
+
+4) Damage to Reputation:  
+   - The termination letter uses the term “gross misconduct,” which can seriously damage her future employment prospects in the relatively small AI/tech community.
+
+Defendant’s Position (BrightWave)  
+BrightWave files a written statement denying all allegations and arguing:  
+1) Managerial Discretion on Bonuses:  
+   - The bonus clause is “discretionary,” and meeting KPIs does not create an automatic entitlement.  
+   - The company faced financial stress in early 2024 and decided to restrict bonuses across several teams.
+
+2) Policy Violations:  
+   - Sharma allegedly introduced an open‑source library with a restrictive license into a core product without first routing it through the Legal and Compliance team.  
+   - She allegedly merged code without following two‑reviewer approval policy.
+
+3) Breakdown of Trust:  
+   - Her emails to senior management are described as “threatening” and “disruptive,” undermining the working relationship with her manager.  
+   - The company asserts that given the high‑trust nature of her role, the employment relationship became untenable.
+
+4) Contractual Right to Terminate:  
+   - The company claims the contract allows immediate termination for misconduct without notice or severance.
+
+Key Evidence  
+From Sharma:  
+- Employment contract with bonus and notice‑period clauses.  
+- Email exchanges showing bonus discussions, praise, and her escalation.  
+- Client appreciation letter naming her as the project lead.  
+- Code review logs and internal documentation showing approvals.  
+
+From BrightWave:  
+- HR policy documents regarding bonuses and conduct.  
+- An internal “Incident Report” prepared after the bonus dispute began, listing alleged violations.  
+- Selected extracts of email threads highlighting sharp language in Sharma’s escalation emails.  
+
+Issues Before the Court  
+1) Whether Sharma’s termination for “gross misconduct” complied with the principles of natural justice and the terms of her contract.  
+2) Whether the bonus clause created an enforceable right in Sharma’s favor under the facts of this case.  
+3) Whether BrightWave lawfully denied notice‑period salary by invoking misconduct.  
+4) Whether Sharma is entitled to damages for reputational harm and, if so, to what extent.
+
+Possible Legal Analysis (Outline)  
+- The court will likely scrutinize whether a proper inquiry was held. Immediate termination without robust evidence or a documented process may weigh against the employer.  
+- The wording of the bonus clause will be critical: if it is purely discretionary, Sharma may struggle to claim it as a right; if it is tied clearly to quantifiable KPIs, her strong performance evidence may support her claim.  
+- If the court finds that misconduct was cited pretextually and primarily in retaliation for her raising a compensation dispute, it may treat the termination as wrongful and award notice‑period salary and possibly the bonus.  
+- Large reputational damages are harder to quantify, but the use of “gross misconduct” in the termination letter without solid backing could justify some compensatory amount.
+
+Sample “Prayer” (What the Plaintiff Asks For)  
+In her plaint, Sharma could pray for:  
+- A declaration that the termination letter dated 10 June 2024 is illegal and void.  
+- Direction to BrightWave to pay:  
+  - FY 2023–24 bonus at 20% of her CTC.  
+  - Salary in lieu of three months’ notice.  
+  - Additional compensatory damages (for example, a quantified lump sum) for mental agony and damage to reputation.  
+- Costs of the suit and any other relief the court deems just and proper.
+
+***
+
+If you tell what jurisdiction you want this tied to (India, US, EU, etc.) and what area (employment, contract, criminal, IP), a more tailored, longer case text can be drafted in the same format.

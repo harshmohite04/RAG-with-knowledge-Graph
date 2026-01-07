@@ -25,7 +25,7 @@ load_dotenv()
 # ----- CONFIG -----
 NEO4J_URI = os.getenv("NEO4J_URI")
 NEO4J_USER = os.getenv("NEO4J_USER")
-NEO4J_PASS = os.getenv("NEO4J_PASSWORD")
+NEO4J_PASS = os.getenv("NEO4J_PASS")
 OLLAMA_LLM_MODEL = "llama3.2:latest"
 QDRANT_URL = os.getenv("QDRANT_URL")
 QDRANT_KEY = os.getenv("QDRANT_API_KEY")

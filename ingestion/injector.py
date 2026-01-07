@@ -14,7 +14,7 @@ load_dotenv()
 # ------------------ CONFIG ------------------
 NEO4J_URI = os.getenv("NEO4J_URI")
 NEO4J_USER = os.getenv("NEO4J_USER")
-NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD")
+NEO4J_PASS = os.getenv("NEO4J_PASS")
 
 QDRANT_URL = os.getenv("QDRANT_URL")
 QDRANT_KEY = os.getenv("QDRANT_API_KEY")
@@ -24,7 +24,7 @@ QDRANT_COLLECTION = "chunks"
 EMBED_MODEL = os.getenv("OLLAMA_EMBED_MODEL", "nomic-embed-text")
 
 # ------------------ CLIENTS ------------------
-driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
+driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASS))
 qdrant = QdrantClient(url=QDRANT_URL, api_key=QDRANT_KEY)
 
 # Use SAME embedder as in GraphRAG retriever

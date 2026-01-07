@@ -49,6 +49,7 @@ class ChatResponse(BaseModel):
 class Message(BaseModel):
     role: str
     content: str
+    contexts: Optional[List[ContextItem]] = None
 
 class ChatHistoryResponse(BaseModel):
     history: List[Message]
@@ -65,7 +66,11 @@ def get_chat_history(caseId: str):
         
         # Convert to Message objects
         messages = [
-            Message(role=m["role"], content=m["content"]) 
+            Message(
+                role=m["role"], 
+                content=m["content"],
+                contexts=[ContextItem(**c) for c in m.get("contexts", [])] if m.get("contexts") else None
+            ) 
             for m in case_doc["messages"]
         ]
         return ChatHistoryResponse(history=messages)
@@ -91,17 +96,6 @@ def chat(request: ChatRequest):
             case_id=request.caseId,
             history=recent_history,
             top_k=request.top_k
-        )
-
-        # 3. Save to History
-        new_user_msg = {"role": "user", "content": request.message}
-        new_ai_msg = {"role": "assistant", "content": result.answer}
-        
-        # Update MongoDB (upsert)
-        chat_collection.update_one(
-            {"case_id": request.caseId},
-            {"$push": {"messages": {"$each": [new_user_msg, new_ai_msg]}}},
-            upsert=True
         )
 
         # Extract context items from result
@@ -130,6 +124,24 @@ def chat(request: ChatRequest):
                         score=getattr(item, 'score', None)
                     )
                 )
+
+        # 3. Save to History
+        new_user_msg = {"role": "user", "content": request.message}
+        
+        # Convert contexts to dicts for MongoDB
+        contexts_dicts = [ctx.model_dump() for ctx in contexts] if contexts else []
+        new_ai_msg = {
+            "role": "assistant", 
+            "content": result.answer,
+            "contexts": contexts_dicts
+        }
+
+        # Update MongoDB (upsert)
+        chat_collection.update_one(
+            {"case_id": request.caseId},
+            {"$push": {"messages": {"$each": [new_user_msg, new_ai_msg]}}},
+            upsert=True
+        )
 
         return ChatResponse(
             answer=result.answer,

@@ -5,7 +5,7 @@ const app = require('./app');
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/lawfirm_connect';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://mohiteharsh639_db_user:nwToSOqfOOU5dmxb@cluster0.amrqszu.mongodb.net/';
 
 const connectDB = async () => {
     try {
