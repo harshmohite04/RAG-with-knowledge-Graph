@@ -76,7 +76,7 @@ const PortalCalendar: React.FC = () => {
     const [startTime, setStartTime] = useState('09:00');
     const [endDate, setEndDate] = useState('');
     const [endTime, setEndTime] = useState('10:00');
-    // allDay state removed as unused
+
     const [location, setLocation] = useState('');
     const [description, setDescription] = useState('');
 
