@@ -489,7 +489,7 @@ const CaseDocuments: React.FC = () => {
                             </div>
                             <div className="flex items-center gap-2">
                                 <a 
-                                    href={selectedDocument.filePath.startsWith('http') ? selectedDocument.filePath : `http://localhost:5000${selectedDocument.filePath}`} 
+                                    href={selectedDocument.filePath.startsWith('http') ? selectedDocument.filePath : `https://f1dfffb60441.ngrok-free.app${selectedDocument.filePath}`} 
                                     download={selectedDocument.fileName}
                                     target="_blank"
                                     rel="noreferrer"
@@ -510,7 +510,7 @@ const CaseDocuments: React.FC = () => {
                             {(() => {
                                 const url = selectedDocument.filePath.startsWith('http') 
                                     ? selectedDocument.filePath 
-                                    : `http://localhost:5000${selectedDocument.filePath}`;
+                                    : `https://f1dfffb60441.ngrok-free.app${selectedDocument.filePath}`;
                                 
                                 const ext = selectedDocument.fileName.split('.').pop().toLowerCase();
                                 

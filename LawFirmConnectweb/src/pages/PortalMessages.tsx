@@ -80,7 +80,7 @@ const PortalMessages: React.FC = () => {
     useEffect(() => {
         if (!userId) return;
 
-        socketRef.current = io('http://localhost:5000'); // Ensure this matches your backend URL
+        socketRef.current = io('https://f1dfffb60441.ngrok-free.app'); // Ensure this matches your backend URL
 
         socketRef.current.on('connect', () => {
             console.log('Socket connected');

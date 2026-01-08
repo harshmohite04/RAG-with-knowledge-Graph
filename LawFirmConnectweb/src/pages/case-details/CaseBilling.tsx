@@ -135,7 +135,7 @@ const CaseBilling: React.FC = () => {
                                     <td className="px-6 py-4 text-sm text-blue-600">
                                         {bill.receiptUrl ? (
                                             <a 
-                                                href={bill.receiptUrl.startsWith('http') ? bill.receiptUrl : `http://localhost:5000${bill.receiptUrl}`} 
+                                                href={bill.receiptUrl.startsWith('http') ? bill.receiptUrl : `https://f1dfffb60441.ngrok-free.app${bill.receiptUrl}`} 
                                                 target="_blank" 
                                                 rel="noreferrer"
                                                 className="hover:underline flex items-center gap-1"
