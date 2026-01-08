@@ -510,11 +510,7 @@ const CaseDocuments: React.FC = () => {
                             {(() => {
                                 const url = selectedDocument.filePath.startsWith('http') 
                                     ? selectedDocument.filePath 
-<<<<<<< HEAD
                                     : `https://f1dfffb60441.ngrok-free.app${selectedDocument.filePath}`;
-=======
-                                    : `https://0c89861a03c4.ngrok-free.app${selectedDocument.filePath}`;
->>>>>>> 5d70fec784032276368ddc10f3b4524bd74f11b4
                                 
                                 const ext = selectedDocument.fileName.split('.').pop().toLowerCase();
                                 
