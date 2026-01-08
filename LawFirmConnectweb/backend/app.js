@@ -21,8 +21,7 @@ const app = express();
 // Security and utility middleware
 app.use(
   cors({
-    origin: 'http://localhost:5173',
-    origin: 'https://rag-with-knowledge-graph.vercel.app',
+    origin: ['http://localhost:5173', 'https://rag-with-knowledge-graph.vercel.app', 'https://rag-with-knowledge-graph.vercel.app/'],
     credentials: true
   })
 );
